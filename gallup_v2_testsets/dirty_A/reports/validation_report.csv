@@ -1,0 +1,11 @@
+area,check,result,expected,observed
+Health check,INT_DUPLICATE catches the planted errors,PASS,"FAIL, 1 violation(s) [E001]","FAIL, 1 violation(s)"
+Health check,INT_SCORE_RANGE catches the planted errors,PASS,"FAIL, 1 violation(s) [E002]","FAIL, 1 violation(s)"
+Health check,INT_ORPHAN_TEAM catches the planted errors,PASS,"FAIL, 1 violation(s) [E003]","FAIL, 1 violation(s)"
+Health check,INT_UNMATCHED_OUTCOME catches the planted errors,PASS,"FAIL, 1 violation(s) [E004]","FAIL, 1 violation(s)"
+Health check,INT_NEGATIVE_VALUES catches the planted errors,PASS,"FAIL, 1 violation(s) [E005]","FAIL, 1 violation(s)"
+Health check,INT_PARTIAL_RESPONSE catches the planted errors,PASS,"WARN, 1 violation(s) [E006]","WARN, 1 violation(s)"
+Health check,LK_DATE_turnover catches the planted errors,PASS,"FAIL, 1 violation(s) [E007]","FAIL, 1 violation(s)"
+Health check,LK_SURVEY_COLUMNS catches the planted errors,PASS,"FAIL, 1 violation(s) [E008]","FAIL, 1 violation(s)"
+Health check,No FAIL on checks without planted errors,PASS,none,none
+Health check,Blocks exactly the affected outcomes,PASS,['all'],['all']

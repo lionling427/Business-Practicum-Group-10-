@@ -1,0 +1,752 @@
+{
+  "summary": {
+    "checker_version": "2.0",
+    "dataset": "null",
+    "checks_run": 45,
+    "pass": 34,
+    "warn": 11,
+    "fail": 0,
+    "blocked_outcomes": [],
+    "analysis_allowed": {
+      "turnover": true,
+      "absence": true,
+      "performance": true
+    },
+    "actions": [
+      "add_caveat:AG_SIMPSON",
+      "add_caveat:MS_DIF",
+      "add_caveat:NR_GAP_department",
+      "add_caveat:NR_LEAVERS",
+      "add_caveat:RS_EXTREME",
+      "add_caveat:SV_LEAVER_ENGAGEMENT",
+      "add_control:department",
+      "add_control:prior_performance_rating",
+      "same_employees_only",
+      "suppress_groups:5",
+      "within_group:department"
+    ]
+  },
+  "checks": [
+    {
+      "step": "1 Integrity",
+      "code": "INT_DUPLICATE",
+      "check": "Duplicate employee per wave",
+      "status": "PASS",
+      "detail": "0 duplicate rows",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "1 Integrity",
+      "code": "INT_SCORE_RANGE",
+      "check": "Q12 scores within 1-5",
+      "status": "PASS",
+      "detail": "0 out-of-range values",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "1 Integrity",
+      "code": "INT_ORPHAN_TEAM",
+      "check": "Every employee maps to a team",
+      "status": "PASS",
+      "detail": "0 orphan rows",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "1 Integrity",
+      "code": "INT_UNMATCHED_OUTCOME",
+      "check": "Every survey row has outcomes",
+      "status": "PASS",
+      "detail": "0 unmatched rows",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "1 Integrity",
+      "code": "INT_NEGATIVE_VALUES",
+      "check": "No negative tenure or absence",
+      "status": "PASS",
+      "detail": "0 negative values",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "1 Integrity",
+      "code": "INT_PARTIAL_RESPONSE",
+      "check": "Respondents answered all 12 items",
+      "status": "PASS",
+      "detail": "0 partial responses",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "2 Coverage",
+      "code": "COV_GROUP_SIZE_department",
+      "check": "Group sizes: department",
+      "status": "PASS",
+      "detail": "smallest Sales 11.6%, largest Logistics 13.2%",
+      "metrics": {
+        "smallest_share": 0.1163
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "2 Coverage",
+      "code": "COV_GROUP_SIZE_role_level",
+      "check": "Group sizes: role_level",
+      "status": "PASS",
+      "detail": "smallest Manager 9.8%, largest Individual contributor 65.2%",
+      "metrics": {
+        "smallest_share": 0.0983
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "2 Coverage",
+      "code": "COV_GROUP_SIZE_pay_band",
+      "check": "Group sizes: pay_band",
+      "status": "PASS",
+      "detail": "smallest B4 9.9%, largest B2 34.8%",
+      "metrics": {
+        "smallest_share": 0.0994
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "2 Coverage",
+      "code": "COV_GROUP_SIZE_shift_type",
+      "check": "Group sizes: shift_type",
+      "status": "PASS",
+      "detail": "smallest Night 10.1%, largest Day 69.9%",
+      "metrics": {
+        "smallest_share": 0.1006
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "2 Coverage",
+      "code": "COV_SMALL_TEAMS",
+      "check": "Teams below n=5 (must be suppressed)",
+      "status": "WARN",
+      "detail": "5.0% of teams (200)",
+      "metrics": {
+        "teams": 200,
+        "share": 0.05
+      },
+      "evidence_strength": "moderate",
+      "affects": [
+        "all"
+      ],
+      "actions": [
+        "suppress_groups:5"
+      ]
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_OVERALL",
+      "check": "Overall response rate",
+      "status": "PASS",
+      "detail": "80.8%",
+      "metrics": {
+        "rate": 0.8077
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_GAP_department",
+      "check": "Response rate gap by department",
+      "status": "WARN",
+      "detail": "Sales 76.8% vs Engineering 82.0% (gap 5.2%)",
+      "metrics": {
+        "gap": 0.0518
+      },
+      "evidence_strength": "moderate",
+      "affects": [
+        "all"
+      ],
+      "actions": [
+        "add_caveat:NR_GAP_department"
+      ]
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_GAP_role_level",
+      "check": "Response rate gap by role_level",
+      "status": "PASS",
+      "detail": "Manager 80.4% vs Senior 81.0% (gap 0.6%)",
+      "metrics": {
+        "gap": 0.0059
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_GAP_pay_band",
+      "check": "Response rate gap by pay_band",
+      "status": "PASS",
+      "detail": "B4 80.0% vs B1 80.9% (gap 1.0%)",
+      "metrics": {
+        "gap": 0.0096
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_GAP_shift_type",
+      "check": "Response rate gap by shift_type",
+      "status": "PASS",
+      "detail": "Day 80.7% vs Night 81.5% (gap 0.8%)",
+      "metrics": {
+        "gap": 0.0081
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_GAP_tenure_band",
+      "check": "Response rate gap by tenure_band",
+      "status": "PASS",
+      "detail": "<2y 80.1% vs 2-5y 81.3% (gap 1.2%)",
+      "metrics": {
+        "gap": 0.0121
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_SMD_tenure_years",
+      "check": "Respondents vs non-respondents: tenure_years",
+      "status": "PASS",
+      "detail": "SMD +0.012",
+      "metrics": {
+        "smd": 0.012
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_SMD_unplanned_absence_days_6m",
+      "check": "Respondents vs non-respondents: unplanned_absence_days_6m",
+      "status": "PASS",
+      "detail": "SMD -0.004",
+      "metrics": {
+        "smd": -0.004
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_SMD_performance_rating",
+      "check": "Respondents vs non-respondents: performance_rating",
+      "status": "PASS",
+      "detail": "SMD -0.026",
+      "metrics": {
+        "smd": -0.026
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_SMD_prior_performance_rating",
+      "check": "Respondents vs non-respondents: prior_performance_rating",
+      "status": "PASS",
+      "detail": "SMD -0.002",
+      "metrics": {
+        "smd": -0.002
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "3 Nonresponse",
+      "code": "NR_LEAVERS",
+      "check": "Leavers vs stayers response rate",
+      "status": "WARN",
+      "detail": "Leavers 60.1% vs stayers 86.1%. Respondents may look more positive than the workforce; turnover effects may be understated.",
+      "metrics": {
+        "leaver_rate": 0.6009,
+        "stayer_rate": 0.8612,
+        "gap": 0.2603
+      },
+      "evidence_strength": "moderate",
+      "affects": [
+        "turnover"
+      ],
+      "actions": [
+        "add_caveat:NR_LEAVERS"
+      ]
+    },
+    {
+      "step": "4 Response style",
+      "code": "RS_STRAIGHTLINE",
+      "check": "Straight-lining (same answer to all 12)",
+      "status": "PASS",
+      "detail": "2.1% of respondents",
+      "metrics": {
+        "share": 0.0214
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "4 Response style",
+      "code": "RS_EXTREME",
+      "check": "Extreme responding (>80% of answers are 1 or 5)",
+      "status": "WARN",
+      "detail": "7.9% of respondents",
+      "metrics": {
+        "share": 0.0789
+      },
+      "evidence_strength": "weak",
+      "affects": [
+        "all"
+      ],
+      "actions": [
+        "add_caveat:RS_EXTREME"
+      ]
+    },
+    {
+      "step": "4 Response style",
+      "code": "RS_CEILING",
+      "check": "Ceiling effect (item with most 5s)",
+      "status": "PASS",
+      "detail": "Q09 38.8% answered 5",
+      "metrics": {
+        "max_share": 0.3882
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "4 Response style",
+      "code": "RS_ACQUIESCENCE",
+      "check": "Acquiescence (share agree/strongly agree)",
+      "status": "PASS",
+      "detail": "58.3%",
+      "metrics": {
+        "share": 0.5828
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "5 Measurement",
+      "code": "MS_ALPHA",
+      "check": "Reliability (Cronbach's alpha), all",
+      "status": "PASS",
+      "detail": "alpha 0.93",
+      "metrics": {
+        "alpha": 0.932
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "5 Measurement",
+      "code": "MS_ALPHA_department",
+      "check": "Reliability consistent across department",
+      "status": "PASS",
+      "detail": "alpha 0.93 (Sales) to 0.94 (Customer Service)",
+      "metrics": {
+        "range": 0.004
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "5 Measurement",
+      "code": "MS_ALPHA_role_level",
+      "check": "Reliability consistent across role_level",
+      "status": "PASS",
+      "detail": "alpha 0.93 (Manager) to 0.93 (Individual contributor)",
+      "metrics": {
+        "range": 0.002
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "5 Measurement",
+      "code": "MS_ALPHA_tenure_band",
+      "check": "Reliability consistent across tenure_band",
+      "status": "PASS",
+      "detail": "alpha 0.93 (2-5y) to 0.93 (<2y)",
+      "metrics": {
+        "range": 0.001
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    },
+    {
+      "step": "5 Measurement",
+      "code": "MS_DIF",
+      "check": "Item bias by department (DIF screen)",
+      "status": "WARN",
+      "detail": "Items behave differently by department: Q02, Q07",
+      "metrics": {
+        "items": [
+          "Q02",
+          "Q07"
+        ]
+      },
+      "evidence_strength": "moderate",
+      "affects": [
+        "all"
+      ],
+      "actions": [
+        "add_control:department",
+        "add_caveat:MS_DIF"
+      ]
+    },
+    {
+      "step": "6 Outcome labels",
+      "code": "OL_PERF_GAP_role_level",
+      "check": "Performance rating gap by role_level",
+      "status": "PASS",
+      "detail": "Manager 3.51 vs Senior 3.54 (0.02 SD)",
+      "metrics": {
+        "gap_sd": 0.025
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "performance"
+      ],
+      "actions": []
+    },
+    {
+      "step": "6 Outcome labels",
+      "code": "OL_TURNOVER_GAP_role_level",
+      "check": "Turnover rate gap by role_level",
+      "status": "PASS",
+      "detail": "Senior 20.0% vs Individual contributor 20.8%",
+      "metrics": {
+        "gap": 0.0084
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "turnover"
+      ],
+      "actions": []
+    },
+    {
+      "step": "6 Outcome labels",
+      "code": "OL_PERF_GAP_pay_band",
+      "check": "Performance rating gap by pay_band",
+      "status": "PASS",
+      "detail": "B1 3.52 vs B4 3.56 (0.03 SD)",
+      "metrics": {
+        "gap_sd": 0.033
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "performance"
+      ],
+      "actions": []
+    },
+    {
+      "step": "6 Outcome labels",
+      "code": "OL_TURNOVER_GAP_pay_band",
+      "check": "Turnover rate gap by pay_band",
+      "status": "PASS",
+      "detail": "B4 20.4% vs B3 20.7%",
+      "metrics": {
+        "gap": 0.0028
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "turnover"
+      ],
+      "actions": []
+    },
+    {
+      "step": "6 Outcome labels",
+      "code": "OL_PERF_GAP_department",
+      "check": "Performance rating gap by department",
+      "status": "WARN",
+      "detail": "Logistics 2.20 vs Sales 4.66 (2.06 SD)",
+      "metrics": {
+        "gap_sd": 2.06
+      },
+      "evidence_strength": "strong",
+      "affects": [
+        "performance"
+      ],
+      "actions": [
+        "add_control:department"
+      ]
+    },
+    {
+      "step": "6 Outcome labels",
+      "code": "OL_TURNOVER_GAP_department",
+      "check": "Turnover rate gap by department",
+      "status": "WARN",
+      "detail": "Customer Service 17.8% vs Sales 35.1%",
+      "metrics": {
+        "gap": 0.1738
+      },
+      "evidence_strength": "moderate",
+      "affects": [
+        "turnover"
+      ],
+      "actions": [
+        "add_control:department"
+      ]
+    },
+    {
+      "step": "6 Outcome labels",
+      "code": "OL_PRIOR_ANCHOR",
+      "check": "Rating tracks prior rating",
+      "status": "WARN",
+      "detail": "r = 0.35",
+      "metrics": {
+        "r": 0.345
+      },
+      "evidence_strength": "weak",
+      "affects": [
+        "performance"
+      ],
+      "actions": [
+        "add_control:prior_performance_rating"
+      ]
+    },
+    {
+      "step": "7 Survivorship",
+      "code": "SV_STAYER_SHARE",
+      "check": "Wave 2 made of wave 1 stayers",
+      "status": "WARN",
+      "detail": "79.5% stayers, 20.5% new hires",
+      "metrics": {
+        "stayer_share": 0.7945
+      },
+      "evidence_strength": "moderate",
+      "affects": [
+        "trend"
+      ],
+      "actions": [
+        "same_employees_only"
+      ]
+    },
+    {
+      "step": "7 Survivorship",
+      "code": "SV_LEAVER_ENGAGEMENT",
+      "check": "Leavers were less engaged (wave 2 over-represents engaged staff)",
+      "status": "WARN",
+      "detail": "stayers vs leavers mean score SMD -0.40",
+      "metrics": {
+        "smd": -0.4
+      },
+      "evidence_strength": "moderate",
+      "affects": [
+        "trend"
+      ],
+      "actions": [
+        "same_employees_only",
+        "add_caveat:SV_LEAVER_ENGAGEMENT"
+      ]
+    },
+    {
+      "step": "8 Aggregation",
+      "code": "AG_SIMPSON",
+      "check": "Pooled vs within-department direction flips",
+      "status": "WARN",
+      "detail": "Q02 x performance_rating (pooled -0.08, within-department +0.01); Q07 x performance_rating (pooled -0.28, within-department +0.00)",
+      "metrics": {
+        "pairs": [
+          {
+            "item": "Q02",
+            "outcome": "performance",
+            "pooled_r": -0.084,
+            "within_r": 0.007
+          },
+          {
+            "item": "Q07",
+            "outcome": "performance",
+            "pooled_r": -0.275,
+            "within_r": 0.004
+          }
+        ]
+      },
+      "evidence_strength": "strong",
+      "affects": [
+        "performance"
+      ],
+      "actions": [
+        "within_group:department",
+        "add_control:department",
+        "add_caveat:AG_SIMPSON"
+      ]
+    },
+    {
+      "step": "9 Leakage",
+      "code": "LK_DATE_turnover",
+      "check": "Turnover measured after the survey",
+      "status": "PASS",
+      "detail": "all 100,000 rows: turnover_window_end is after the survey date",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "turnover"
+      ],
+      "actions": []
+    },
+    {
+      "step": "9 Leakage",
+      "code": "LK_DATE_absence",
+      "check": "Absence measured after the survey",
+      "status": "PASS",
+      "detail": "all 100,000 rows: absence_window_end is after the survey date",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "absence"
+      ],
+      "actions": []
+    },
+    {
+      "step": "9 Leakage",
+      "code": "LK_DATE_performance",
+      "check": "Performance measured after the survey",
+      "status": "PASS",
+      "detail": "all 100,000 rows: performance_review_date is after the survey date",
+      "metrics": {
+        "violations": 0
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "performance"
+      ],
+      "actions": []
+    },
+    {
+      "step": "9 Leakage",
+      "code": "LK_SURVEY_COLUMNS",
+      "check": "No outcome columns inside the survey file",
+      "status": "PASS",
+      "detail": "none found",
+      "metrics": {
+        "violations": 0,
+        "columns": []
+      },
+      "evidence_strength": "none",
+      "affects": [
+        "all"
+      ],
+      "actions": []
+    }
+  ]
+}

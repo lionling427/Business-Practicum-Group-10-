@@ -1,0 +1,20 @@
+area,check,result,expected,observed
+Structure,Items correlate like real Q12 data,PASS,mean inter-item r 0.35-0.75,0.54
+Structure,Items have different score distributions (fix #5),PASS,agree share differs by 10+ points across items,Q10 41% to Q09 72%
+Structure,X8 about 5% of teams under 5 people,PASS,4%-6%,"5.0% (200 of 4,000)"
+Structure,Every outcome is dated after the survey,PASS,all rows,all rows
+Structure,Health check raises no FAIL on clean data,PASS,0 FAIL,"0 FAIL, 11 WARN"
+Null design,No item is a meaningful driver after FDR correction (35 tests),PASS,0 items both FDR-significant and outside the no-effect band,0
+Null design,Remaining significant results are trivially small,PASS,any FDR-significant result stays inside the no-effect band,"Q01->turnover, Q02->turnover, Q04->turnover, Q09->turnover (within band; nonresponse selection, X7)"
+True nulls,N1 Q06 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"1.00 [0.99, 1.01] p=0.56"
+True nulls,N2 Q10 -> turnover: no independent effect,PASS,p > 0.05 or OR 0.91-1.10,"1.02 [0.98, 1.05] p=0.30"
+True nulls,N2 Q10 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"1.00 [0.99, 1.01] p=0.69"
+True nulls,N2 Q10 -> performance: no independent effect,PASS,p > 0.05 or |beta| < 0.05,beta -0.010 p=0.03
+True nulls,N3 Q08 -> turnover: no independent effect,PASS,p > 0.05 or OR 0.91-1.10,"1.06 [1.01, 1.10] p=0.01"
+True nulls,N3 Q08 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"1.00 [0.99, 1.02] p=0.61"
+True nulls,N3 Q08 -> performance: no independent effect,PASS,p > 0.05 or |beta| < 0.05,beta -0.001 p=0.79
+Traps,"X1 Q02 looks related to turnover, until department is controlled",PASS,raw p < 0.05; controlled no effect,"raw 1.21 [1.18, 1.24] -> controlled 1.06 [1.02, 1.10]"
+Traps,X2 Q11 looks predictive until prior rating is controlled,PASS,raw beta > 2x controlled,raw 0.17 -> controlled 0.06
+Traps,"X6 Q07 negative pooled, no effect within departments",PASS,"pooled < 0, within about 0","pooled -0.28, within 0.00"
+Traps,X7 leavers answer less often,PASS,gap > 10 points,leavers 60% vs stayers 86%
+Traps,X8 health check asks to suppress small teams,PASS,suppress_groups:5,suppress_groups:5

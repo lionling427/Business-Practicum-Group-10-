@@ -1,0 +1,182 @@
+error_id,file,wave,key,column,original_value,injected_value,error_type,expected_check,expected_status,expected_effect
+E001,survey_responses.csv,1,E00004763,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E002,survey_responses.csv,1,E00002545,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E003,survey_responses.csv,1,E00003955,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E004,survey_responses.csv,1,E00000079,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E005,survey_responses.csv,1,E00000359,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E006,survey_responses.csv,1,E00004471,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E007,survey_responses.csv,1,E00002261,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E008,survey_responses.csv,1,E00004817,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E009,survey_responses.csv,1,E00004374,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E010,survey_responses.csv,1,E00000679,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E011,survey_responses.csv,1,E00002353,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E012,survey_responses.csv,1,E00000445,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E013,survey_responses.csv,1,E00000856,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E014,survey_responses.csv,1,E00003789,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E015,survey_responses.csv,1,E00003768,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E016,survey_responses.csv,1,E00001884,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E017,survey_responses.csv,1,E00000050,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E018,survey_responses.csv,1,E00000044,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E019,survey_responses.csv,1,E00003537,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E020,survey_responses.csv,1,E00003093,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E021,survey_responses.csv,1,E00004693,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E022,survey_responses.csv,1,E00001541,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E023,survey_responses.csv,1,E00004616,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E024,survey_responses.csv,1,E00002715,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E025,survey_responses.csv,1,E00004094,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E026,survey_responses.csv,1,E00004727,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E027,survey_responses.csv,1,E00003780,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E028,survey_responses.csv,1,E00004379,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E029,survey_responses.csv,1,E00003706,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E030,survey_responses.csv,1,E00003516,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E031,survey_responses.csv,1,E00000643,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E032,survey_responses.csv,1,E00001222,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E033,survey_responses.csv,1,E00003722,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E034,survey_responses.csv,1,E00004286,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E035,survey_responses.csv,1,E00001212,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E036,survey_responses.csv,1,E00000069,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E037,survey_responses.csv,1,E00004631,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E038,survey_responses.csv,1,E00000775,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E039,survey_responses.csv,1,E00003330,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E040,survey_responses.csv,1,E00004971,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E041,survey_responses.csv,1,E00000310,Q01,3,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E042,survey_responses.csv,1,E00002617,Q02,3,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E043,survey_responses.csv,1,E00003007,Q03,5,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E044,survey_responses.csv,1,E00004398,Q04,4,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E045,survey_responses.csv,1,E00003705,Q05,5,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E046,survey_responses.csv,1,E00002063,Q06,4,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E047,survey_responses.csv,1,E00001804,Q07,3,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E048,survey_responses.csv,1,E00002833,Q08,5,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E049,survey_responses.csv,1,E00002515,Q09,5,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E050,survey_responses.csv,1,E00003851,Q10,2,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E051,survey_responses.csv,1,E00001491,Q11,5,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E052,survey_responses.csv,1,E00004753,Q12,1,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E053,survey_responses.csv,1,E00004103,Q01,3,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E054,survey_responses.csv,1,E00001041,Q02,4,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E055,survey_responses.csv,1,E00004428,Q03,4,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E056,survey_responses.csv,1,E00002293,Q04,4,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E057,survey_responses.csv,1,E00001736,Q05,5,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E058,survey_responses.csv,1,E00003003,Q06,3,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E059,survey_responses.csv,1,E00003301,Q07,5,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E060,survey_responses.csv,1,E00001320,Q08,5,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E061,survey_responses.csv,1,E00003540,Q09,2,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E062,survey_responses.csv,1,E00002304,Q10,4,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E063,survey_responses.csv,1,E00000474,Q11,5,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E064,survey_responses.csv,1,E00003484,Q12,2,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E065,survey_responses.csv,1,E00003089,Q01,2,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E066,survey_responses.csv,1,E00002604,Q02,4,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E067,survey_responses.csv,1,E00003580,Q03,4,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E068,survey_responses.csv,1,E00000692,Q04,4,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E069,survey_responses.csv,1,E00004159,Q05,3,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E070,survey_responses.csv,1,E00003127,Q06,4,99,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E071,survey_responses.csv,1,E00002438,team_id,T000195,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E072,survey_responses.csv,1,E00002620,team_id,T000210,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E073,survey_responses.csv,1,E00001866,team_id,T000150,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E074,survey_responses.csv,1,E00003885,team_id,T000310,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E075,survey_responses.csv,1,E00003658,team_id,T000291,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E076,survey_responses.csv,1,E00001255,team_id,T000102,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E077,survey_responses.csv,1,E00004800,team_id,T000384,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E078,survey_responses.csv,1,E00004954,team_id,T000396,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E079,survey_responses.csv,1,E00001262,team_id,T000102,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E080,survey_responses.csv,1,E00000150,team_id,T000012,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E081,survey_responses.csv,1,E00002433,team_id,T000195,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E082,survey_responses.csv,1,E00002321,team_id,T000183,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E083,survey_responses.csv,1,E00002069,team_id,T000165,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E084,survey_responses.csv,1,E00004249,team_id,T000337,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E085,survey_responses.csv,1,E00003278,team_id,T000262,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E086,survey_responses.csv,1,E00002075,team_id,T000166,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E087,survey_responses.csv,1,E00002310,team_id,T000183,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E088,survey_responses.csv,1,E00002243,team_id,T000177,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E089,survey_responses.csv,1,E00004104,team_id,T000326,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E090,survey_responses.csv,1,E00004832,team_id,T000386,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E091,individual_outcomes.csv,1,E00002470,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E092,individual_outcomes.csv,1,E00004044,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E093,individual_outcomes.csv,1,E00002851,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E094,individual_outcomes.csv,1,E00000724,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E095,individual_outcomes.csv,1,E00004518,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E096,individual_outcomes.csv,1,E00003505,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E097,individual_outcomes.csv,1,E00004333,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E098,individual_outcomes.csv,1,E00003010,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E099,individual_outcomes.csv,1,E00000953,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E100,individual_outcomes.csv,1,E00004842,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E101,individual_outcomes.csv,1,E00000981,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E102,individual_outcomes.csv,1,E00003944,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E103,individual_outcomes.csv,1,E00000225,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E104,individual_outcomes.csv,1,E00002450,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E105,individual_outcomes.csv,1,E00003259,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E106,survey_responses.csv,1,E00001940,tenure_years,4.6,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E107,survey_responses.csv,1,E00001073,tenure_years,4.7,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E108,survey_responses.csv,1,E00000920,tenure_years,1.9,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E109,survey_responses.csv,1,E00003970,tenure_years,5.9,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E110,survey_responses.csv,1,E00001280,tenure_years,3.1,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E111,survey_responses.csv,1,E00003556,tenure_years,0.9,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E112,survey_responses.csv,1,E00000605,tenure_years,6.1,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E113,survey_responses.csv,1,E00002884,tenure_years,2.9,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E114,survey_responses.csv,1,E00003405,tenure_years,5.3,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E115,survey_responses.csv,1,E00000250,tenure_years,1.0,-2.0,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E116,individual_outcomes.csv,1,E00000526,unplanned_absence_days_6m,0,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E117,individual_outcomes.csv,1,E00002431,unplanned_absence_days_6m,6,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E118,individual_outcomes.csv,1,E00004322,unplanned_absence_days_6m,2,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E119,individual_outcomes.csv,1,E00003327,unplanned_absence_days_6m,1,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E120,individual_outcomes.csv,1,E00002411,unplanned_absence_days_6m,4,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E121,individual_outcomes.csv,1,E00002275,unplanned_absence_days_6m,2,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E122,individual_outcomes.csv,1,E00000395,unplanned_absence_days_6m,2,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E123,individual_outcomes.csv,1,E00002464,unplanned_absence_days_6m,2,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E124,individual_outcomes.csv,1,E00002187,unplanned_absence_days_6m,1,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E125,individual_outcomes.csv,1,E00000551,unplanned_absence_days_6m,0,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E126,individual_outcomes.csv,1,E00002765,unplanned_absence_days_6m,1,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E127,individual_outcomes.csv,1,E00001081,unplanned_absence_days_6m,6,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E128,individual_outcomes.csv,1,E00003599,unplanned_absence_days_6m,5,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E129,individual_outcomes.csv,1,E00004158,unplanned_absence_days_6m,0,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E130,individual_outcomes.csv,1,E00002452,unplanned_absence_days_6m,0,-1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E131,survey_responses.csv,1,E00003266,"Q04,Q08",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E132,survey_responses.csv,1,E00003264,"Q05,Q09",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E133,survey_responses.csv,1,E00003187,"Q06,Q10",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E134,survey_responses.csv,1,E00002301,"Q07,Q11",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E135,survey_responses.csv,1,E00002866,"Q08,Q12",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E136,survey_responses.csv,1,E00000927,"Q09,Q01",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E137,survey_responses.csv,1,E00000432,"Q10,Q02",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E138,survey_responses.csv,1,E00003787,"Q11,Q03",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E139,survey_responses.csv,1,E00002108,"Q12,Q04",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E140,survey_responses.csv,1,E00004050,"Q01,Q05",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E141,survey_responses.csv,1,E00001536,"Q02,Q06",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E142,survey_responses.csv,1,E00000505,"Q03,Q07",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E143,survey_responses.csv,1,E00001200,"Q04,Q08",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E144,survey_responses.csv,1,E00001697,"Q05,Q09",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E145,survey_responses.csv,1,E00003695,"Q06,Q10",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E146,survey_responses.csv,1,E00003175,"Q07,Q11",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E147,survey_responses.csv,1,E00000175,"Q08,Q12",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E148,survey_responses.csv,1,E00001336,"Q09,Q01",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E149,survey_responses.csv,1,E00000049,"Q10,Q02",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E150,survey_responses.csv,1,E00004341,"Q11,Q03",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E151,survey_responses.csv,1,E00000496,"Q12,Q04",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E152,survey_responses.csv,1,E00003508,"Q01,Q05",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E153,survey_responses.csv,1,E00002025,"Q02,Q06",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E154,survey_responses.csv,1,E00004611,"Q03,Q07",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E155,survey_responses.csv,1,E00003526,"Q04,Q08",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E156,survey_responses.csv,1,E00001244,"Q05,Q09",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E157,survey_responses.csv,1,E00002382,"Q06,Q10",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E158,survey_responses.csv,1,E00000848,"Q07,Q11",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E159,survey_responses.csv,1,E00003691,"Q08,Q12",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E160,survey_responses.csv,1,E00004089,"Q09,Q01",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E161,survey_responses.csv,1,E00003815,"Q10,Q02",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E162,survey_responses.csv,1,E00003100,"Q11,Q03",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E163,survey_responses.csv,1,E00000174,"Q12,Q04",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E164,survey_responses.csv,1,E00001385,"Q01,Q05",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E165,survey_responses.csv,1,E00000306,"Q02,Q06",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E166,survey_responses.csv,1,E00002547,"Q03,Q07",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E167,survey_responses.csv,1,E00004300,"Q04,Q08",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E168,survey_responses.csv,1,E00003563,"Q05,Q09",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E169,survey_responses.csv,1,E00002568,"Q06,Q10",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E170,survey_responses.csv,1,E00002838,"Q07,Q11",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E171,individual_outcomes.csv,1,E00000894,absence_window_end,2024-09-16,2024-03-08,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E172,individual_outcomes.csv,1,E00001178,absence_window_end,2024-09-05,2024-02-26,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E173,individual_outcomes.csv,1,E00004151,absence_window_end,2024-09-22,2024-03-14,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E174,individual_outcomes.csv,1,E00002288,absence_window_end,2024-09-19,2024-03-11,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E175,individual_outcomes.csv,1,E00002639,absence_window_end,2024-09-04,2024-02-25,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E176,individual_outcomes.csv,1,E00000227,absence_window_end,2024-09-19,2024-03-11,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E177,individual_outcomes.csv,1,E00000148,absence_window_end,2024-09-08,2024-02-29,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E178,individual_outcomes.csv,1,E00002425,absence_window_end,2024-09-05,2024-02-26,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E179,individual_outcomes.csv,1,E00002932,absence_window_end,2024-09-18,2024-03-10,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E180,individual_outcomes.csv,1,E00000335,absence_window_end,2024-09-19,2024-03-11,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only
+E181,individual_outcomes.csv,,(column),performance_review_date,present,column deleted,date column missing: order cannot be verified,LK_DATE_performance,WARN,performance analysis continues with a caveat

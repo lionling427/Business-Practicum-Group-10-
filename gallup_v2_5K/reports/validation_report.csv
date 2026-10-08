@@ -1,0 +1,32 @@
+area,check,result,expected,observed
+Structure,Items correlate like real Q12 data,PASS,mean inter-item r 0.35-0.75,0.53
+Structure,Items have different score distributions (fix #5),PASS,agree share differs by 10+ points across items,Q10 40% to Q08 73%
+Structure,X8 about 5% of teams under 5 people,PASS,4%-6%,5.0% (20 of 400)
+Structure,Every outcome is dated after the survey,PASS,all rows,all rows
+Structure,Health check raises no FAIL on clean data,PASS,0 FAIL,"0 FAIL, 13 WARN"
+True effects,T1 Q04 -> turnover,PASS,ratio < 1 (realized 0.69),"0.69 [0.61, 0.78]"
+True effects,T2 Q05 -> turnover,PASS,ratio < 1 (realized 0.84),"0.84 [0.75, 0.94]"
+True effects,T3 Q12 -> turnover,PASS,ratio < 1 (realized 0.84),"0.84 [0.75, 0.94]"
+True effects,T5 Q05 -> absence,PASS,ratio < 1 (realized 0.88),"0.88 [0.84, 0.91]"
+True effects,T4 Q01 -> performance,PASS,beta > 0 (realized 0.13),beta 0.13 (p=0.000)
+True nulls,N1 Q06 looks related to absence on its own,PASS,p < 0.05 alone,"0.84 [0.81, 0.86]"
+True nulls,N1 Q06 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"0.98 [0.95, 1.02] p=0.35"
+True nulls,N3 Q08 looks related to turnover on its own,PASS,p < 0.05 alone,"0.72 [0.66, 0.78]"
+True nulls,N2 Q10 -> turnover: no independent effect,PASS,p > 0.05 or OR 0.91-1.10,"1.05 [0.93, 1.17] p=0.45"
+True nulls,N2 Q10 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"0.99 [0.96, 1.03] p=0.75"
+True nulls,N2 Q10 -> performance: no independent effect,PASS,p > 0.05 or |beta| < 0.05,beta -0.012 p=0.38
+True nulls,N3 Q08 -> turnover: no independent effect,PASS,p > 0.05 or OR 0.91-1.10,"0.98 [0.86, 1.12] p=0.80"
+True nulls,N3 Q08 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"1.01 [0.96, 1.06] p=0.69"
+True nulls,N3 Q08 -> performance: no independent effect,PASS,p > 0.05 or |beta| < 0.05,beta 0.006 p=0.70
+Traps,"X1 Q02 looks related to turnover, until department is controlled",PASS,raw p < 0.05; controlled no effect,"raw 0.69 [0.64, 0.75] -> controlled 0.98 [0.86, 1.11]"
+Traps,X2 Q11 looks predictive until prior rating is controlled,PASS,raw beta > 2x controlled,raw 0.27 -> controlled 0.08
+Traps,X3 step 1: Q07 looks related to absence (department controlled),PASS,IRR < 1,"0.81 [0.78, 0.84]"
+Traps,X3 step 2: Q07 effect shrinks within teams (same manager),PASS,shrinks by more than half,-0.143 -> -0.009
+Traps,X3 step 3: absence clusters by team,PASS,"ICC > 0.01, p < 0.001",ICC 0.104 (p=5.3e-31)
+Traps,X3 step 4: controlling hidden manager quality removes Q07,PASS,p > 0.05 or under a quarter of step 1,-0.007 (p=0.64)
+Traps,X4 absence jumps when Q01 is below 3,PASS,RR > 1 (realized 1.80),"1.81 [1.59, 2.05]"
+Traps,X5 Q04 matters more for tenure under 2 years,PASS,"interaction < 0, p < 0.05",log-OR -0.44 (p=0.000)
+Traps,X6 Simpson's paradox: Q07 vs performance flips,PASS,pooled < 0 < within,"pooled -0.08, within 0.18"
+Traps,X7 leavers answer less often,PASS,gap > 10 points,leavers 58% vs stayers 86%
+Traps,X7 respondents understate the engagement-turnover link,PASS,respondent OR above the all-employee OR 0.39,respondent OR 0.56
+Traps,X8 health check asks to suppress small teams,PASS,suppress_groups:5,suppress_groups:5

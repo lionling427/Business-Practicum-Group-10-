@@ -1,0 +1,8001 @@
+wave,team_id,department,team_size
+1,T000000,Finance,15
+1,T000001,HR,15
+1,T000002,Customer Service,15
+1,T000003,Logistics,14
+1,T000004,Sales,18
+1,T000005,Operations,12
+1,T000006,Customer Service,13
+1,T000007,Logistics,11
+1,T000008,Operations,8
+1,T000009,Engineering,12
+1,T000010,Customer Service,13
+1,T000011,Finance,13
+1,T000012,Engineering,9
+1,T000013,Customer Service,10
+1,T000014,Engineering,11
+1,T000015,Finance,4
+1,T000016,Marketing,12
+1,T000017,HR,11
+1,T000018,Sales,4
+1,T000019,Sales,12
+1,T000020,Customer Service,11
+1,T000021,Customer Service,10
+1,T000022,Customer Service,16
+1,T000023,HR,14
+1,T000024,Customer Service,19
+1,T000025,Engineering,14
+1,T000026,Finance,14
+1,T000027,Customer Service,12
+1,T000028,Sales,15
+1,T000029,Engineering,13
+1,T000030,Sales,15
+1,T000031,Finance,13
+1,T000032,Logistics,15
+1,T000033,Operations,14
+1,T000034,Finance,12
+1,T000035,Finance,10
+1,T000036,Logistics,11
+1,T000037,Operations,4
+1,T000038,HR,12
+1,T000039,Engineering,13
+1,T000040,Sales,11
+1,T000041,Customer Service,11
+1,T000042,Sales,12
+1,T000043,Engineering,13
+1,T000044,Finance,10
+1,T000045,Finance,12
+1,T000046,Sales,14
+1,T000047,Logistics,16
+1,T000048,Marketing,13
+1,T000049,Logistics,18
+1,T000050,Sales,15
+1,T000051,Marketing,15
+1,T000052,Engineering,10
+1,T000053,HR,13
+1,T000054,Logistics,9
+1,T000055,Engineering,14
+1,T000056,Marketing,12
+1,T000057,Operations,16
+1,T000058,Engineering,10
+1,T000059,Logistics,9
+1,T000060,Finance,12
+1,T000061,HR,10
+1,T000062,Engineering,13
+1,T000063,Sales,4
+1,T000064,Finance,12
+1,T000065,HR,8
+1,T000066,Finance,11
+1,T000067,Customer Service,10
+1,T000068,Engineering,11
+1,T000069,HR,19
+1,T000070,Customer Service,13
+1,T000071,Logistics,15
+1,T000072,Finance,12
+1,T000073,Sales,11
+1,T000074,Marketing,12
+1,T000075,HR,14
+1,T000076,Customer Service,12
+1,T000077,Finance,8
+1,T000078,Engineering,13
+1,T000079,Sales,13
+1,T000080,Finance,14
+1,T000081,Marketing,8
+1,T000082,Customer Service,16
+1,T000083,Customer Service,13
+1,T000084,Operations,12
+1,T000085,HR,11
+1,T000086,Customer Service,16
+1,T000087,Engineering,11
+1,T000088,Engineering,11
+1,T000089,Customer Service,16
+1,T000090,HR,13
+1,T000091,HR,9
+1,T000092,Marketing,10
+1,T000093,HR,15
+1,T000094,Logistics,12
+1,T000095,Customer Service,12
+1,T000096,Sales,11
+1,T000097,Operations,18
+1,T000098,HR,13
+1,T000099,Customer Service,16
+1,T000100,Sales,15
+1,T000101,Marketing,15
+1,T000102,Customer Service,15
+1,T000103,Customer Service,12
+1,T000104,Customer Service,15
+1,T000105,Operations,13
+1,T000106,HR,10
+1,T000107,Customer Service,11
+1,T000108,Engineering,13
+1,T000109,Operations,13
+1,T000110,Finance,19
+1,T000111,Sales,14
+1,T000112,Operations,14
+1,T000113,Customer Service,9
+1,T000114,Marketing,9
+1,T000115,Customer Service,11
+1,T000116,Customer Service,12
+1,T000117,Logistics,17
+1,T000118,Engineering,9
+1,T000119,Finance,14
+1,T000120,HR,14
+1,T000121,Engineering,11
+1,T000122,Logistics,17
+1,T000123,Sales,12
+1,T000124,Customer Service,16
+1,T000125,Marketing,11
+1,T000126,Engineering,13
+1,T000127,Marketing,3
+1,T000128,Finance,15
+1,T000129,Customer Service,16
+1,T000130,Logistics,12
+1,T000131,Engineering,11
+1,T000132,Finance,14
+1,T000133,Operations,14
+1,T000134,Marketing,9
+1,T000135,Marketing,3
+1,T000136,Customer Service,14
+1,T000137,Customer Service,17
+1,T000138,Logistics,11
+1,T000139,Logistics,14
+1,T000140,Logistics,17
+1,T000141,Operations,12
+1,T000142,Sales,15
+1,T000143,Finance,16
+1,T000144,Engineering,9
+1,T000145,Logistics,3
+1,T000146,Customer Service,11
+1,T000147,Finance,11
+1,T000148,HR,17
+1,T000149,HR,13
+1,T000150,Logistics,10
+1,T000151,Sales,12
+1,T000152,Finance,11
+1,T000153,Marketing,21
+1,T000154,Finance,16
+1,T000155,Logistics,16
+1,T000156,Logistics,10
+1,T000157,Customer Service,12
+1,T000158,Finance,12
+1,T000159,Logistics,12
+1,T000160,Sales,16
+1,T000161,Marketing,13
+1,T000162,Engineering,15
+1,T000163,Operations,13
+1,T000164,Marketing,12
+1,T000165,Customer Service,10
+1,T000166,Logistics,16
+1,T000167,Operations,13
+1,T000168,Customer Service,9
+1,T000169,Customer Service,13
+1,T000170,Engineering,3
+1,T000171,Sales,9
+1,T000172,Customer Service,12
+1,T000173,Customer Service,16
+1,T000174,Finance,12
+1,T000175,Operations,12
+1,T000176,Operations,12
+1,T000177,Finance,13
+1,T000178,Customer Service,13
+1,T000179,Engineering,12
+1,T000180,Sales,16
+1,T000181,Marketing,13
+1,T000182,Marketing,4
+1,T000183,Operations,16
+1,T000184,HR,12
+1,T000185,Finance,12
+1,T000186,HR,11
+1,T000187,Sales,9
+1,T000188,Marketing,13
+1,T000189,Engineering,12
+1,T000190,HR,10
+1,T000191,Finance,13
+1,T000192,HR,14
+1,T000193,Sales,14
+1,T000194,Engineering,8
+1,T000195,Marketing,12
+1,T000196,Customer Service,14
+1,T000197,Finance,12
+1,T000198,Sales,12
+1,T000199,Marketing,15
+1,T000200,HR,10
+1,T000201,Marketing,10
+1,T000202,Operations,15
+1,T000203,Finance,17
+1,T000204,Logistics,10
+1,T000205,Customer Service,9
+1,T000206,Engineering,15
+1,T000207,Marketing,13
+1,T000208,Sales,11
+1,T000209,Customer Service,9
+1,T000210,Engineering,13
+1,T000211,Engineering,10
+1,T000212,Logistics,16
+1,T000213,HR,17
+1,T000214,Customer Service,15
+1,T000215,Operations,19
+1,T000216,Customer Service,12
+1,T000217,Logistics,10
+1,T000218,Sales,14
+1,T000219,Operations,11
+1,T000220,Operations,14
+1,T000221,Engineering,9
+1,T000222,Engineering,12
+1,T000223,Sales,14
+1,T000224,Logistics,17
+1,T000225,Engineering,10
+1,T000226,Logistics,12
+1,T000227,Customer Service,17
+1,T000228,Operations,9
+1,T000229,Marketing,13
+1,T000230,Customer Service,15
+1,T000231,Operations,13
+1,T000232,Operations,16
+1,T000233,Finance,12
+1,T000234,Sales,12
+1,T000235,Finance,8
+1,T000236,Finance,13
+1,T000237,Marketing,19
+1,T000238,HR,17
+1,T000239,Finance,6
+1,T000240,Operations,9
+1,T000241,HR,4
+1,T000242,Finance,9
+1,T000243,Customer Service,16
+1,T000244,Marketing,12
+1,T000245,Marketing,11
+1,T000246,HR,15
+1,T000247,Engineering,4
+1,T000248,Engineering,12
+1,T000249,Finance,12
+1,T000250,HR,14
+1,T000251,Engineering,16
+1,T000252,Operations,11
+1,T000253,Sales,11
+1,T000254,Sales,11
+1,T000255,Operations,17
+1,T000256,Finance,13
+1,T000257,Engineering,15
+1,T000258,Operations,11
+1,T000259,Engineering,16
+1,T000260,Marketing,11
+1,T000261,Engineering,3
+1,T000262,Logistics,14
+1,T000263,HR,11
+1,T000264,Operations,13
+1,T000265,Logistics,15
+1,T000266,Logistics,11
+1,T000267,Customer Service,18
+1,T000268,Operations,16
+1,T000269,Customer Service,14
+1,T000270,Marketing,15
+1,T000271,Customer Service,11
+1,T000272,Marketing,10
+1,T000273,HR,4
+1,T000274,Engineering,12
+1,T000275,Logistics,10
+1,T000276,Logistics,12
+1,T000277,Marketing,15
+1,T000278,Engineering,10
+1,T000279,HR,9
+1,T000280,HR,15
+1,T000281,Sales,17
+1,T000282,Sales,12
+1,T000283,Finance,11
+1,T000284,HR,3
+1,T000285,Operations,16
+1,T000286,Engineering,9
+1,T000287,Operations,12
+1,T000288,Logistics,15
+1,T000289,HR,15
+1,T000290,Engineering,15
+1,T000291,Customer Service,13
+1,T000292,Logistics,14
+1,T000293,Engineering,12
+1,T000294,Logistics,16
+1,T000295,Customer Service,15
+1,T000296,Customer Service,17
+1,T000297,HR,15
+1,T000298,Logistics,14
+1,T000299,Operations,11
+1,T000300,Sales,13
+1,T000301,Logistics,9
+1,T000302,Finance,17
+1,T000303,Finance,15
+1,T000304,Marketing,13
+1,T000305,Engineering,16
+1,T000306,Marketing,16
+1,T000307,Customer Service,3
+1,T000308,Customer Service,12
+1,T000309,Sales,14
+1,T000310,Logistics,10
+1,T000311,Marketing,9
+1,T000312,Marketing,15
+1,T000313,Operations,11
+1,T000314,Logistics,12
+1,T000315,Finance,13
+1,T000316,Logistics,17
+1,T000317,Operations,15
+1,T000318,Sales,13
+1,T000319,Customer Service,15
+1,T000320,HR,11
+1,T000321,Finance,10
+1,T000322,Logistics,11
+1,T000323,Logistics,13
+1,T000324,Sales,12
+1,T000325,Marketing,20
+1,T000326,Customer Service,13
+1,T000327,Marketing,13
+1,T000328,HR,4
+1,T000329,HR,15
+1,T000330,HR,13
+1,T000331,Engineering,10
+1,T000332,Operations,11
+1,T000333,Finance,13
+1,T000334,Marketing,11
+1,T000335,Logistics,4
+1,T000336,Logistics,11
+1,T000337,Operations,12
+1,T000338,Sales,15
+1,T000339,Logistics,16
+1,T000340,Marketing,11
+1,T000341,Customer Service,11
+1,T000342,Customer Service,9
+1,T000343,Engineering,8
+1,T000344,Customer Service,12
+1,T000345,Marketing,11
+1,T000346,Marketing,13
+1,T000347,Finance,10
+1,T000348,Engineering,14
+1,T000349,Finance,13
+1,T000350,Marketing,17
+1,T000351,HR,15
+1,T000352,Sales,10
+1,T000353,Sales,13
+1,T000354,Operations,12
+1,T000355,Finance,9
+1,T000356,HR,13
+1,T000357,Logistics,19
+1,T000358,Customer Service,10
+1,T000359,Engineering,7
+1,T000360,HR,11
+1,T000361,Marketing,12
+1,T000362,Logistics,11
+1,T000363,Finance,14
+1,T000364,Marketing,11
+1,T000365,Operations,16
+1,T000366,Finance,10
+1,T000367,Logistics,10
+1,T000368,Finance,3
+1,T000369,Sales,3
+1,T000370,Customer Service,18
+1,T000371,Engineering,9
+1,T000372,Finance,15
+1,T000373,Logistics,10
+1,T000374,Finance,10
+1,T000375,Engineering,14
+1,T000376,Operations,15
+1,T000377,Customer Service,14
+1,T000378,Operations,21
+1,T000379,HR,19
+1,T000380,Operations,10
+1,T000381,Customer Service,13
+1,T000382,Marketing,13
+1,T000383,Marketing,11
+1,T000384,Finance,14
+1,T000385,Engineering,16
+1,T000386,Logistics,15
+1,T000387,Customer Service,15
+1,T000388,Finance,11
+1,T000389,Sales,13
+1,T000390,Operations,11
+1,T000391,Finance,15
+1,T000392,Finance,17
+1,T000393,Engineering,13
+1,T000394,Logistics,13
+1,T000395,Finance,15
+1,T000396,Customer Service,16
+1,T000397,Operations,10
+1,T000398,Engineering,15
+1,T000399,Operations,16
+1,T000400,Operations,11
+1,T000401,HR,11
+1,T000402,Operations,13
+1,T000403,Finance,13
+1,T000404,Marketing,13
+1,T000405,Customer Service,13
+1,T000406,HR,12
+1,T000407,HR,12
+1,T000408,Engineering,12
+1,T000409,Customer Service,14
+1,T000410,Operations,17
+1,T000411,Marketing,19
+1,T000412,Sales,12
+1,T000413,HR,9
+1,T000414,Engineering,14
+1,T000415,Engineering,18
+1,T000416,Engineering,18
+1,T000417,Customer Service,14
+1,T000418,Customer Service,12
+1,T000419,Engineering,10
+1,T000420,HR,3
+1,T000421,Sales,13
+1,T000422,Logistics,14
+1,T000423,Logistics,14
+1,T000424,Engineering,14
+1,T000425,HR,3
+1,T000426,HR,15
+1,T000427,Customer Service,4
+1,T000428,Sales,10
+1,T000429,HR,13
+1,T000430,Customer Service,12
+1,T000431,HR,13
+1,T000432,HR,13
+1,T000433,Sales,14
+1,T000434,Logistics,10
+1,T000435,Operations,8
+1,T000436,Engineering,12
+1,T000437,Marketing,13
+1,T000438,Finance,12
+1,T000439,HR,13
+1,T000440,HR,12
+1,T000441,Operations,15
+1,T000442,Sales,15
+1,T000443,Logistics,10
+1,T000444,Customer Service,14
+1,T000445,Operations,13
+1,T000446,Marketing,9
+1,T000447,HR,10
+1,T000448,Marketing,15
+1,T000449,Operations,14
+1,T000450,Marketing,10
+1,T000451,Marketing,13
+1,T000452,Logistics,16
+1,T000453,Engineering,13
+1,T000454,Finance,13
+1,T000455,Operations,14
+1,T000456,Sales,13
+1,T000457,Sales,16
+1,T000458,Finance,11
+1,T000459,Operations,11
+1,T000460,Marketing,10
+1,T000461,Operations,12
+1,T000462,Marketing,12
+1,T000463,HR,13
+1,T000464,Engineering,10
+1,T000465,Finance,13
+1,T000466,Logistics,13
+1,T000467,Logistics,12
+1,T000468,Engineering,15
+1,T000469,Logistics,13
+1,T000470,Operations,13
+1,T000471,Customer Service,18
+1,T000472,Engineering,16
+1,T000473,Marketing,14
+1,T000474,Marketing,7
+1,T000475,Customer Service,14
+1,T000476,Finance,12
+1,T000477,Logistics,11
+1,T000478,Logistics,14
+1,T000479,Sales,11
+1,T000480,Sales,15
+1,T000481,Sales,15
+1,T000482,Marketing,10
+1,T000483,Engineering,10
+1,T000484,Operations,17
+1,T000485,Sales,9
+1,T000486,Logistics,15
+1,T000487,HR,15
+1,T000488,Sales,14
+1,T000489,Engineering,9
+1,T000490,Marketing,17
+1,T000491,Engineering,11
+1,T000492,Customer Service,16
+1,T000493,Engineering,13
+1,T000494,Marketing,12
+1,T000495,Sales,11
+1,T000496,Customer Service,8
+1,T000497,Marketing,11
+1,T000498,HR,10
+1,T000499,Marketing,4
+1,T000500,Sales,7
+1,T000501,HR,4
+1,T000502,Finance,14
+1,T000503,Sales,19
+1,T000504,Sales,13
+1,T000505,Finance,15
+1,T000506,Marketing,3
+1,T000507,Marketing,18
+1,T000508,Operations,9
+1,T000509,Operations,3
+1,T000510,Engineering,12
+1,T000511,Finance,12
+1,T000512,Operations,11
+1,T000513,Sales,14
+1,T000514,Engineering,13
+1,T000515,Sales,10
+1,T000516,Operations,17
+1,T000517,Operations,10
+1,T000518,Finance,9
+1,T000519,Finance,15
+1,T000520,Sales,12
+1,T000521,Finance,14
+1,T000522,Logistics,3
+1,T000523,Logistics,8
+1,T000524,Operations,9
+1,T000525,Engineering,11
+1,T000526,Marketing,12
+1,T000527,Sales,13
+1,T000528,HR,12
+1,T000529,Customer Service,11
+1,T000530,Customer Service,18
+1,T000531,Sales,10
+1,T000532,Engineering,13
+1,T000533,Sales,11
+1,T000534,HR,15
+1,T000535,Logistics,14
+1,T000536,Customer Service,14
+1,T000537,Customer Service,12
+1,T000538,Customer Service,13
+1,T000539,Engineering,20
+1,T000540,Logistics,12
+1,T000541,Operations,14
+1,T000542,Operations,10
+1,T000543,Finance,13
+1,T000544,Finance,15
+1,T000545,Engineering,13
+1,T000546,Finance,14
+1,T000547,Customer Service,14
+1,T000548,Finance,10
+1,T000549,Finance,13
+1,T000550,Marketing,9
+1,T000551,Sales,10
+1,T000552,Logistics,14
+1,T000553,Logistics,11
+1,T000554,Sales,9
+1,T000555,HR,13
+1,T000556,Logistics,14
+1,T000557,Sales,4
+1,T000558,Operations,11
+1,T000559,Sales,11
+1,T000560,Logistics,11
+1,T000561,Finance,8
+1,T000562,Logistics,9
+1,T000563,Sales,13
+1,T000564,Marketing,11
+1,T000565,Marketing,12
+1,T000566,HR,17
+1,T000567,HR,15
+1,T000568,Operations,15
+1,T000569,Sales,3
+1,T000570,HR,17
+1,T000571,Customer Service,14
+1,T000572,Logistics,12
+1,T000573,Customer Service,9
+1,T000574,Finance,14
+1,T000575,Logistics,10
+1,T000576,Sales,12
+1,T000577,Marketing,11
+1,T000578,HR,17
+1,T000579,Marketing,16
+1,T000580,Customer Service,11
+1,T000581,Operations,12
+1,T000582,Customer Service,13
+1,T000583,Sales,9
+1,T000584,Finance,4
+1,T000585,Sales,8
+1,T000586,Operations,13
+1,T000587,Logistics,13
+1,T000588,Finance,14
+1,T000589,Marketing,16
+1,T000590,Logistics,10
+1,T000591,Logistics,16
+1,T000592,Sales,11
+1,T000593,Engineering,17
+1,T000594,Logistics,10
+1,T000595,Customer Service,12
+1,T000596,Finance,15
+1,T000597,Sales,11
+1,T000598,Marketing,10
+1,T000599,Operations,11
+1,T000600,Logistics,12
+1,T000601,Engineering,16
+1,T000602,Finance,11
+1,T000603,HR,14
+1,T000604,Finance,16
+1,T000605,HR,8
+1,T000606,Customer Service,11
+1,T000607,Finance,17
+1,T000608,Engineering,13
+1,T000609,Finance,10
+1,T000610,Customer Service,13
+1,T000611,HR,12
+1,T000612,Finance,16
+1,T000613,Logistics,15
+1,T000614,Engineering,12
+1,T000615,Finance,19
+1,T000616,Logistics,9
+1,T000617,Customer Service,17
+1,T000618,HR,10
+1,T000619,Sales,13
+1,T000620,HR,12
+1,T000621,Finance,15
+1,T000622,Logistics,13
+1,T000623,HR,11
+1,T000624,HR,14
+1,T000625,HR,4
+1,T000626,Finance,4
+1,T000627,Engineering,4
+1,T000628,HR,12
+1,T000629,Finance,12
+1,T000630,Customer Service,4
+1,T000631,Logistics,15
+1,T000632,Finance,12
+1,T000633,Marketing,13
+1,T000634,Operations,15
+1,T000635,HR,15
+1,T000636,Operations,14
+1,T000637,Sales,14
+1,T000638,Operations,10
+1,T000639,Sales,13
+1,T000640,Customer Service,13
+1,T000641,Operations,4
+1,T000642,Logistics,10
+1,T000643,Operations,16
+1,T000644,Marketing,14
+1,T000645,Logistics,10
+1,T000646,Sales,10
+1,T000647,Sales,10
+1,T000648,Engineering,10
+1,T000649,Engineering,13
+1,T000650,Finance,10
+1,T000651,Sales,12
+1,T000652,Sales,11
+1,T000653,Marketing,14
+1,T000654,Sales,14
+1,T000655,Sales,14
+1,T000656,Finance,13
+1,T000657,Sales,13
+1,T000658,Operations,15
+1,T000659,Sales,13
+1,T000660,Finance,11
+1,T000661,Engineering,10
+1,T000662,Customer Service,14
+1,T000663,HR,15
+1,T000664,Engineering,14
+1,T000665,Customer Service,14
+1,T000666,Operations,15
+1,T000667,Engineering,9
+1,T000668,Operations,16
+1,T000669,Engineering,9
+1,T000670,Finance,13
+1,T000671,Customer Service,4
+1,T000672,Engineering,3
+1,T000673,Marketing,12
+1,T000674,Customer Service,10
+1,T000675,Operations,13
+1,T000676,Marketing,10
+1,T000677,Customer Service,9
+1,T000678,Engineering,4
+1,T000679,Customer Service,4
+1,T000680,Customer Service,14
+1,T000681,Operations,16
+1,T000682,Operations,12
+1,T000683,Marketing,15
+1,T000684,Finance,18
+1,T000685,Operations,15
+1,T000686,Logistics,12
+1,T000687,Operations,17
+1,T000688,Operations,11
+1,T000689,Finance,11
+1,T000690,Engineering,14
+1,T000691,HR,15
+1,T000692,Engineering,11
+1,T000693,Finance,12
+1,T000694,Finance,8
+1,T000695,HR,10
+1,T000696,Logistics,12
+1,T000697,Operations,10
+1,T000698,Finance,8
+1,T000699,Customer Service,15
+1,T000700,Logistics,16
+1,T000701,Engineering,10
+1,T000702,Logistics,12
+1,T000703,Logistics,8
+1,T000704,Engineering,12
+1,T000705,HR,10
+1,T000706,Marketing,13
+1,T000707,Engineering,14
+1,T000708,Operations,14
+1,T000709,Operations,10
+1,T000710,Finance,15
+1,T000711,Finance,16
+1,T000712,Marketing,11
+1,T000713,Finance,19
+1,T000714,Finance,12
+1,T000715,HR,11
+1,T000716,Marketing,10
+1,T000717,Finance,18
+1,T000718,Operations,19
+1,T000719,Sales,15
+1,T000720,HR,11
+1,T000721,Customer Service,4
+1,T000722,HR,11
+1,T000723,Sales,15
+1,T000724,Sales,15
+1,T000725,Customer Service,14
+1,T000726,Engineering,8
+1,T000727,Customer Service,10
+1,T000728,Operations,13
+1,T000729,Logistics,9
+1,T000730,Operations,15
+1,T000731,Marketing,19
+1,T000732,Finance,19
+1,T000733,Operations,15
+1,T000734,Engineering,9
+1,T000735,Finance,10
+1,T000736,Operations,19
+1,T000737,Finance,13
+1,T000738,Sales,10
+1,T000739,Marketing,7
+1,T000740,Logistics,10
+1,T000741,Finance,16
+1,T000742,Finance,11
+1,T000743,Marketing,15
+1,T000744,Logistics,17
+1,T000745,Operations,12
+1,T000746,Operations,17
+1,T000747,Engineering,16
+1,T000748,Logistics,10
+1,T000749,HR,10
+1,T000750,Sales,16
+1,T000751,Finance,16
+1,T000752,Logistics,15
+1,T000753,Sales,14
+1,T000754,Operations,18
+1,T000755,Logistics,12
+1,T000756,Sales,4
+1,T000757,Marketing,15
+1,T000758,HR,15
+1,T000759,Customer Service,3
+1,T000760,Logistics,12
+1,T000761,Engineering,11
+1,T000762,Engineering,10
+1,T000763,Logistics,18
+1,T000764,HR,15
+1,T000765,Customer Service,3
+1,T000766,Sales,15
+1,T000767,Logistics,11
+1,T000768,Finance,15
+1,T000769,Operations,11
+1,T000770,Marketing,3
+1,T000771,Finance,14
+1,T000772,Marketing,10
+1,T000773,Finance,13
+1,T000774,Engineering,14
+1,T000775,HR,14
+1,T000776,Logistics,17
+1,T000777,Engineering,18
+1,T000778,Marketing,15
+1,T000779,Sales,9
+1,T000780,Operations,12
+1,T000781,Finance,14
+1,T000782,Sales,16
+1,T000783,Marketing,8
+1,T000784,HR,12
+1,T000785,Finance,17
+1,T000786,Customer Service,17
+1,T000787,Logistics,16
+1,T000788,Logistics,10
+1,T000789,Finance,12
+1,T000790,HR,17
+1,T000791,Engineering,17
+1,T000792,Sales,18
+1,T000793,Customer Service,14
+1,T000794,Finance,14
+1,T000795,Finance,11
+1,T000796,Finance,14
+1,T000797,Engineering,11
+1,T000798,Marketing,16
+1,T000799,Engineering,4
+1,T000800,Sales,14
+1,T000801,Logistics,11
+1,T000802,Marketing,10
+1,T000803,Logistics,10
+1,T000804,Customer Service,10
+1,T000805,Marketing,17
+1,T000806,Logistics,12
+1,T000807,Engineering,13
+1,T000808,Operations,10
+1,T000809,Marketing,16
+1,T000810,Marketing,20
+1,T000811,Operations,13
+1,T000812,Logistics,18
+1,T000813,Engineering,18
+1,T000814,Logistics,14
+1,T000815,HR,10
+1,T000816,Operations,14
+1,T000817,Finance,11
+1,T000818,Operations,16
+1,T000819,Engineering,16
+1,T000820,HR,11
+1,T000821,Logistics,12
+1,T000822,Logistics,14
+1,T000823,Operations,11
+1,T000824,Marketing,16
+1,T000825,HR,13
+1,T000826,Finance,14
+1,T000827,Sales,13
+1,T000828,HR,15
+1,T000829,Sales,15
+1,T000830,Customer Service,15
+1,T000831,Operations,12
+1,T000832,Customer Service,4
+1,T000833,Logistics,12
+1,T000834,Finance,11
+1,T000835,Marketing,16
+1,T000836,Finance,10
+1,T000837,Customer Service,12
+1,T000838,Marketing,9
+1,T000839,Sales,14
+1,T000840,Finance,18
+1,T000841,Marketing,13
+1,T000842,Finance,9
+1,T000843,Finance,12
+1,T000844,Finance,14
+1,T000845,Finance,4
+1,T000846,HR,10
+1,T000847,Marketing,13
+1,T000848,Engineering,12
+1,T000849,Engineering,9
+1,T000850,Finance,15
+1,T000851,HR,11
+1,T000852,Finance,11
+1,T000853,Engineering,14
+1,T000854,Marketing,12
+1,T000855,Finance,12
+1,T000856,HR,10
+1,T000857,HR,20
+1,T000858,Customer Service,13
+1,T000859,Operations,12
+1,T000860,Operations,13
+1,T000861,Engineering,13
+1,T000862,Logistics,15
+1,T000863,Finance,16
+1,T000864,Sales,11
+1,T000865,Finance,17
+1,T000866,Engineering,11
+1,T000867,Customer Service,14
+1,T000868,Sales,17
+1,T000869,Marketing,14
+1,T000870,Sales,9
+1,T000871,HR,14
+1,T000872,Customer Service,16
+1,T000873,Customer Service,9
+1,T000874,Sales,11
+1,T000875,Operations,12
+1,T000876,Operations,12
+1,T000877,Sales,4
+1,T000878,Sales,19
+1,T000879,Finance,10
+1,T000880,Finance,11
+1,T000881,Operations,14
+1,T000882,Customer Service,10
+1,T000883,HR,3
+1,T000884,Customer Service,14
+1,T000885,HR,14
+1,T000886,HR,13
+1,T000887,Operations,12
+1,T000888,Finance,13
+1,T000889,Marketing,12
+1,T000890,Operations,12
+1,T000891,HR,4
+1,T000892,Marketing,12
+1,T000893,Finance,12
+1,T000894,Logistics,10
+1,T000895,Logistics,13
+1,T000896,HR,14
+1,T000897,Customer Service,13
+1,T000898,Customer Service,13
+1,T000899,Operations,15
+1,T000900,Operations,17
+1,T000901,Operations,9
+1,T000902,Sales,12
+1,T000903,Logistics,13
+1,T000904,Finance,10
+1,T000905,Operations,12
+1,T000906,Engineering,12
+1,T000907,Customer Service,9
+1,T000908,Engineering,12
+1,T000909,Engineering,10
+1,T000910,HR,12
+1,T000911,Engineering,3
+1,T000912,Finance,11
+1,T000913,HR,10
+1,T000914,Engineering,9
+1,T000915,Logistics,13
+1,T000916,Marketing,7
+1,T000917,Sales,12
+1,T000918,Customer Service,9
+1,T000919,Operations,14
+1,T000920,HR,14
+1,T000921,Marketing,4
+1,T000922,Operations,10
+1,T000923,Finance,12
+1,T000924,Logistics,14
+1,T000925,Engineering,10
+1,T000926,Sales,15
+1,T000927,Logistics,14
+1,T000928,Finance,17
+1,T000929,Engineering,14
+1,T000930,Logistics,9
+1,T000931,Marketing,12
+1,T000932,Marketing,14
+1,T000933,Logistics,13
+1,T000934,Sales,12
+1,T000935,Customer Service,11
+1,T000936,HR,14
+1,T000937,Marketing,10
+1,T000938,HR,15
+1,T000939,Marketing,11
+1,T000940,Marketing,13
+1,T000941,Customer Service,17
+1,T000942,Engineering,13
+1,T000943,Engineering,16
+1,T000944,Finance,10
+1,T000945,Marketing,13
+1,T000946,Engineering,14
+1,T000947,Customer Service,10
+1,T000948,Marketing,14
+1,T000949,Logistics,14
+1,T000950,Marketing,13
+1,T000951,Logistics,15
+1,T000952,Finance,7
+1,T000953,Logistics,17
+1,T000954,Marketing,10
+1,T000955,Sales,15
+1,T000956,Engineering,10
+1,T000957,Finance,8
+1,T000958,Marketing,13
+1,T000959,Finance,13
+1,T000960,Engineering,15
+1,T000961,Logistics,16
+1,T000962,Logistics,13
+1,T000963,Finance,13
+1,T000964,Operations,13
+1,T000965,Engineering,3
+1,T000966,Engineering,12
+1,T000967,Sales,15
+1,T000968,HR,15
+1,T000969,Engineering,10
+1,T000970,Marketing,14
+1,T000971,Customer Service,11
+1,T000972,Engineering,11
+1,T000973,Sales,13
+1,T000974,HR,12
+1,T000975,Operations,13
+1,T000976,HR,11
+1,T000977,Engineering,15
+1,T000978,Customer Service,10
+1,T000979,HR,8
+1,T000980,Marketing,11
+1,T000981,Engineering,13
+1,T000982,Finance,3
+1,T000983,Logistics,16
+1,T000984,HR,12
+1,T000985,Operations,3
+1,T000986,Sales,10
+1,T000987,HR,3
+1,T000988,Customer Service,3
+1,T000989,Customer Service,3
+1,T000990,Sales,19
+1,T000991,Logistics,14
+1,T000992,Marketing,11
+1,T000993,Customer Service,11
+1,T000994,Logistics,10
+1,T000995,Operations,10
+1,T000996,Sales,14
+1,T000997,Customer Service,10
+1,T000998,Logistics,14
+1,T000999,Marketing,12
+1,T001000,Customer Service,14
+1,T001001,Finance,12
+1,T001002,Logistics,10
+1,T001003,Sales,6
+1,T001004,Sales,16
+1,T001005,Operations,15
+1,T001006,Engineering,10
+1,T001007,Marketing,3
+1,T001008,Engineering,11
+1,T001009,Sales,13
+1,T001010,Logistics,17
+1,T001011,Engineering,3
+1,T001012,Logistics,12
+1,T001013,Engineering,13
+1,T001014,Marketing,8
+1,T001015,Marketing,9
+1,T001016,HR,3
+1,T001017,Engineering,15
+1,T001018,Marketing,13
+1,T001019,Sales,9
+1,T001020,Engineering,14
+1,T001021,Engineering,11
+1,T001022,Customer Service,17
+1,T001023,Engineering,20
+1,T001024,Operations,18
+1,T001025,Marketing,11
+1,T001026,Finance,13
+1,T001027,Engineering,16
+1,T001028,Customer Service,14
+1,T001029,Marketing,9
+1,T001030,Engineering,11
+1,T001031,HR,14
+1,T001032,Logistics,4
+1,T001033,Logistics,12
+1,T001034,Customer Service,10
+1,T001035,Marketing,13
+1,T001036,HR,16
+1,T001037,Finance,14
+1,T001038,Operations,11
+1,T001039,Finance,11
+1,T001040,Finance,10
+1,T001041,Finance,11
+1,T001042,Operations,13
+1,T001043,Customer Service,17
+1,T001044,Operations,11
+1,T001045,Operations,15
+1,T001046,Engineering,18
+1,T001047,Finance,12
+1,T001048,Sales,15
+1,T001049,HR,20
+1,T001050,Operations,11
+1,T001051,Finance,13
+1,T001052,Operations,16
+1,T001053,HR,10
+1,T001054,Marketing,9
+1,T001055,Finance,14
+1,T001056,Operations,13
+1,T001057,Finance,17
+1,T001058,Customer Service,14
+1,T001059,Marketing,17
+1,T001060,Sales,13
+1,T001061,Engineering,14
+1,T001062,HR,15
+1,T001063,HR,12
+1,T001064,Sales,12
+1,T001065,Marketing,14
+1,T001066,Sales,9
+1,T001067,Operations,13
+1,T001068,Marketing,10
+1,T001069,Engineering,13
+1,T001070,Marketing,8
+1,T001071,Logistics,9
+1,T001072,Engineering,13
+1,T001073,Logistics,12
+1,T001074,HR,14
+1,T001075,Logistics,13
+1,T001076,Customer Service,13
+1,T001077,Sales,16
+1,T001078,Engineering,9
+1,T001079,Customer Service,17
+1,T001080,Customer Service,3
+1,T001081,Logistics,10
+1,T001082,Customer Service,9
+1,T001083,Logistics,18
+1,T001084,Sales,10
+1,T001085,Marketing,13
+1,T001086,Operations,12
+1,T001087,Marketing,11
+1,T001088,Customer Service,13
+1,T001089,Marketing,16
+1,T001090,Logistics,12
+1,T001091,HR,14
+1,T001092,Finance,18
+1,T001093,Customer Service,13
+1,T001094,Operations,12
+1,T001095,HR,13
+1,T001096,Logistics,15
+1,T001097,Operations,14
+1,T001098,Marketing,18
+1,T001099,Sales,12
+1,T001100,Logistics,17
+1,T001101,Logistics,12
+1,T001102,HR,8
+1,T001103,Customer Service,14
+1,T001104,HR,17
+1,T001105,Operations,11
+1,T001106,Finance,16
+1,T001107,Customer Service,16
+1,T001108,Engineering,12
+1,T001109,Engineering,15
+1,T001110,Marketing,12
+1,T001111,Marketing,14
+1,T001112,Finance,13
+1,T001113,Engineering,11
+1,T001114,Customer Service,12
+1,T001115,Operations,12
+1,T001116,Engineering,9
+1,T001117,Operations,16
+1,T001118,Engineering,11
+1,T001119,Sales,12
+1,T001120,Engineering,18
+1,T001121,Sales,12
+1,T001122,HR,12
+1,T001123,Sales,16
+1,T001124,Sales,12
+1,T001125,Sales,18
+1,T001126,Operations,4
+1,T001127,Customer Service,13
+1,T001128,Marketing,12
+1,T001129,HR,12
+1,T001130,Engineering,12
+1,T001131,Operations,19
+1,T001132,HR,13
+1,T001133,HR,4
+1,T001134,HR,9
+1,T001135,HR,9
+1,T001136,HR,15
+1,T001137,Finance,16
+1,T001138,Sales,18
+1,T001139,Operations,9
+1,T001140,Sales,11
+1,T001141,Finance,15
+1,T001142,HR,15
+1,T001143,Customer Service,15
+1,T001144,Finance,10
+1,T001145,Finance,15
+1,T001146,Logistics,15
+1,T001147,HR,17
+1,T001148,Finance,12
+1,T001149,Logistics,14
+1,T001150,Marketing,3
+1,T001151,Operations,4
+1,T001152,Customer Service,11
+1,T001153,Marketing,15
+1,T001154,Operations,8
+1,T001155,Finance,16
+1,T001156,HR,14
+1,T001157,Customer Service,12
+1,T001158,Finance,11
+1,T001159,Engineering,13
+1,T001160,HR,15
+1,T001161,HR,17
+1,T001162,HR,18
+1,T001163,Engineering,13
+1,T001164,Operations,11
+1,T001165,Customer Service,10
+1,T001166,Logistics,14
+1,T001167,Logistics,13
+1,T001168,Sales,11
+1,T001169,Marketing,13
+1,T001170,Engineering,12
+1,T001171,Logistics,15
+1,T001172,Marketing,10
+1,T001173,Marketing,11
+1,T001174,HR,11
+1,T001175,Customer Service,13
+1,T001176,Operations,12
+1,T001177,Logistics,3
+1,T001178,Finance,13
+1,T001179,Engineering,13
+1,T001180,Finance,12
+1,T001181,Logistics,14
+1,T001182,Operations,13
+1,T001183,Finance,10
+1,T001184,Customer Service,12
+1,T001185,Finance,14
+1,T001186,Operations,14
+1,T001187,Operations,13
+1,T001188,Logistics,11
+1,T001189,Customer Service,15
+1,T001190,Marketing,13
+1,T001191,Engineering,14
+1,T001192,Sales,16
+1,T001193,Marketing,9
+1,T001194,Customer Service,10
+1,T001195,Operations,15
+1,T001196,Sales,10
+1,T001197,Engineering,7
+1,T001198,Engineering,19
+1,T001199,Finance,9
+1,T001200,Finance,3
+1,T001201,Operations,16
+1,T001202,Logistics,19
+1,T001203,Sales,12
+1,T001204,Marketing,14
+1,T001205,Customer Service,10
+1,T001206,Finance,21
+1,T001207,Logistics,16
+1,T001208,Logistics,11
+1,T001209,Operations,9
+1,T001210,Operations,15
+1,T001211,Operations,23
+1,T001212,Sales,10
+1,T001213,Engineering,16
+1,T001214,Operations,16
+1,T001215,Sales,11
+1,T001216,HR,11
+1,T001217,Marketing,11
+1,T001218,Customer Service,11
+1,T001219,Engineering,12
+1,T001220,Engineering,11
+1,T001221,HR,12
+1,T001222,HR,13
+1,T001223,Logistics,13
+1,T001224,HR,23
+1,T001225,Customer Service,10
+1,T001226,Sales,16
+1,T001227,Logistics,11
+1,T001228,Finance,11
+1,T001229,Logistics,16
+1,T001230,Sales,13
+1,T001231,HR,14
+1,T001232,HR,16
+1,T001233,HR,15
+1,T001234,Operations,15
+1,T001235,Sales,3
+1,T001236,Operations,12
+1,T001237,Sales,12
+1,T001238,HR,3
+1,T001239,HR,13
+1,T001240,Finance,12
+1,T001241,Customer Service,11
+1,T001242,Finance,15
+1,T001243,Finance,15
+1,T001244,Sales,17
+1,T001245,Sales,14
+1,T001246,Logistics,13
+1,T001247,Operations,12
+1,T001248,Operations,4
+1,T001249,Customer Service,12
+1,T001250,Customer Service,15
+1,T001251,Operations,15
+1,T001252,HR,10
+1,T001253,Operations,13
+1,T001254,HR,16
+1,T001255,Engineering,16
+1,T001256,Engineering,12
+1,T001257,HR,15
+1,T001258,Logistics,16
+1,T001259,Customer Service,14
+1,T001260,Sales,16
+1,T001261,Operations,10
+1,T001262,Logistics,17
+1,T001263,HR,16
+1,T001264,Engineering,12
+1,T001265,HR,15
+1,T001266,Logistics,13
+1,T001267,Finance,15
+1,T001268,Sales,12
+1,T001269,HR,14
+1,T001270,Customer Service,9
+1,T001271,Customer Service,19
+1,T001272,Marketing,14
+1,T001273,Operations,17
+1,T001274,Finance,14
+1,T001275,Finance,14
+1,T001276,Marketing,16
+1,T001277,Sales,21
+1,T001278,Sales,3
+1,T001279,HR,12
+1,T001280,Sales,11
+1,T001281,Customer Service,15
+1,T001282,Finance,13
+1,T001283,Logistics,23
+1,T001284,Operations,13
+1,T001285,Finance,10
+1,T001286,Logistics,9
+1,T001287,Engineering,15
+1,T001288,Operations,12
+1,T001289,HR,11
+1,T001290,Marketing,14
+1,T001291,Engineering,11
+1,T001292,Customer Service,12
+1,T001293,Sales,12
+1,T001294,Marketing,15
+1,T001295,HR,14
+1,T001296,Logistics,17
+1,T001297,Customer Service,11
+1,T001298,Customer Service,21
+1,T001299,Logistics,13
+1,T001300,Sales,12
+1,T001301,Logistics,17
+1,T001302,Sales,11
+1,T001303,Engineering,18
+1,T001304,Engineering,8
+1,T001305,Engineering,10
+1,T001306,Sales,13
+1,T001307,Sales,11
+1,T001308,Engineering,14
+1,T001309,Finance,13
+1,T001310,Operations,11
+1,T001311,Customer Service,12
+1,T001312,Sales,8
+1,T001313,Operations,17
+1,T001314,Logistics,9
+1,T001315,Customer Service,12
+1,T001316,Logistics,17
+1,T001317,Marketing,13
+1,T001318,HR,13
+1,T001319,Operations,14
+1,T001320,Customer Service,14
+1,T001321,Marketing,12
+1,T001322,Logistics,10
+1,T001323,Customer Service,14
+1,T001324,Logistics,13
+1,T001325,Logistics,14
+1,T001326,Sales,18
+1,T001327,Operations,13
+1,T001328,HR,11
+1,T001329,Customer Service,12
+1,T001330,Customer Service,16
+1,T001331,Customer Service,11
+1,T001332,Logistics,12
+1,T001333,Operations,17
+1,T001334,Customer Service,13
+1,T001335,Engineering,14
+1,T001336,Sales,17
+1,T001337,Logistics,16
+1,T001338,HR,8
+1,T001339,Engineering,13
+1,T001340,Finance,14
+1,T001341,Engineering,10
+1,T001342,Marketing,11
+1,T001343,Marketing,15
+1,T001344,Engineering,15
+1,T001345,Operations,19
+1,T001346,Engineering,9
+1,T001347,Finance,9
+1,T001348,Customer Service,20
+1,T001349,Engineering,14
+1,T001350,Finance,10
+1,T001351,HR,14
+1,T001352,Operations,14
+1,T001353,HR,3
+1,T001354,Finance,14
+1,T001355,Marketing,15
+1,T001356,Marketing,14
+1,T001357,Finance,13
+1,T001358,Engineering,12
+1,T001359,Logistics,11
+1,T001360,Customer Service,19
+1,T001361,Customer Service,12
+1,T001362,Marketing,11
+1,T001363,Logistics,14
+1,T001364,Customer Service,14
+1,T001365,Finance,13
+1,T001366,Logistics,16
+1,T001367,Marketing,14
+1,T001368,Customer Service,12
+1,T001369,Finance,10
+1,T001370,Finance,10
+1,T001371,Engineering,13
+1,T001372,Sales,4
+1,T001373,Marketing,11
+1,T001374,Logistics,3
+1,T001375,Logistics,10
+1,T001376,Finance,15
+1,T001377,Customer Service,13
+1,T001378,Marketing,14
+1,T001379,Engineering,16
+1,T001380,HR,9
+1,T001381,Operations,18
+1,T001382,Logistics,3
+1,T001383,Customer Service,13
+1,T001384,Marketing,12
+1,T001385,Marketing,13
+1,T001386,Logistics,11
+1,T001387,Customer Service,12
+1,T001388,Finance,14
+1,T001389,Operations,11
+1,T001390,Logistics,12
+1,T001391,Customer Service,11
+1,T001392,HR,15
+1,T001393,Finance,11
+1,T001394,Operations,14
+1,T001395,Engineering,8
+1,T001396,Logistics,12
+1,T001397,Engineering,13
+1,T001398,Operations,12
+1,T001399,Logistics,4
+1,T001400,Logistics,13
+1,T001401,Logistics,16
+1,T001402,HR,13
+1,T001403,Sales,15
+1,T001404,Logistics,14
+1,T001405,Engineering,11
+1,T001406,Customer Service,11
+1,T001407,Marketing,10
+1,T001408,Logistics,3
+1,T001409,Sales,15
+1,T001410,Logistics,10
+1,T001411,Sales,16
+1,T001412,Operations,13
+1,T001413,Sales,12
+1,T001414,Operations,13
+1,T001415,Customer Service,13
+1,T001416,Logistics,14
+1,T001417,Engineering,13
+1,T001418,Marketing,12
+1,T001419,Engineering,16
+1,T001420,Logistics,14
+1,T001421,Customer Service,21
+1,T001422,HR,10
+1,T001423,Engineering,17
+1,T001424,Operations,14
+1,T001425,Marketing,14
+1,T001426,HR,17
+1,T001427,Engineering,9
+1,T001428,Logistics,11
+1,T001429,Engineering,13
+1,T001430,Sales,11
+1,T001431,Finance,8
+1,T001432,HR,11
+1,T001433,Operations,14
+1,T001434,Operations,14
+1,T001435,Sales,8
+1,T001436,Logistics,12
+1,T001437,Customer Service,16
+1,T001438,Finance,4
+1,T001439,Customer Service,14
+1,T001440,Logistics,14
+1,T001441,Finance,19
+1,T001442,Customer Service,12
+1,T001443,Marketing,9
+1,T001444,Customer Service,14
+1,T001445,Customer Service,14
+1,T001446,Engineering,13
+1,T001447,Finance,18
+1,T001448,HR,14
+1,T001449,Marketing,9
+1,T001450,Marketing,14
+1,T001451,Customer Service,9
+1,T001452,Marketing,13
+1,T001453,Sales,13
+1,T001454,Engineering,3
+1,T001455,Operations,7
+1,T001456,Logistics,11
+1,T001457,Customer Service,12
+1,T001458,HR,12
+1,T001459,Marketing,10
+1,T001460,Sales,14
+1,T001461,Operations,17
+1,T001462,Marketing,9
+1,T001463,Customer Service,15
+1,T001464,Marketing,12
+1,T001465,Customer Service,11
+1,T001466,Finance,15
+1,T001467,Engineering,17
+1,T001468,HR,19
+1,T001469,Engineering,17
+1,T001470,Operations,10
+1,T001471,Sales,8
+1,T001472,Customer Service,15
+1,T001473,Finance,15
+1,T001474,Finance,10
+1,T001475,Sales,13
+1,T001476,Logistics,14
+1,T001477,HR,12
+1,T001478,HR,10
+1,T001479,HR,12
+1,T001480,Operations,11
+1,T001481,HR,8
+1,T001482,Marketing,3
+1,T001483,Sales,11
+1,T001484,Marketing,11
+1,T001485,HR,14
+1,T001486,Customer Service,14
+1,T001487,Customer Service,14
+1,T001488,Engineering,11
+1,T001489,Operations,13
+1,T001490,Customer Service,10
+1,T001491,HR,15
+1,T001492,Customer Service,17
+1,T001493,Customer Service,15
+1,T001494,HR,14
+1,T001495,Operations,4
+1,T001496,Finance,13
+1,T001497,Logistics,15
+1,T001498,Operations,13
+1,T001499,Logistics,11
+1,T001500,Operations,15
+1,T001501,Marketing,13
+1,T001502,HR,17
+1,T001503,Customer Service,13
+1,T001504,Engineering,13
+1,T001505,Engineering,9
+1,T001506,Operations,11
+1,T001507,Marketing,14
+1,T001508,Engineering,12
+1,T001509,Logistics,17
+1,T001510,Engineering,14
+1,T001511,Sales,11
+1,T001512,Engineering,11
+1,T001513,Customer Service,11
+1,T001514,Operations,11
+1,T001515,Operations,13
+1,T001516,Operations,10
+1,T001517,Customer Service,13
+1,T001518,Marketing,12
+1,T001519,Marketing,16
+1,T001520,Engineering,16
+1,T001521,Customer Service,11
+1,T001522,Operations,11
+1,T001523,Finance,12
+1,T001524,Operations,13
+1,T001525,Finance,14
+1,T001526,Finance,18
+1,T001527,Logistics,16
+1,T001528,HR,12
+1,T001529,Sales,13
+1,T001530,Operations,13
+1,T001531,Operations,16
+1,T001532,Marketing,10
+1,T001533,Logistics,15
+1,T001534,Operations,11
+1,T001535,Logistics,10
+1,T001536,Logistics,19
+1,T001537,Operations,12
+1,T001538,Sales,15
+1,T001539,Logistics,12
+1,T001540,Logistics,11
+1,T001541,Engineering,13
+1,T001542,Operations,3
+1,T001543,Logistics,11
+1,T001544,Marketing,11
+1,T001545,Logistics,9
+1,T001546,Sales,14
+1,T001547,Sales,3
+1,T001548,HR,17
+1,T001549,Sales,7
+1,T001550,Engineering,11
+1,T001551,Engineering,16
+1,T001552,Logistics,13
+1,T001553,Logistics,10
+1,T001554,Engineering,11
+1,T001555,Customer Service,11
+1,T001556,Logistics,9
+1,T001557,Finance,10
+1,T001558,Logistics,10
+1,T001559,Customer Service,13
+1,T001560,HR,15
+1,T001561,Engineering,13
+1,T001562,Operations,14
+1,T001563,Engineering,16
+1,T001564,Logistics,4
+1,T001565,Operations,15
+1,T001566,Engineering,10
+1,T001567,Logistics,8
+1,T001568,Marketing,17
+1,T001569,Customer Service,11
+1,T001570,Sales,16
+1,T001571,Finance,10
+1,T001572,Customer Service,16
+1,T001573,Engineering,12
+1,T001574,Customer Service,8
+1,T001575,Logistics,20
+1,T001576,Finance,10
+1,T001577,Finance,8
+1,T001578,Finance,15
+1,T001579,Operations,12
+1,T001580,Sales,9
+1,T001581,Finance,8
+1,T001582,Engineering,12
+1,T001583,Marketing,10
+1,T001584,Operations,12
+1,T001585,Customer Service,14
+1,T001586,Operations,18
+1,T001587,Sales,11
+1,T001588,Logistics,13
+1,T001589,Logistics,14
+1,T001590,Engineering,15
+1,T001591,Marketing,13
+1,T001592,Operations,15
+1,T001593,Sales,13
+1,T001594,Operations,15
+1,T001595,Customer Service,14
+1,T001596,Customer Service,13
+1,T001597,Logistics,16
+1,T001598,Customer Service,12
+1,T001599,Customer Service,12
+1,T001600,HR,13
+1,T001601,Sales,9
+1,T001602,Marketing,13
+1,T001603,Finance,8
+1,T001604,Customer Service,16
+1,T001605,HR,12
+1,T001606,Engineering,4
+1,T001607,Logistics,16
+1,T001608,HR,10
+1,T001609,HR,14
+1,T001610,Engineering,13
+1,T001611,Sales,13
+1,T001612,Sales,17
+1,T001613,Logistics,10
+1,T001614,Sales,17
+1,T001615,Logistics,11
+1,T001616,Sales,11
+1,T001617,Finance,14
+1,T001618,Finance,12
+1,T001619,Sales,10
+1,T001620,Logistics,13
+1,T001621,Customer Service,16
+1,T001622,Marketing,8
+1,T001623,Marketing,12
+1,T001624,HR,11
+1,T001625,Logistics,14
+1,T001626,Customer Service,15
+1,T001627,Sales,10
+1,T001628,Engineering,16
+1,T001629,Finance,12
+1,T001630,Marketing,15
+1,T001631,Engineering,10
+1,T001632,HR,13
+1,T001633,Sales,14
+1,T001634,Marketing,13
+1,T001635,Marketing,14
+1,T001636,Marketing,15
+1,T001637,Engineering,17
+1,T001638,Sales,14
+1,T001639,Sales,11
+1,T001640,Finance,15
+1,T001641,Operations,12
+1,T001642,Operations,3
+1,T001643,Customer Service,14
+1,T001644,Customer Service,14
+1,T001645,HR,16
+1,T001646,Sales,3
+1,T001647,Operations,13
+1,T001648,Logistics,11
+1,T001649,Marketing,3
+1,T001650,Operations,12
+1,T001651,Operations,14
+1,T001652,HR,4
+1,T001653,Marketing,13
+1,T001654,HR,11
+1,T001655,Marketing,4
+1,T001656,Operations,15
+1,T001657,Sales,4
+1,T001658,Operations,13
+1,T001659,HR,13
+1,T001660,Marketing,11
+1,T001661,Marketing,13
+1,T001662,HR,11
+1,T001663,Customer Service,4
+1,T001664,Finance,12
+1,T001665,Marketing,12
+1,T001666,Sales,14
+1,T001667,Logistics,12
+1,T001668,Customer Service,16
+1,T001669,Customer Service,15
+1,T001670,Customer Service,19
+1,T001671,Logistics,14
+1,T001672,HR,12
+1,T001673,Finance,12
+1,T001674,HR,9
+1,T001675,Sales,14
+1,T001676,Logistics,12
+1,T001677,Operations,8
+1,T001678,Logistics,17
+1,T001679,Engineering,11
+1,T001680,HR,10
+1,T001681,Sales,15
+1,T001682,Sales,15
+1,T001683,Sales,15
+1,T001684,Sales,14
+1,T001685,HR,8
+1,T001686,Operations,13
+1,T001687,Engineering,18
+1,T001688,Operations,13
+1,T001689,Engineering,11
+1,T001690,Customer Service,13
+1,T001691,Marketing,14
+1,T001692,Logistics,11
+1,T001693,Customer Service,4
+1,T001694,Operations,15
+1,T001695,Customer Service,16
+1,T001696,Sales,8
+1,T001697,Engineering,10
+1,T001698,Sales,13
+1,T001699,Marketing,9
+1,T001700,HR,11
+1,T001701,Customer Service,16
+1,T001702,Marketing,22
+1,T001703,Operations,16
+1,T001704,Logistics,10
+1,T001705,Operations,15
+1,T001706,Logistics,13
+1,T001707,Marketing,21
+1,T001708,Engineering,11
+1,T001709,Engineering,16
+1,T001710,Engineering,8
+1,T001711,Operations,11
+1,T001712,Logistics,17
+1,T001713,Engineering,13
+1,T001714,Logistics,11
+1,T001715,Sales,14
+1,T001716,HR,12
+1,T001717,Finance,13
+1,T001718,Logistics,12
+1,T001719,Sales,9
+1,T001720,Customer Service,3
+1,T001721,Operations,9
+1,T001722,Operations,17
+1,T001723,Operations,16
+1,T001724,Engineering,13
+1,T001725,Engineering,11
+1,T001726,Engineering,10
+1,T001727,Operations,18
+1,T001728,HR,13
+1,T001729,Finance,8
+1,T001730,Finance,14
+1,T001731,Marketing,15
+1,T001732,Sales,12
+1,T001733,Engineering,19
+1,T001734,Customer Service,9
+1,T001735,Logistics,10
+1,T001736,Sales,4
+1,T001737,Customer Service,14
+1,T001738,Customer Service,13
+1,T001739,Engineering,12
+1,T001740,Logistics,14
+1,T001741,Sales,17
+1,T001742,Customer Service,16
+1,T001743,Customer Service,14
+1,T001744,HR,11
+1,T001745,Operations,12
+1,T001746,Engineering,11
+1,T001747,Engineering,16
+1,T001748,HR,14
+1,T001749,HR,13
+1,T001750,Customer Service,9
+1,T001751,Logistics,16
+1,T001752,Logistics,10
+1,T001753,Engineering,13
+1,T001754,Logistics,3
+1,T001755,Finance,17
+1,T001756,Marketing,12
+1,T001757,Marketing,13
+1,T001758,Finance,17
+1,T001759,Marketing,11
+1,T001760,Operations,12
+1,T001761,Operations,12
+1,T001762,Sales,12
+1,T001763,HR,12
+1,T001764,Customer Service,20
+1,T001765,HR,15
+1,T001766,HR,9
+1,T001767,Marketing,14
+1,T001768,Logistics,8
+1,T001769,Sales,9
+1,T001770,HR,13
+1,T001771,Operations,14
+1,T001772,Marketing,10
+1,T001773,Logistics,12
+1,T001774,Logistics,12
+1,T001775,Customer Service,14
+1,T001776,Logistics,12
+1,T001777,Customer Service,12
+1,T001778,Customer Service,15
+1,T001779,Logistics,14
+1,T001780,Engineering,10
+1,T001781,Logistics,3
+1,T001782,Customer Service,13
+1,T001783,Finance,11
+1,T001784,Logistics,11
+1,T001785,Customer Service,14
+1,T001786,Logistics,16
+1,T001787,Marketing,12
+1,T001788,Logistics,13
+1,T001789,HR,9
+1,T001790,Logistics,15
+1,T001791,Marketing,10
+1,T001792,Customer Service,12
+1,T001793,Engineering,11
+1,T001794,Customer Service,13
+1,T001795,Customer Service,11
+1,T001796,Finance,13
+1,T001797,Finance,12
+1,T001798,Marketing,14
+1,T001799,Operations,14
+1,T001800,Logistics,13
+1,T001801,Sales,15
+1,T001802,Operations,16
+1,T001803,Marketing,13
+1,T001804,Customer Service,9
+1,T001805,Operations,15
+1,T001806,Marketing,13
+1,T001807,Logistics,15
+1,T001808,Operations,16
+1,T001809,Operations,9
+1,T001810,Engineering,12
+1,T001811,Engineering,15
+1,T001812,HR,13
+1,T001813,Logistics,12
+1,T001814,Customer Service,13
+1,T001815,HR,20
+1,T001816,HR,11
+1,T001817,Logistics,10
+1,T001818,Logistics,15
+1,T001819,Customer Service,16
+1,T001820,Customer Service,9
+1,T001821,Sales,3
+1,T001822,Engineering,14
+1,T001823,Operations,16
+1,T001824,Customer Service,14
+1,T001825,Finance,10
+1,T001826,Sales,10
+1,T001827,Logistics,12
+1,T001828,Logistics,12
+1,T001829,Engineering,10
+1,T001830,Logistics,13
+1,T001831,Finance,11
+1,T001832,Engineering,9
+1,T001833,Finance,13
+1,T001834,HR,17
+1,T001835,Engineering,10
+1,T001836,Marketing,11
+1,T001837,Customer Service,13
+1,T001838,Customer Service,18
+1,T001839,Sales,13
+1,T001840,Finance,11
+1,T001841,Operations,13
+1,T001842,Logistics,12
+1,T001843,Customer Service,10
+1,T001844,Engineering,14
+1,T001845,HR,12
+1,T001846,Operations,18
+1,T001847,HR,12
+1,T001848,Logistics,10
+1,T001849,Engineering,12
+1,T001850,Operations,13
+1,T001851,Operations,11
+1,T001852,Engineering,12
+1,T001853,Finance,14
+1,T001854,Marketing,15
+1,T001855,Logistics,13
+1,T001856,Engineering,13
+1,T001857,HR,10
+1,T001858,Logistics,14
+1,T001859,HR,11
+1,T001860,HR,15
+1,T001861,Logistics,4
+1,T001862,Logistics,18
+1,T001863,Logistics,16
+1,T001864,Operations,11
+1,T001865,Logistics,13
+1,T001866,Customer Service,12
+1,T001867,Logistics,15
+1,T001868,Finance,12
+1,T001869,Marketing,12
+1,T001870,Customer Service,13
+1,T001871,Engineering,13
+1,T001872,Customer Service,16
+1,T001873,Marketing,17
+1,T001874,Logistics,16
+1,T001875,Engineering,20
+1,T001876,Engineering,13
+1,T001877,Customer Service,12
+1,T001878,Sales,14
+1,T001879,Operations,16
+1,T001880,Operations,14
+1,T001881,Finance,13
+1,T001882,Finance,10
+1,T001883,Customer Service,14
+1,T001884,Logistics,17
+1,T001885,Finance,13
+1,T001886,HR,16
+1,T001887,HR,13
+1,T001888,Finance,11
+1,T001889,Sales,19
+1,T001890,Customer Service,15
+1,T001891,Engineering,19
+1,T001892,Marketing,14
+1,T001893,Logistics,15
+1,T001894,Marketing,11
+1,T001895,Marketing,13
+1,T001896,Marketing,12
+1,T001897,Engineering,14
+1,T001898,Marketing,17
+1,T001899,HR,13
+1,T001900,Customer Service,7
+1,T001901,Customer Service,12
+1,T001902,HR,13
+1,T001903,Customer Service,15
+1,T001904,Sales,13
+1,T001905,Customer Service,4
+1,T001906,Logistics,11
+1,T001907,Engineering,14
+1,T001908,HR,16
+1,T001909,Operations,13
+1,T001910,HR,16
+1,T001911,Marketing,13
+1,T001912,Logistics,9
+1,T001913,HR,19
+1,T001914,Marketing,9
+1,T001915,HR,11
+1,T001916,Logistics,14
+1,T001917,Operations,15
+1,T001918,Operations,11
+1,T001919,Engineering,4
+1,T001920,Finance,16
+1,T001921,Customer Service,14
+1,T001922,Sales,10
+1,T001923,Engineering,4
+1,T001924,Sales,12
+1,T001925,Customer Service,16
+1,T001926,Engineering,12
+1,T001927,Sales,16
+1,T001928,Marketing,11
+1,T001929,Logistics,16
+1,T001930,Engineering,4
+1,T001931,Operations,4
+1,T001932,Marketing,14
+1,T001933,Finance,8
+1,T001934,Sales,10
+1,T001935,Logistics,15
+1,T001936,Operations,16
+1,T001937,Engineering,12
+1,T001938,Engineering,11
+1,T001939,Operations,19
+1,T001940,HR,16
+1,T001941,Logistics,21
+1,T001942,Marketing,10
+1,T001943,Logistics,3
+1,T001944,Finance,13
+1,T001945,HR,10
+1,T001946,Engineering,14
+1,T001947,Sales,12
+1,T001948,Marketing,10
+1,T001949,HR,10
+1,T001950,Sales,17
+1,T001951,Engineering,16
+1,T001952,Sales,18
+1,T001953,Operations,16
+1,T001954,Marketing,13
+1,T001955,Logistics,13
+1,T001956,Marketing,13
+1,T001957,HR,15
+1,T001958,Logistics,11
+1,T001959,Finance,12
+1,T001960,Finance,12
+1,T001961,Sales,15
+1,T001962,Finance,9
+1,T001963,Engineering,14
+1,T001964,HR,10
+1,T001965,Customer Service,13
+1,T001966,Operations,11
+1,T001967,Engineering,19
+1,T001968,Operations,10
+1,T001969,Engineering,12
+1,T001970,Engineering,4
+1,T001971,HR,11
+1,T001972,Marketing,11
+1,T001973,Engineering,14
+1,T001974,Engineering,9
+1,T001975,HR,14
+1,T001976,Customer Service,13
+1,T001977,Customer Service,9
+1,T001978,Engineering,17
+1,T001979,Engineering,13
+1,T001980,Operations,9
+1,T001981,Finance,13
+1,T001982,HR,12
+1,T001983,HR,10
+1,T001984,Customer Service,15
+1,T001985,Engineering,16
+1,T001986,Finance,14
+1,T001987,Operations,13
+1,T001988,Finance,15
+1,T001989,Sales,4
+1,T001990,Finance,8
+1,T001991,HR,11
+1,T001992,Sales,13
+1,T001993,Logistics,11
+1,T001994,Sales,3
+1,T001995,Sales,14
+1,T001996,Sales,13
+1,T001997,Customer Service,15
+1,T001998,Customer Service,19
+1,T001999,Logistics,9
+1,T002000,Marketing,15
+1,T002001,HR,9
+1,T002002,Engineering,13
+1,T002003,Logistics,12
+1,T002004,Marketing,13
+1,T002005,Marketing,15
+1,T002006,Finance,7
+1,T002007,HR,14
+1,T002008,Customer Service,16
+1,T002009,Finance,16
+1,T002010,Marketing,13
+1,T002011,Finance,14
+1,T002012,Customer Service,10
+1,T002013,Marketing,11
+1,T002014,Marketing,19
+1,T002015,Operations,9
+1,T002016,Engineering,17
+1,T002017,Marketing,11
+1,T002018,Operations,13
+1,T002019,Finance,3
+1,T002020,Finance,11
+1,T002021,Marketing,10
+1,T002022,Sales,16
+1,T002023,Logistics,14
+1,T002024,Finance,16
+1,T002025,Operations,14
+1,T002026,Marketing,14
+1,T002027,Finance,10
+1,T002028,Sales,8
+1,T002029,Engineering,10
+1,T002030,Finance,16
+1,T002031,Sales,9
+1,T002032,HR,10
+1,T002033,HR,10
+1,T002034,Engineering,9
+1,T002035,Marketing,12
+1,T002036,HR,13
+1,T002037,Logistics,17
+1,T002038,HR,10
+1,T002039,HR,9
+1,T002040,Marketing,18
+1,T002041,Finance,10
+1,T002042,Sales,15
+1,T002043,Logistics,17
+1,T002044,Finance,12
+1,T002045,Sales,19
+1,T002046,Operations,12
+1,T002047,Engineering,10
+1,T002048,Marketing,16
+1,T002049,Customer Service,14
+1,T002050,Customer Service,3
+1,T002051,Operations,11
+1,T002052,HR,9
+1,T002053,Engineering,11
+1,T002054,Operations,14
+1,T002055,Customer Service,13
+1,T002056,Marketing,11
+1,T002057,Engineering,12
+1,T002058,Sales,12
+1,T002059,Operations,9
+1,T002060,Finance,14
+1,T002061,Logistics,13
+1,T002062,Customer Service,16
+1,T002063,Sales,15
+1,T002064,Sales,12
+1,T002065,Customer Service,15
+1,T002066,Finance,14
+1,T002067,Engineering,17
+1,T002068,Customer Service,11
+1,T002069,Operations,3
+1,T002070,Customer Service,11
+1,T002071,Finance,13
+1,T002072,Operations,10
+1,T002073,Finance,13
+1,T002074,Customer Service,12
+1,T002075,Logistics,15
+1,T002076,HR,15
+1,T002077,Customer Service,10
+1,T002078,Engineering,21
+1,T002079,Finance,15
+1,T002080,Operations,15
+1,T002081,HR,11
+1,T002082,Finance,11
+1,T002083,Engineering,16
+1,T002084,Operations,9
+1,T002085,Logistics,10
+1,T002086,Marketing,14
+1,T002087,Finance,11
+1,T002088,Engineering,13
+1,T002089,Logistics,13
+1,T002090,Operations,12
+1,T002091,Marketing,15
+1,T002092,HR,11
+1,T002093,Logistics,4
+1,T002094,Customer Service,15
+1,T002095,Engineering,12
+1,T002096,Marketing,17
+1,T002097,Finance,10
+1,T002098,Sales,11
+1,T002099,Engineering,12
+1,T002100,HR,11
+1,T002101,Customer Service,12
+1,T002102,Logistics,12
+1,T002103,Logistics,4
+1,T002104,Sales,15
+1,T002105,Customer Service,14
+1,T002106,Operations,15
+1,T002107,Finance,13
+1,T002108,HR,11
+1,T002109,Customer Service,10
+1,T002110,Marketing,18
+1,T002111,Marketing,14
+1,T002112,Logistics,11
+1,T002113,HR,12
+1,T002114,Operations,13
+1,T002115,Operations,13
+1,T002116,Customer Service,9
+1,T002117,Operations,3
+1,T002118,Engineering,12
+1,T002119,Marketing,13
+1,T002120,Finance,15
+1,T002121,Operations,11
+1,T002122,Finance,11
+1,T002123,HR,12
+1,T002124,HR,11
+1,T002125,Customer Service,15
+1,T002126,Operations,13
+1,T002127,Marketing,11
+1,T002128,Customer Service,13
+1,T002129,HR,13
+1,T002130,Customer Service,11
+1,T002131,Engineering,13
+1,T002132,Customer Service,15
+1,T002133,Sales,11
+1,T002134,Marketing,11
+1,T002135,Sales,10
+1,T002136,Engineering,12
+1,T002137,Sales,15
+1,T002138,Finance,15
+1,T002139,Operations,17
+1,T002140,Engineering,12
+1,T002141,HR,10
+1,T002142,Marketing,10
+1,T002143,Finance,13
+1,T002144,Sales,10
+1,T002145,Operations,14
+1,T002146,HR,11
+1,T002147,Engineering,13
+1,T002148,Sales,12
+1,T002149,Finance,12
+1,T002150,Customer Service,16
+1,T002151,Customer Service,9
+1,T002152,Sales,16
+1,T002153,Marketing,10
+1,T002154,Operations,10
+1,T002155,Sales,11
+1,T002156,HR,16
+1,T002157,Finance,19
+1,T002158,Operations,10
+1,T002159,Operations,13
+1,T002160,Finance,13
+1,T002161,Customer Service,11
+1,T002162,Sales,14
+1,T002163,Logistics,13
+1,T002164,Finance,11
+1,T002165,HR,11
+1,T002166,Logistics,14
+1,T002167,Marketing,9
+1,T002168,Engineering,15
+1,T002169,Marketing,15
+1,T002170,Marketing,13
+1,T002171,Customer Service,3
+1,T002172,HR,4
+1,T002173,Engineering,8
+1,T002174,HR,14
+1,T002175,Operations,4
+1,T002176,HR,12
+1,T002177,Marketing,9
+1,T002178,Customer Service,12
+1,T002179,Logistics,12
+1,T002180,Sales,10
+1,T002181,Operations,3
+1,T002182,Customer Service,18
+1,T002183,HR,12
+1,T002184,Operations,15
+1,T002185,HR,13
+1,T002186,Marketing,12
+1,T002187,Engineering,13
+1,T002188,Engineering,13
+1,T002189,Customer Service,12
+1,T002190,Logistics,10
+1,T002191,Operations,16
+1,T002192,Finance,13
+1,T002193,Engineering,13
+1,T002194,Operations,13
+1,T002195,Finance,12
+1,T002196,Operations,17
+1,T002197,Logistics,17
+1,T002198,Operations,15
+1,T002199,Marketing,9
+1,T002200,Finance,12
+1,T002201,Marketing,14
+1,T002202,HR,13
+1,T002203,Logistics,15
+1,T002204,HR,11
+1,T002205,Operations,16
+1,T002206,Finance,12
+1,T002207,HR,13
+1,T002208,Engineering,11
+1,T002209,Sales,15
+1,T002210,Operations,10
+1,T002211,Operations,15
+1,T002212,Customer Service,14
+1,T002213,Marketing,4
+1,T002214,Logistics,11
+1,T002215,Customer Service,15
+1,T002216,Operations,9
+1,T002217,Marketing,12
+1,T002218,Logistics,15
+1,T002219,HR,11
+1,T002220,Marketing,14
+1,T002221,Customer Service,13
+1,T002222,Sales,7
+1,T002223,Logistics,4
+1,T002224,Customer Service,12
+1,T002225,Logistics,21
+1,T002226,Sales,9
+1,T002227,Customer Service,10
+1,T002228,Customer Service,8
+1,T002229,Finance,13
+1,T002230,Operations,11
+1,T002231,Customer Service,9
+1,T002232,Operations,10
+1,T002233,Operations,9
+1,T002234,Marketing,14
+1,T002235,Logistics,10
+1,T002236,Logistics,18
+1,T002237,Engineering,13
+1,T002238,Sales,3
+1,T002239,Logistics,12
+1,T002240,Customer Service,17
+1,T002241,Engineering,15
+1,T002242,Sales,12
+1,T002243,Engineering,13
+1,T002244,Engineering,14
+1,T002245,Engineering,17
+1,T002246,HR,18
+1,T002247,Finance,15
+1,T002248,Engineering,10
+1,T002249,Operations,13
+1,T002250,Logistics,9
+1,T002251,Engineering,12
+1,T002252,Operations,15
+1,T002253,Logistics,15
+1,T002254,Marketing,12
+1,T002255,Logistics,11
+1,T002256,Engineering,14
+1,T002257,Operations,17
+1,T002258,HR,15
+1,T002259,Finance,4
+1,T002260,Sales,14
+1,T002261,Finance,12
+1,T002262,Marketing,12
+1,T002263,Customer Service,15
+1,T002264,Customer Service,14
+1,T002265,Marketing,8
+1,T002266,Engineering,13
+1,T002267,Finance,19
+1,T002268,Engineering,11
+1,T002269,Customer Service,18
+1,T002270,Operations,15
+1,T002271,HR,3
+1,T002272,Finance,13
+1,T002273,Operations,10
+1,T002274,Operations,13
+1,T002275,Customer Service,4
+1,T002276,Sales,18
+1,T002277,Finance,6
+1,T002278,Marketing,12
+1,T002279,Logistics,12
+1,T002280,Operations,15
+1,T002281,Marketing,9
+1,T002282,Logistics,11
+1,T002283,Operations,17
+1,T002284,Engineering,15
+1,T002285,Customer Service,11
+1,T002286,Customer Service,15
+1,T002287,HR,17
+1,T002288,Logistics,19
+1,T002289,HR,19
+1,T002290,HR,13
+1,T002291,Finance,10
+1,T002292,Sales,13
+1,T002293,Marketing,10
+1,T002294,HR,13
+1,T002295,Sales,9
+1,T002296,Finance,14
+1,T002297,HR,4
+1,T002298,Finance,9
+1,T002299,Logistics,11
+1,T002300,Engineering,16
+1,T002301,Operations,10
+1,T002302,Customer Service,11
+1,T002303,Operations,12
+1,T002304,Sales,12
+1,T002305,Finance,15
+1,T002306,Sales,9
+1,T002307,HR,12
+1,T002308,HR,15
+1,T002309,Finance,15
+1,T002310,Operations,17
+1,T002311,Finance,8
+1,T002312,Finance,20
+1,T002313,Marketing,12
+1,T002314,Logistics,17
+1,T002315,Customer Service,20
+1,T002316,Logistics,12
+1,T002317,Sales,13
+1,T002318,Logistics,13
+1,T002319,Finance,22
+1,T002320,Logistics,13
+1,T002321,HR,14
+1,T002322,Marketing,12
+1,T002323,Sales,14
+1,T002324,Sales,14
+1,T002325,Logistics,14
+1,T002326,Engineering,13
+1,T002327,Marketing,13
+1,T002328,Customer Service,12
+1,T002329,Finance,13
+1,T002330,Logistics,13
+1,T002331,Finance,14
+1,T002332,Sales,9
+1,T002333,Operations,10
+1,T002334,Finance,15
+1,T002335,Sales,15
+1,T002336,Customer Service,10
+1,T002337,Marketing,15
+1,T002338,Sales,18
+1,T002339,Logistics,18
+1,T002340,Logistics,13
+1,T002341,Customer Service,10
+1,T002342,Customer Service,15
+1,T002343,Sales,13
+1,T002344,HR,17
+1,T002345,Sales,13
+1,T002346,Engineering,11
+1,T002347,HR,10
+1,T002348,Finance,4
+1,T002349,HR,8
+1,T002350,Marketing,16
+1,T002351,HR,17
+1,T002352,Customer Service,10
+1,T002353,Logistics,14
+1,T002354,Operations,11
+1,T002355,Logistics,16
+1,T002356,Customer Service,18
+1,T002357,Logistics,12
+1,T002358,Marketing,12
+1,T002359,Engineering,16
+1,T002360,Engineering,11
+1,T002361,Finance,16
+1,T002362,Finance,18
+1,T002363,Logistics,11
+1,T002364,HR,12
+1,T002365,Marketing,15
+1,T002366,Marketing,3
+1,T002367,Sales,11
+1,T002368,Customer Service,14
+1,T002369,Logistics,12
+1,T002370,Finance,4
+1,T002371,HR,18
+1,T002372,Operations,16
+1,T002373,Operations,17
+1,T002374,Logistics,13
+1,T002375,Engineering,15
+1,T002376,Customer Service,11
+1,T002377,HR,14
+1,T002378,Finance,10
+1,T002379,Marketing,11
+1,T002380,Engineering,14
+1,T002381,Finance,16
+1,T002382,HR,11
+1,T002383,Marketing,3
+1,T002384,Finance,11
+1,T002385,HR,10
+1,T002386,Sales,8
+1,T002387,Logistics,11
+1,T002388,Sales,12
+1,T002389,Customer Service,9
+1,T002390,Marketing,10
+1,T002391,Operations,14
+1,T002392,Operations,16
+1,T002393,Sales,9
+1,T002394,Operations,15
+1,T002395,Customer Service,12
+1,T002396,Logistics,12
+1,T002397,HR,18
+1,T002398,HR,12
+1,T002399,Logistics,11
+1,T002400,Engineering,15
+1,T002401,Finance,11
+1,T002402,Marketing,14
+1,T002403,Operations,14
+1,T002404,Sales,10
+1,T002405,Sales,15
+1,T002406,Logistics,14
+1,T002407,Customer Service,10
+1,T002408,Engineering,15
+1,T002409,Sales,12
+1,T002410,HR,12
+1,T002411,Marketing,15
+1,T002412,Finance,9
+1,T002413,HR,15
+1,T002414,Engineering,13
+1,T002415,Marketing,14
+1,T002416,HR,15
+1,T002417,Logistics,16
+1,T002418,Sales,16
+1,T002419,Operations,11
+1,T002420,Sales,13
+1,T002421,Finance,13
+1,T002422,Sales,14
+1,T002423,Customer Service,15
+1,T002424,Operations,12
+1,T002425,Operations,13
+1,T002426,Customer Service,14
+1,T002427,Sales,10
+1,T002428,HR,4
+1,T002429,Operations,3
+1,T002430,Logistics,3
+1,T002431,Logistics,16
+1,T002432,HR,13
+1,T002433,Customer Service,10
+1,T002434,Marketing,11
+1,T002435,Operations,9
+1,T002436,Logistics,11
+1,T002437,Sales,4
+1,T002438,Logistics,10
+1,T002439,Marketing,15
+1,T002440,Engineering,15
+1,T002441,Engineering,11
+1,T002442,Logistics,13
+1,T002443,Operations,3
+1,T002444,Logistics,11
+1,T002445,Operations,8
+1,T002446,Logistics,12
+1,T002447,Finance,14
+1,T002448,Logistics,13
+1,T002449,Engineering,13
+1,T002450,Customer Service,12
+1,T002451,Logistics,15
+1,T002452,Marketing,18
+1,T002453,HR,9
+1,T002454,Customer Service,10
+1,T002455,Logistics,14
+1,T002456,Logistics,15
+1,T002457,Logistics,13
+1,T002458,Customer Service,10
+1,T002459,Logistics,12
+1,T002460,Logistics,13
+1,T002461,Finance,14
+1,T002462,Finance,12
+1,T002463,HR,13
+1,T002464,HR,15
+1,T002465,HR,14
+1,T002466,Sales,11
+1,T002467,Sales,11
+1,T002468,Finance,13
+1,T002469,Logistics,16
+1,T002470,Engineering,18
+1,T002471,Operations,10
+1,T002472,Marketing,15
+1,T002473,HR,11
+1,T002474,HR,11
+1,T002475,Marketing,13
+1,T002476,Marketing,17
+1,T002477,Customer Service,11
+1,T002478,HR,10
+1,T002479,HR,12
+1,T002480,Logistics,12
+1,T002481,Marketing,16
+1,T002482,Engineering,14
+1,T002483,Customer Service,14
+1,T002484,Customer Service,12
+1,T002485,Marketing,13
+1,T002486,Engineering,15
+1,T002487,Marketing,9
+1,T002488,Customer Service,16
+1,T002489,Customer Service,14
+1,T002490,HR,9
+1,T002491,Sales,14
+1,T002492,HR,12
+1,T002493,HR,9
+1,T002494,Marketing,14
+1,T002495,Sales,3
+1,T002496,Logistics,14
+1,T002497,Operations,14
+1,T002498,Customer Service,12
+1,T002499,Sales,10
+1,T002500,Logistics,11
+1,T002501,Customer Service,12
+1,T002502,HR,11
+1,T002503,Engineering,12
+1,T002504,Finance,12
+1,T002505,HR,17
+1,T002506,Operations,13
+1,T002507,Customer Service,3
+1,T002508,HR,16
+1,T002509,Marketing,10
+1,T002510,Operations,15
+1,T002511,Logistics,4
+1,T002512,HR,15
+1,T002513,Finance,14
+1,T002514,Sales,12
+1,T002515,Marketing,16
+1,T002516,Customer Service,14
+1,T002517,Customer Service,13
+1,T002518,Operations,16
+1,T002519,Sales,21
+1,T002520,Operations,14
+1,T002521,Finance,12
+1,T002522,Sales,10
+1,T002523,Sales,12
+1,T002524,Finance,17
+1,T002525,HR,13
+1,T002526,Sales,12
+1,T002527,Engineering,15
+1,T002528,HR,12
+1,T002529,Customer Service,14
+1,T002530,HR,20
+1,T002531,Finance,14
+1,T002532,Operations,14
+1,T002533,Operations,11
+1,T002534,Finance,16
+1,T002535,Customer Service,12
+1,T002536,Customer Service,14
+1,T002537,Finance,9
+1,T002538,HR,12
+1,T002539,Sales,14
+1,T002540,Finance,11
+1,T002541,Engineering,13
+1,T002542,Customer Service,13
+1,T002543,Finance,14
+1,T002544,Engineering,13
+1,T002545,Sales,12
+1,T002546,Finance,12
+1,T002547,Operations,13
+1,T002548,Finance,10
+1,T002549,Engineering,11
+1,T002550,Finance,16
+1,T002551,Engineering,10
+1,T002552,Sales,13
+1,T002553,Finance,16
+1,T002554,HR,15
+1,T002555,Engineering,11
+1,T002556,Sales,12
+1,T002557,Engineering,12
+1,T002558,Sales,11
+1,T002559,Finance,12
+1,T002560,Customer Service,16
+1,T002561,Engineering,16
+1,T002562,Marketing,13
+1,T002563,Marketing,13
+1,T002564,Logistics,4
+1,T002565,Customer Service,13
+1,T002566,Logistics,14
+1,T002567,Sales,15
+1,T002568,Sales,12
+1,T002569,Operations,15
+1,T002570,Operations,18
+1,T002571,Sales,14
+1,T002572,Sales,3
+1,T002573,Engineering,15
+1,T002574,HR,10
+1,T002575,Engineering,11
+1,T002576,Sales,12
+1,T002577,Marketing,12
+1,T002578,HR,15
+1,T002579,Marketing,10
+1,T002580,Customer Service,11
+1,T002581,Logistics,13
+1,T002582,Finance,15
+1,T002583,Marketing,13
+1,T002584,Operations,15
+1,T002585,HR,12
+1,T002586,Marketing,12
+1,T002587,Logistics,13
+1,T002588,Engineering,10
+1,T002589,Marketing,12
+1,T002590,Operations,12
+1,T002591,Finance,13
+1,T002592,Logistics,10
+1,T002593,Engineering,15
+1,T002594,Finance,15
+1,T002595,Sales,14
+1,T002596,Sales,12
+1,T002597,Logistics,16
+1,T002598,Operations,12
+1,T002599,Customer Service,12
+1,T002600,Operations,10
+1,T002601,Finance,9
+1,T002602,Sales,14
+1,T002603,Logistics,13
+1,T002604,Customer Service,11
+1,T002605,Customer Service,12
+1,T002606,Logistics,12
+1,T002607,Finance,11
+1,T002608,Sales,11
+1,T002609,Logistics,9
+1,T002610,Engineering,11
+1,T002611,Logistics,8
+1,T002612,Customer Service,12
+1,T002613,Finance,10
+1,T002614,Sales,13
+1,T002615,Finance,17
+1,T002616,Customer Service,13
+1,T002617,Operations,12
+1,T002618,HR,17
+1,T002619,Sales,13
+1,T002620,Logistics,13
+1,T002621,Engineering,11
+1,T002622,Logistics,16
+1,T002623,Operations,21
+1,T002624,Sales,9
+1,T002625,Sales,12
+1,T002626,Engineering,16
+1,T002627,Marketing,10
+1,T002628,Finance,15
+1,T002629,Logistics,14
+1,T002630,Marketing,14
+1,T002631,Marketing,12
+1,T002632,Marketing,14
+1,T002633,Logistics,14
+1,T002634,Finance,14
+1,T002635,Customer Service,12
+1,T002636,Sales,14
+1,T002637,Marketing,8
+1,T002638,Finance,9
+1,T002639,HR,11
+1,T002640,Customer Service,9
+1,T002641,Engineering,13
+1,T002642,Finance,14
+1,T002643,Finance,8
+1,T002644,Finance,13
+1,T002645,Engineering,15
+1,T002646,Customer Service,13
+1,T002647,Operations,14
+1,T002648,Logistics,16
+1,T002649,Finance,12
+1,T002650,Marketing,9
+1,T002651,Marketing,11
+1,T002652,Finance,8
+1,T002653,HR,11
+1,T002654,Engineering,16
+1,T002655,Marketing,14
+1,T002656,HR,15
+1,T002657,Engineering,15
+1,T002658,Sales,14
+1,T002659,Sales,12
+1,T002660,HR,12
+1,T002661,Operations,12
+1,T002662,Finance,11
+1,T002663,Engineering,14
+1,T002664,Sales,10
+1,T002665,HR,15
+1,T002666,Customer Service,14
+1,T002667,Finance,16
+1,T002668,Operations,12
+1,T002669,Marketing,16
+1,T002670,Finance,15
+1,T002671,Operations,13
+1,T002672,Finance,14
+1,T002673,Finance,4
+1,T002674,Engineering,12
+1,T002675,Sales,8
+1,T002676,Logistics,13
+1,T002677,Marketing,12
+1,T002678,Engineering,3
+1,T002679,Customer Service,15
+1,T002680,HR,8
+1,T002681,Customer Service,10
+1,T002682,Finance,11
+1,T002683,Customer Service,12
+1,T002684,Finance,15
+1,T002685,Operations,17
+1,T002686,Engineering,13
+1,T002687,Logistics,15
+1,T002688,HR,14
+1,T002689,HR,10
+1,T002690,Logistics,10
+1,T002691,Operations,11
+1,T002692,Finance,16
+1,T002693,Sales,7
+1,T002694,Operations,7
+1,T002695,Sales,16
+1,T002696,Marketing,15
+1,T002697,Marketing,16
+1,T002698,Customer Service,14
+1,T002699,Marketing,15
+1,T002700,HR,3
+1,T002701,Customer Service,10
+1,T002702,Finance,3
+1,T002703,Marketing,13
+1,T002704,Logistics,12
+1,T002705,HR,13
+1,T002706,Customer Service,12
+1,T002707,Operations,11
+1,T002708,Customer Service,11
+1,T002709,Marketing,10
+1,T002710,Customer Service,12
+1,T002711,Sales,16
+1,T002712,Finance,13
+1,T002713,Marketing,11
+1,T002714,Operations,17
+1,T002715,Operations,12
+1,T002716,Customer Service,12
+1,T002717,Operations,15
+1,T002718,Operations,3
+1,T002719,Logistics,12
+1,T002720,Operations,11
+1,T002721,Logistics,12
+1,T002722,HR,13
+1,T002723,Marketing,4
+1,T002724,Engineering,17
+1,T002725,Operations,15
+1,T002726,Sales,16
+1,T002727,Finance,13
+1,T002728,Operations,13
+1,T002729,Engineering,12
+1,T002730,Logistics,10
+1,T002731,Sales,15
+1,T002732,Operations,10
+1,T002733,Operations,11
+1,T002734,Operations,3
+1,T002735,Sales,11
+1,T002736,Finance,13
+1,T002737,Logistics,14
+1,T002738,Logistics,11
+1,T002739,Operations,11
+1,T002740,Sales,4
+1,T002741,Finance,11
+1,T002742,Sales,12
+1,T002743,Operations,12
+1,T002744,Operations,15
+1,T002745,Marketing,17
+1,T002746,Sales,14
+1,T002747,HR,9
+1,T002748,HR,13
+1,T002749,Customer Service,13
+1,T002750,Finance,16
+1,T002751,Sales,12
+1,T002752,Customer Service,14
+1,T002753,Operations,15
+1,T002754,Marketing,13
+1,T002755,HR,13
+1,T002756,Logistics,10
+1,T002757,HR,9
+1,T002758,Finance,18
+1,T002759,Customer Service,4
+1,T002760,Operations,13
+1,T002761,Sales,11
+1,T002762,Marketing,15
+1,T002763,Engineering,9
+1,T002764,Engineering,17
+1,T002765,Finance,10
+1,T002766,Sales,19
+1,T002767,HR,11
+1,T002768,Finance,17
+1,T002769,Engineering,9
+1,T002770,Marketing,10
+1,T002771,Marketing,9
+1,T002772,Customer Service,11
+1,T002773,Sales,15
+1,T002774,Engineering,10
+1,T002775,Sales,10
+1,T002776,Sales,14
+1,T002777,Engineering,13
+1,T002778,Finance,9
+1,T002779,Sales,11
+1,T002780,Operations,15
+1,T002781,Finance,13
+1,T002782,Customer Service,17
+1,T002783,HR,15
+1,T002784,Logistics,15
+1,T002785,Sales,15
+1,T002786,Engineering,10
+1,T002787,Finance,12
+1,T002788,Logistics,15
+1,T002789,HR,11
+1,T002790,HR,12
+1,T002791,HR,14
+1,T002792,Marketing,10
+1,T002793,Sales,14
+1,T002794,Marketing,12
+1,T002795,Customer Service,16
+1,T002796,Customer Service,3
+1,T002797,Marketing,13
+1,T002798,Sales,9
+1,T002799,Engineering,15
+1,T002800,Logistics,14
+1,T002801,Finance,18
+1,T002802,Sales,15
+1,T002803,Marketing,13
+1,T002804,Operations,15
+1,T002805,Customer Service,11
+1,T002806,Customer Service,17
+1,T002807,Operations,15
+1,T002808,Marketing,13
+1,T002809,Customer Service,9
+1,T002810,Engineering,12
+1,T002811,Finance,12
+1,T002812,Logistics,14
+1,T002813,Logistics,20
+1,T002814,Sales,12
+1,T002815,Logistics,17
+1,T002816,Logistics,14
+1,T002817,Engineering,10
+1,T002818,HR,14
+1,T002819,Engineering,13
+1,T002820,Logistics,11
+1,T002821,Finance,10
+1,T002822,Customer Service,10
+1,T002823,Logistics,16
+1,T002824,Marketing,13
+1,T002825,Operations,13
+1,T002826,Finance,15
+1,T002827,HR,11
+1,T002828,HR,11
+1,T002829,Marketing,15
+1,T002830,Logistics,12
+1,T002831,Marketing,10
+1,T002832,Logistics,15
+1,T002833,Sales,12
+1,T002834,Operations,10
+1,T002835,HR,14
+1,T002836,Marketing,11
+1,T002837,Finance,10
+1,T002838,Operations,11
+1,T002839,Engineering,4
+1,T002840,Sales,14
+1,T002841,Logistics,11
+1,T002842,Marketing,10
+1,T002843,Sales,13
+1,T002844,Marketing,11
+1,T002845,Marketing,10
+1,T002846,Operations,13
+1,T002847,Operations,12
+1,T002848,HR,13
+1,T002849,Logistics,15
+1,T002850,Sales,13
+1,T002851,HR,16
+1,T002852,Operations,9
+1,T002853,Finance,15
+1,T002854,Marketing,10
+1,T002855,Operations,10
+1,T002856,Engineering,14
+1,T002857,HR,16
+1,T002858,Operations,11
+1,T002859,Customer Service,13
+1,T002860,Marketing,15
+1,T002861,Sales,11
+1,T002862,Finance,12
+1,T002863,Marketing,13
+1,T002864,Sales,15
+1,T002865,Operations,13
+1,T002866,Sales,10
+1,T002867,Operations,16
+1,T002868,Logistics,3
+1,T002869,Customer Service,15
+1,T002870,Marketing,14
+1,T002871,Sales,15
+1,T002872,Customer Service,13
+1,T002873,Marketing,14
+1,T002874,HR,22
+1,T002875,Sales,19
+1,T002876,Finance,11
+1,T002877,HR,14
+1,T002878,Sales,16
+1,T002879,HR,9
+1,T002880,HR,13
+1,T002881,Operations,10
+1,T002882,Sales,11
+1,T002883,Customer Service,12
+1,T002884,Sales,13
+1,T002885,Operations,13
+1,T002886,Customer Service,13
+1,T002887,Finance,18
+1,T002888,Engineering,13
+1,T002889,Operations,4
+1,T002890,Finance,15
+1,T002891,Customer Service,12
+1,T002892,Operations,15
+1,T002893,Engineering,15
+1,T002894,Engineering,14
+1,T002895,Engineering,15
+1,T002896,Sales,13
+1,T002897,Sales,16
+1,T002898,Logistics,16
+1,T002899,Logistics,10
+1,T002900,Engineering,12
+1,T002901,Sales,10
+1,T002902,Finance,18
+1,T002903,Engineering,12
+1,T002904,Logistics,11
+1,T002905,Marketing,16
+1,T002906,Operations,10
+1,T002907,Engineering,10
+1,T002908,Sales,14
+1,T002909,HR,13
+1,T002910,Engineering,11
+1,T002911,Engineering,13
+1,T002912,Customer Service,4
+1,T002913,Logistics,11
+1,T002914,Marketing,12
+1,T002915,Operations,14
+1,T002916,Customer Service,16
+1,T002917,Sales,14
+1,T002918,Operations,14
+1,T002919,Sales,15
+1,T002920,Finance,12
+1,T002921,HR,19
+1,T002922,Engineering,14
+1,T002923,HR,11
+1,T002924,Logistics,9
+1,T002925,Customer Service,10
+1,T002926,Finance,3
+1,T002927,Logistics,11
+1,T002928,HR,15
+1,T002929,Finance,15
+1,T002930,Operations,17
+1,T002931,Customer Service,14
+1,T002932,Sales,11
+1,T002933,Finance,16
+1,T002934,Logistics,18
+1,T002935,Engineering,14
+1,T002936,HR,9
+1,T002937,Operations,12
+1,T002938,Marketing,11
+1,T002939,Customer Service,17
+1,T002940,Sales,15
+1,T002941,Engineering,9
+1,T002942,Logistics,14
+1,T002943,Marketing,19
+1,T002944,HR,13
+1,T002945,HR,16
+1,T002946,Sales,15
+1,T002947,Logistics,13
+1,T002948,Finance,12
+1,T002949,Engineering,10
+1,T002950,Marketing,12
+1,T002951,HR,11
+1,T002952,Operations,16
+1,T002953,Customer Service,14
+1,T002954,Engineering,17
+1,T002955,Operations,12
+1,T002956,Customer Service,14
+1,T002957,Customer Service,3
+1,T002958,Logistics,16
+1,T002959,HR,8
+1,T002960,HR,12
+1,T002961,Sales,12
+1,T002962,Marketing,17
+1,T002963,Logistics,16
+1,T002964,Finance,10
+1,T002965,Finance,18
+1,T002966,Engineering,14
+1,T002967,Finance,9
+1,T002968,Sales,14
+1,T002969,Customer Service,16
+1,T002970,HR,11
+1,T002971,Logistics,12
+1,T002972,Operations,11
+1,T002973,Operations,14
+1,T002974,Operations,14
+1,T002975,Operations,15
+1,T002976,Marketing,17
+1,T002977,Marketing,11
+1,T002978,HR,14
+1,T002979,Marketing,14
+1,T002980,Sales,11
+1,T002981,Finance,19
+1,T002982,Sales,13
+1,T002983,Marketing,18
+1,T002984,Engineering,18
+1,T002985,Logistics,16
+1,T002986,Engineering,13
+1,T002987,Customer Service,11
+1,T002988,Marketing,13
+1,T002989,HR,12
+1,T002990,Finance,13
+1,T002991,Logistics,11
+1,T002992,HR,16
+1,T002993,Logistics,14
+1,T002994,Marketing,16
+1,T002995,Customer Service,13
+1,T002996,Customer Service,10
+1,T002997,Sales,16
+1,T002998,Operations,9
+1,T002999,HR,10
+1,T003000,HR,17
+1,T003001,HR,13
+1,T003002,HR,14
+1,T003003,Logistics,15
+1,T003004,Engineering,14
+1,T003005,HR,12
+1,T003006,Customer Service,13
+1,T003007,HR,12
+1,T003008,Marketing,13
+1,T003009,Marketing,7
+1,T003010,Finance,13
+1,T003011,Sales,8
+1,T003012,Marketing,10
+1,T003013,Sales,16
+1,T003014,Engineering,4
+1,T003015,Sales,14
+1,T003016,Finance,11
+1,T003017,Sales,15
+1,T003018,Customer Service,13
+1,T003019,Engineering,10
+1,T003020,Logistics,17
+1,T003021,Sales,10
+1,T003022,Engineering,8
+1,T003023,HR,11
+1,T003024,Engineering,10
+1,T003025,HR,8
+1,T003026,Engineering,14
+1,T003027,Finance,10
+1,T003028,Operations,13
+1,T003029,Sales,11
+1,T003030,Customer Service,17
+1,T003031,HR,11
+1,T003032,Customer Service,13
+1,T003033,Operations,15
+1,T003034,Marketing,12
+1,T003035,Sales,15
+1,T003036,Logistics,12
+1,T003037,Customer Service,12
+1,T003038,Operations,12
+1,T003039,Logistics,12
+1,T003040,Operations,14
+1,T003041,Sales,11
+1,T003042,HR,12
+1,T003043,Marketing,11
+1,T003044,Sales,11
+1,T003045,Sales,15
+1,T003046,Logistics,14
+1,T003047,HR,18
+1,T003048,HR,18
+1,T003049,HR,11
+1,T003050,Engineering,11
+1,T003051,HR,17
+1,T003052,HR,10
+1,T003053,Logistics,15
+1,T003054,Operations,11
+1,T003055,HR,10
+1,T003056,Customer Service,12
+1,T003057,Operations,14
+1,T003058,Sales,16
+1,T003059,Logistics,11
+1,T003060,Customer Service,10
+1,T003061,Engineering,15
+1,T003062,Customer Service,12
+1,T003063,HR,14
+1,T003064,Operations,13
+1,T003065,Finance,15
+1,T003066,Engineering,20
+1,T003067,Customer Service,14
+1,T003068,HR,12
+1,T003069,Sales,3
+1,T003070,Finance,10
+1,T003071,Engineering,10
+1,T003072,Customer Service,14
+1,T003073,Finance,11
+1,T003074,Logistics,11
+1,T003075,HR,12
+1,T003076,Engineering,13
+1,T003077,Logistics,12
+1,T003078,Marketing,18
+1,T003079,Engineering,11
+1,T003080,Operations,14
+1,T003081,Engineering,8
+1,T003082,Operations,9
+1,T003083,Marketing,11
+1,T003084,Sales,11
+1,T003085,Operations,13
+1,T003086,Marketing,13
+1,T003087,HR,10
+1,T003088,Customer Service,13
+1,T003089,Engineering,10
+1,T003090,Finance,12
+1,T003091,HR,15
+1,T003092,Customer Service,13
+1,T003093,HR,14
+1,T003094,Logistics,11
+1,T003095,Marketing,14
+1,T003096,Operations,19
+1,T003097,Finance,14
+1,T003098,Sales,19
+1,T003099,Operations,16
+1,T003100,Finance,15
+1,T003101,Sales,13
+1,T003102,Logistics,13
+1,T003103,HR,11
+1,T003104,Finance,16
+1,T003105,Operations,8
+1,T003106,Sales,15
+1,T003107,Sales,17
+1,T003108,Logistics,12
+1,T003109,Finance,15
+1,T003110,Marketing,12
+1,T003111,Engineering,16
+1,T003112,Logistics,14
+1,T003113,Marketing,9
+1,T003114,HR,12
+1,T003115,Engineering,8
+1,T003116,HR,15
+1,T003117,Engineering,16
+1,T003118,Customer Service,21
+1,T003119,Marketing,13
+1,T003120,HR,12
+1,T003121,Marketing,13
+1,T003122,Marketing,12
+1,T003123,Operations,11
+1,T003124,Logistics,17
+1,T003125,HR,12
+1,T003126,Operations,16
+1,T003127,Logistics,13
+1,T003128,Finance,16
+1,T003129,Logistics,14
+1,T003130,Finance,13
+1,T003131,Customer Service,14
+1,T003132,Marketing,14
+1,T003133,Engineering,16
+1,T003134,Engineering,13
+1,T003135,Logistics,13
+1,T003136,HR,15
+1,T003137,Operations,13
+1,T003138,HR,14
+1,T003139,Finance,11
+1,T003140,HR,19
+1,T003141,Sales,14
+1,T003142,Customer Service,14
+1,T003143,HR,15
+1,T003144,Logistics,15
+1,T003145,Marketing,10
+1,T003146,Engineering,12
+1,T003147,Marketing,13
+1,T003148,Finance,20
+1,T003149,Sales,13
+1,T003150,Logistics,7
+1,T003151,Logistics,18
+1,T003152,Logistics,13
+1,T003153,Engineering,9
+1,T003154,Sales,12
+1,T003155,Marketing,18
+1,T003156,Sales,12
+1,T003157,Logistics,13
+1,T003158,Marketing,12
+1,T003159,Customer Service,14
+1,T003160,Customer Service,13
+1,T003161,HR,12
+1,T003162,Finance,10
+1,T003163,HR,11
+1,T003164,Logistics,14
+1,T003165,Operations,13
+1,T003166,Finance,12
+1,T003167,Finance,13
+1,T003168,Marketing,12
+1,T003169,Customer Service,13
+1,T003170,Engineering,13
+1,T003171,Marketing,14
+1,T003172,Engineering,18
+1,T003173,Marketing,11
+1,T003174,Logistics,19
+1,T003175,Marketing,19
+1,T003176,Engineering,15
+1,T003177,Engineering,14
+1,T003178,Logistics,9
+1,T003179,Logistics,15
+1,T003180,Customer Service,14
+1,T003181,Engineering,11
+1,T003182,Finance,11
+1,T003183,Operations,12
+1,T003184,Engineering,12
+1,T003185,Marketing,12
+1,T003186,Operations,13
+1,T003187,Operations,15
+1,T003188,Logistics,12
+1,T003189,Logistics,8
+1,T003190,Logistics,14
+1,T003191,HR,7
+1,T003192,Sales,13
+1,T003193,Sales,14
+1,T003194,HR,14
+1,T003195,Sales,15
+1,T003196,Operations,17
+1,T003197,HR,12
+1,T003198,Engineering,14
+1,T003199,Sales,16
+1,T003200,Customer Service,16
+1,T003201,Sales,15
+1,T003202,Operations,13
+1,T003203,Finance,15
+1,T003204,HR,11
+1,T003205,Finance,13
+1,T003206,Operations,13
+1,T003207,Customer Service,10
+1,T003208,Logistics,16
+1,T003209,Operations,12
+1,T003210,Logistics,12
+1,T003211,Customer Service,13
+1,T003212,Operations,13
+1,T003213,Finance,12
+1,T003214,Marketing,14
+1,T003215,Customer Service,11
+1,T003216,Engineering,13
+1,T003217,Operations,8
+1,T003218,Marketing,9
+1,T003219,Sales,9
+1,T003220,Operations,14
+1,T003221,Finance,13
+1,T003222,Customer Service,12
+1,T003223,Operations,12
+1,T003224,Marketing,16
+1,T003225,Finance,14
+1,T003226,Marketing,11
+1,T003227,Customer Service,12
+1,T003228,HR,18
+1,T003229,Logistics,12
+1,T003230,Finance,4
+1,T003231,Sales,13
+1,T003232,Logistics,14
+1,T003233,Engineering,11
+1,T003234,Marketing,14
+1,T003235,Engineering,11
+1,T003236,Operations,16
+1,T003237,Operations,12
+1,T003238,Marketing,19
+1,T003239,Finance,9
+1,T003240,HR,13
+1,T003241,Sales,12
+1,T003242,Operations,11
+1,T003243,Operations,10
+1,T003244,Logistics,9
+1,T003245,Sales,15
+1,T003246,Customer Service,10
+1,T003247,Finance,9
+1,T003248,HR,13
+1,T003249,Logistics,11
+1,T003250,Engineering,12
+1,T003251,Operations,15
+1,T003252,HR,13
+1,T003253,Logistics,10
+1,T003254,Logistics,10
+1,T003255,Engineering,13
+1,T003256,Marketing,16
+1,T003257,Marketing,13
+1,T003258,Operations,14
+1,T003259,Customer Service,15
+1,T003260,Operations,10
+1,T003261,HR,14
+1,T003262,Marketing,19
+1,T003263,Marketing,14
+1,T003264,Engineering,14
+1,T003265,Marketing,10
+1,T003266,Customer Service,13
+1,T003267,Logistics,10
+1,T003268,Sales,14
+1,T003269,Customer Service,13
+1,T003270,Marketing,9
+1,T003271,Finance,11
+1,T003272,Logistics,12
+1,T003273,Engineering,10
+1,T003274,Finance,12
+1,T003275,Operations,23
+1,T003276,Engineering,11
+1,T003277,HR,13
+1,T003278,Engineering,7
+1,T003279,Operations,17
+1,T003280,Customer Service,16
+1,T003281,Operations,9
+1,T003282,Operations,10
+1,T003283,Logistics,13
+1,T003284,Logistics,10
+1,T003285,Marketing,12
+1,T003286,HR,15
+1,T003287,HR,14
+1,T003288,Finance,14
+1,T003289,Customer Service,9
+1,T003290,Operations,11
+1,T003291,HR,10
+1,T003292,Marketing,4
+1,T003293,Finance,13
+1,T003294,HR,15
+1,T003295,Marketing,4
+1,T003296,Logistics,13
+1,T003297,HR,15
+1,T003298,Logistics,9
+1,T003299,Operations,10
+1,T003300,Marketing,9
+1,T003301,Engineering,12
+1,T003302,Engineering,11
+1,T003303,HR,4
+1,T003304,Engineering,17
+1,T003305,Operations,10
+1,T003306,Marketing,15
+1,T003307,Logistics,9
+1,T003308,Operations,11
+1,T003309,Sales,12
+1,T003310,Engineering,17
+1,T003311,Logistics,18
+1,T003312,Sales,14
+1,T003313,Logistics,12
+1,T003314,Finance,16
+1,T003315,HR,13
+1,T003316,Finance,3
+1,T003317,Operations,10
+1,T003318,Marketing,12
+1,T003319,Customer Service,10
+1,T003320,Operations,15
+1,T003321,Finance,11
+1,T003322,HR,12
+1,T003323,Marketing,14
+1,T003324,Customer Service,13
+1,T003325,Engineering,15
+1,T003326,Customer Service,15
+1,T003327,Operations,17
+1,T003328,Finance,13
+1,T003329,Logistics,12
+1,T003330,Customer Service,9
+1,T003331,Sales,10
+1,T003332,Finance,11
+1,T003333,Sales,10
+1,T003334,Finance,7
+1,T003335,Customer Service,4
+1,T003336,Operations,12
+1,T003337,Customer Service,10
+1,T003338,Customer Service,12
+1,T003339,Engineering,12
+1,T003340,Sales,12
+1,T003341,Engineering,13
+1,T003342,Engineering,12
+1,T003343,Marketing,11
+1,T003344,Logistics,14
+1,T003345,HR,10
+1,T003346,Finance,12
+1,T003347,Marketing,10
+1,T003348,Operations,8
+1,T003349,Finance,15
+1,T003350,Finance,15
+1,T003351,Logistics,16
+1,T003352,Operations,14
+1,T003353,Operations,16
+1,T003354,HR,12
+1,T003355,Marketing,13
+1,T003356,Operations,13
+1,T003357,Operations,9
+1,T003358,Finance,16
+1,T003359,Engineering,16
+1,T003360,Sales,19
+1,T003361,Engineering,16
+1,T003362,Engineering,17
+1,T003363,Customer Service,19
+1,T003364,HR,12
+1,T003365,HR,9
+1,T003366,HR,13
+1,T003367,Engineering,15
+1,T003368,Marketing,18
+1,T003369,HR,11
+1,T003370,Customer Service,12
+1,T003371,Finance,18
+1,T003372,Sales,15
+1,T003373,HR,10
+1,T003374,Logistics,18
+1,T003375,Operations,9
+1,T003376,Operations,8
+1,T003377,Engineering,11
+1,T003378,Logistics,11
+1,T003379,Finance,11
+1,T003380,Logistics,14
+1,T003381,Sales,17
+1,T003382,Logistics,12
+1,T003383,Sales,11
+1,T003384,Logistics,13
+1,T003385,HR,10
+1,T003386,Marketing,16
+1,T003387,Operations,12
+1,T003388,Logistics,13
+1,T003389,Customer Service,17
+1,T003390,Operations,13
+1,T003391,Sales,13
+1,T003392,Customer Service,14
+1,T003393,Operations,16
+1,T003394,Sales,10
+1,T003395,Marketing,14
+1,T003396,Engineering,12
+1,T003397,Operations,10
+1,T003398,Logistics,16
+1,T003399,Finance,17
+1,T003400,Finance,4
+1,T003401,Engineering,10
+1,T003402,Engineering,13
+1,T003403,Engineering,21
+1,T003404,Operations,14
+1,T003405,Operations,12
+1,T003406,Sales,10
+1,T003407,Logistics,19
+1,T003408,Customer Service,14
+1,T003409,Engineering,12
+1,T003410,HR,11
+1,T003411,Sales,17
+1,T003412,Logistics,14
+1,T003413,Logistics,8
+1,T003414,HR,14
+1,T003415,Operations,15
+1,T003416,Engineering,13
+1,T003417,Marketing,10
+1,T003418,Engineering,12
+1,T003419,Marketing,13
+1,T003420,Logistics,13
+1,T003421,Marketing,10
+1,T003422,Operations,12
+1,T003423,Customer Service,13
+1,T003424,Engineering,11
+1,T003425,Operations,9
+1,T003426,Customer Service,10
+1,T003427,Sales,13
+1,T003428,Finance,8
+1,T003429,Finance,10
+1,T003430,Sales,11
+1,T003431,Finance,12
+1,T003432,Customer Service,12
+1,T003433,Operations,12
+1,T003434,Operations,9
+1,T003435,Customer Service,17
+1,T003436,Engineering,16
+1,T003437,Sales,12
+1,T003438,HR,16
+1,T003439,Finance,3
+1,T003440,Logistics,16
+1,T003441,HR,16
+1,T003442,Logistics,11
+1,T003443,Sales,13
+1,T003444,Marketing,4
+1,T003445,Customer Service,18
+1,T003446,HR,13
+1,T003447,Engineering,15
+1,T003448,HR,13
+1,T003449,Finance,16
+1,T003450,Sales,13
+1,T003451,Operations,15
+1,T003452,HR,10
+1,T003453,Finance,13
+1,T003454,Logistics,8
+1,T003455,Finance,14
+1,T003456,Customer Service,14
+1,T003457,HR,17
+1,T003458,Logistics,10
+1,T003459,Sales,17
+1,T003460,HR,16
+1,T003461,Finance,13
+1,T003462,HR,9
+1,T003463,Finance,17
+1,T003464,Operations,13
+1,T003465,Logistics,11
+1,T003466,Engineering,13
+1,T003467,HR,13
+1,T003468,Operations,10
+1,T003469,Marketing,13
+1,T003470,Logistics,9
+1,T003471,Finance,10
+1,T003472,Customer Service,15
+1,T003473,Finance,12
+1,T003474,Logistics,18
+1,T003475,Logistics,4
+1,T003476,Finance,15
+1,T003477,Finance,11
+1,T003478,Sales,13
+1,T003479,Logistics,16
+1,T003480,Engineering,11
+1,T003481,HR,13
+1,T003482,Finance,18
+1,T003483,Logistics,12
+1,T003484,Logistics,12
+1,T003485,HR,12
+1,T003486,Marketing,15
+1,T003487,Customer Service,13
+1,T003488,HR,12
+1,T003489,Customer Service,17
+1,T003490,HR,17
+1,T003491,Finance,14
+1,T003492,Customer Service,11
+1,T003493,Engineering,13
+1,T003494,Engineering,11
+1,T003495,Logistics,15
+1,T003496,Sales,13
+1,T003497,Engineering,15
+1,T003498,Engineering,13
+1,T003499,Customer Service,14
+1,T003500,Logistics,18
+1,T003501,Operations,13
+1,T003502,Customer Service,4
+1,T003503,Finance,17
+1,T003504,Sales,12
+1,T003505,Finance,11
+1,T003506,Finance,21
+1,T003507,Engineering,14
+1,T003508,Finance,9
+1,T003509,Operations,16
+1,T003510,Customer Service,14
+1,T003511,Logistics,8
+1,T003512,Finance,13
+1,T003513,Marketing,4
+1,T003514,Finance,24
+1,T003515,Finance,12
+1,T003516,Operations,17
+1,T003517,HR,4
+1,T003518,Marketing,12
+1,T003519,Customer Service,15
+1,T003520,Customer Service,16
+1,T003521,Marketing,13
+1,T003522,Marketing,13
+1,T003523,Operations,15
+1,T003524,Finance,12
+1,T003525,Operations,13
+1,T003526,Customer Service,4
+1,T003527,Logistics,12
+1,T003528,Engineering,16
+1,T003529,HR,17
+1,T003530,Customer Service,10
+1,T003531,HR,16
+1,T003532,HR,12
+1,T003533,Operations,12
+1,T003534,Logistics,9
+1,T003535,Operations,14
+1,T003536,Operations,13
+1,T003537,Operations,12
+1,T003538,Operations,12
+1,T003539,Engineering,16
+1,T003540,Sales,11
+1,T003541,HR,12
+1,T003542,Engineering,13
+1,T003543,Engineering,16
+1,T003544,Customer Service,17
+1,T003545,Marketing,11
+1,T003546,HR,9
+1,T003547,Finance,4
+1,T003548,Logistics,10
+1,T003549,HR,9
+1,T003550,Customer Service,12
+1,T003551,Logistics,3
+1,T003552,Sales,11
+1,T003553,Sales,6
+1,T003554,Logistics,16
+1,T003555,Marketing,16
+1,T003556,Finance,10
+1,T003557,Marketing,11
+1,T003558,Engineering,19
+1,T003559,Operations,15
+1,T003560,Sales,13
+1,T003561,Customer Service,12
+1,T003562,Finance,13
+1,T003563,Sales,15
+1,T003564,Operations,10
+1,T003565,Customer Service,10
+1,T003566,Finance,9
+1,T003567,Operations,11
+1,T003568,Finance,16
+1,T003569,Finance,9
+1,T003570,Engineering,13
+1,T003571,Finance,15
+1,T003572,Marketing,12
+1,T003573,HR,17
+1,T003574,Engineering,12
+1,T003575,Marketing,15
+1,T003576,Customer Service,10
+1,T003577,Sales,14
+1,T003578,Sales,11
+1,T003579,Customer Service,12
+1,T003580,Sales,13
+1,T003581,HR,13
+1,T003582,Sales,18
+1,T003583,Logistics,15
+1,T003584,Engineering,10
+1,T003585,Operations,14
+1,T003586,Finance,10
+1,T003587,Finance,12
+1,T003588,Logistics,8
+1,T003589,Logistics,10
+1,T003590,Finance,14
+1,T003591,Marketing,12
+1,T003592,Marketing,18
+1,T003593,HR,13
+1,T003594,Operations,15
+1,T003595,Finance,20
+1,T003596,HR,19
+1,T003597,Logistics,13
+1,T003598,Engineering,13
+1,T003599,Sales,10
+1,T003600,Customer Service,14
+1,T003601,Logistics,12
+1,T003602,Operations,15
+1,T003603,Finance,3
+1,T003604,Operations,13
+1,T003605,Customer Service,13
+1,T003606,Logistics,15
+1,T003607,Finance,15
+1,T003608,Customer Service,14
+1,T003609,Customer Service,10
+1,T003610,Marketing,13
+1,T003611,Sales,16
+1,T003612,Marketing,14
+1,T003613,Finance,13
+1,T003614,Finance,9
+1,T003615,Customer Service,18
+1,T003616,Finance,8
+1,T003617,Logistics,10
+1,T003618,Finance,3
+1,T003619,HR,9
+1,T003620,Finance,14
+1,T003621,Sales,13
+1,T003622,Sales,17
+1,T003623,Marketing,14
+1,T003624,Operations,13
+1,T003625,Marketing,8
+1,T003626,Marketing,4
+1,T003627,Operations,18
+1,T003628,Engineering,12
+1,T003629,Operations,11
+1,T003630,Sales,13
+1,T003631,HR,17
+1,T003632,Logistics,15
+1,T003633,Operations,10
+1,T003634,Engineering,13
+1,T003635,Logistics,12
+1,T003636,Logistics,10
+1,T003637,Logistics,14
+1,T003638,Sales,10
+1,T003639,Customer Service,14
+1,T003640,Operations,4
+1,T003641,Customer Service,13
+1,T003642,Customer Service,11
+1,T003643,Engineering,9
+1,T003644,Customer Service,13
+1,T003645,Sales,13
+1,T003646,Marketing,12
+1,T003647,Marketing,11
+1,T003648,Customer Service,15
+1,T003649,Customer Service,13
+1,T003650,Engineering,12
+1,T003651,Marketing,12
+1,T003652,Operations,17
+1,T003653,Operations,8
+1,T003654,Marketing,4
+1,T003655,Sales,16
+1,T003656,Finance,12
+1,T003657,HR,9
+1,T003658,Logistics,14
+1,T003659,Operations,10
+1,T003660,Finance,13
+1,T003661,Engineering,12
+1,T003662,Operations,17
+1,T003663,Finance,14
+1,T003664,Marketing,16
+1,T003665,Engineering,16
+1,T003666,Finance,14
+1,T003667,Logistics,16
+1,T003668,Finance,11
+1,T003669,Engineering,3
+1,T003670,Customer Service,15
+1,T003671,HR,14
+1,T003672,Finance,17
+1,T003673,Logistics,4
+1,T003674,Logistics,14
+1,T003675,Marketing,14
+1,T003676,Marketing,13
+1,T003677,Finance,14
+1,T003678,Logistics,13
+1,T003679,Customer Service,10
+1,T003680,Operations,10
+1,T003681,Operations,13
+1,T003682,Finance,13
+1,T003683,Sales,15
+1,T003684,Marketing,15
+1,T003685,Sales,15
+1,T003686,Finance,14
+1,T003687,Marketing,12
+1,T003688,Marketing,7
+1,T003689,Marketing,16
+1,T003690,Sales,14
+1,T003691,Marketing,3
+1,T003692,Customer Service,17
+1,T003693,Marketing,14
+1,T003694,Logistics,8
+1,T003695,HR,10
+1,T003696,Customer Service,10
+1,T003697,Logistics,12
+1,T003698,Finance,13
+1,T003699,Finance,11
+1,T003700,HR,21
+1,T003701,Sales,8
+1,T003702,Customer Service,3
+1,T003703,Operations,12
+1,T003704,Engineering,12
+1,T003705,Finance,15
+1,T003706,Logistics,12
+1,T003707,HR,10
+1,T003708,Finance,12
+1,T003709,Engineering,14
+1,T003710,Finance,16
+1,T003711,Finance,16
+1,T003712,Operations,11
+1,T003713,Engineering,16
+1,T003714,HR,17
+1,T003715,Marketing,12
+1,T003716,HR,12
+1,T003717,Customer Service,12
+1,T003718,HR,14
+1,T003719,Engineering,19
+1,T003720,Operations,14
+1,T003721,Customer Service,13
+1,T003722,Customer Service,11
+1,T003723,Operations,17
+1,T003724,Marketing,13
+1,T003725,Logistics,16
+1,T003726,Operations,13
+1,T003727,Engineering,11
+1,T003728,Sales,15
+1,T003729,Marketing,18
+1,T003730,Engineering,12
+1,T003731,HR,15
+1,T003732,Logistics,12
+1,T003733,Sales,15
+1,T003734,Sales,11
+1,T003735,HR,3
+1,T003736,Sales,14
+1,T003737,Sales,17
+1,T003738,Sales,11
+1,T003739,Finance,9
+1,T003740,Finance,17
+1,T003741,HR,13
+1,T003742,Finance,11
+1,T003743,Logistics,9
+1,T003744,Logistics,12
+1,T003745,Operations,13
+1,T003746,Logistics,13
+1,T003747,Sales,11
+1,T003748,Finance,13
+1,T003749,Marketing,15
+1,T003750,Finance,12
+1,T003751,Engineering,14
+1,T003752,HR,17
+1,T003753,HR,10
+1,T003754,Sales,11
+1,T003755,Engineering,14
+1,T003756,Sales,14
+1,T003757,Marketing,16
+1,T003758,Finance,11
+1,T003759,Operations,15
+1,T003760,Customer Service,19
+1,T003761,HR,10
+1,T003762,Marketing,17
+1,T003763,Customer Service,16
+1,T003764,Engineering,11
+1,T003765,Logistics,13
+1,T003766,Sales,3
+1,T003767,Engineering,13
+1,T003768,Operations,10
+1,T003769,HR,12
+1,T003770,Operations,11
+1,T003771,Logistics,4
+1,T003772,Customer Service,15
+1,T003773,Operations,18
+1,T003774,Customer Service,9
+1,T003775,Customer Service,15
+1,T003776,Operations,13
+1,T003777,Marketing,14
+1,T003778,Sales,3
+1,T003779,Logistics,14
+1,T003780,Marketing,15
+1,T003781,Finance,14
+1,T003782,Sales,12
+1,T003783,Finance,16
+1,T003784,Finance,11
+1,T003785,HR,15
+1,T003786,Logistics,13
+1,T003787,Engineering,9
+1,T003788,Sales,13
+1,T003789,Sales,10
+1,T003790,Finance,15
+1,T003791,HR,14
+1,T003792,HR,14
+1,T003793,Finance,16
+1,T003794,Logistics,17
+1,T003795,HR,14
+1,T003796,Customer Service,4
+1,T003797,Marketing,16
+1,T003798,Operations,17
+1,T003799,Finance,15
+1,T003800,Sales,9
+1,T003801,Operations,11
+1,T003802,Engineering,15
+1,T003803,Customer Service,11
+1,T003804,Finance,14
+1,T003805,Logistics,12
+1,T003806,Finance,13
+1,T003807,Operations,20
+1,T003808,Marketing,15
+1,T003809,HR,12
+1,T003810,Finance,9
+1,T003811,Finance,14
+1,T003812,Operations,12
+1,T003813,Marketing,17
+1,T003814,Sales,14
+1,T003815,Sales,13
+1,T003816,Sales,13
+1,T003817,Logistics,14
+1,T003818,Marketing,13
+1,T003819,Customer Service,10
+1,T003820,Logistics,15
+1,T003821,Operations,11
+1,T003822,Marketing,10
+1,T003823,Marketing,11
+1,T003824,Customer Service,13
+1,T003825,Engineering,12
+1,T003826,Logistics,9
+1,T003827,Operations,13
+1,T003828,Customer Service,14
+1,T003829,Customer Service,16
+1,T003830,Finance,8
+1,T003831,Customer Service,11
+1,T003832,Customer Service,10
+1,T003833,HR,12
+1,T003834,Customer Service,10
+1,T003835,HR,12
+1,T003836,Finance,4
+1,T003837,Customer Service,4
+1,T003838,Marketing,13
+1,T003839,Engineering,10
+1,T003840,HR,14
+1,T003841,Finance,9
+1,T003842,Marketing,12
+1,T003843,Operations,13
+1,T003844,Engineering,16
+1,T003845,Finance,11
+1,T003846,Marketing,9
+1,T003847,Operations,15
+1,T003848,Logistics,16
+1,T003849,Engineering,12
+1,T003850,Customer Service,15
+1,T003851,Marketing,16
+1,T003852,Customer Service,10
+1,T003853,Engineering,16
+1,T003854,Engineering,4
+1,T003855,Marketing,7
+1,T003856,Engineering,12
+1,T003857,Customer Service,12
+1,T003858,Operations,14
+1,T003859,Marketing,3
+1,T003860,Finance,16
+1,T003861,Finance,17
+1,T003862,Marketing,13
+1,T003863,Finance,16
+1,T003864,Engineering,15
+1,T003865,Sales,9
+1,T003866,HR,15
+1,T003867,Customer Service,11
+1,T003868,Operations,12
+1,T003869,Logistics,9
+1,T003870,Marketing,14
+1,T003871,Operations,13
+1,T003872,Finance,13
+1,T003873,Marketing,13
+1,T003874,Operations,12
+1,T003875,HR,10
+1,T003876,Customer Service,11
+1,T003877,Customer Service,11
+1,T003878,Customer Service,10
+1,T003879,Marketing,10
+1,T003880,Engineering,11
+1,T003881,Operations,11
+1,T003882,Logistics,14
+1,T003883,Operations,16
+1,T003884,Finance,11
+1,T003885,Engineering,13
+1,T003886,Customer Service,14
+1,T003887,Operations,11
+1,T003888,Marketing,12
+1,T003889,HR,16
+1,T003890,Engineering,14
+1,T003891,Sales,12
+1,T003892,Sales,12
+1,T003893,Marketing,12
+1,T003894,Sales,12
+1,T003895,Customer Service,15
+1,T003896,Engineering,10
+1,T003897,Sales,13
+1,T003898,Operations,12
+1,T003899,Logistics,13
+1,T003900,Finance,13
+1,T003901,Customer Service,8
+1,T003902,Sales,15
+1,T003903,Sales,13
+1,T003904,Operations,12
+1,T003905,HR,9
+1,T003906,Operations,9
+1,T003907,Sales,15
+1,T003908,Sales,13
+1,T003909,Finance,12
+1,T003910,Customer Service,3
+1,T003911,Sales,16
+1,T003912,Operations,12
+1,T003913,HR,8
+1,T003914,Marketing,14
+1,T003915,Sales,13
+1,T003916,Logistics,13
+1,T003917,Sales,13
+1,T003918,Marketing,10
+1,T003919,Logistics,12
+1,T003920,Customer Service,14
+1,T003921,Customer Service,13
+1,T003922,Logistics,14
+1,T003923,Marketing,4
+1,T003924,Operations,15
+1,T003925,Customer Service,14
+1,T003926,Sales,11
+1,T003927,Operations,11
+1,T003928,Customer Service,11
+1,T003929,Sales,4
+1,T003930,Operations,12
+1,T003931,Engineering,14
+1,T003932,Marketing,4
+1,T003933,Customer Service,15
+1,T003934,HR,10
+1,T003935,Customer Service,11
+1,T003936,Engineering,14
+1,T003937,Marketing,13
+1,T003938,Operations,15
+1,T003939,Finance,13
+1,T003940,Sales,16
+1,T003941,HR,14
+1,T003942,Marketing,12
+1,T003943,Marketing,12
+1,T003944,Engineering,10
+1,T003945,HR,15
+1,T003946,Logistics,17
+1,T003947,Operations,16
+1,T003948,Engineering,13
+1,T003949,Finance,15
+1,T003950,Engineering,4
+1,T003951,Logistics,8
+1,T003952,Logistics,11
+1,T003953,Logistics,4
+1,T003954,Logistics,9
+1,T003955,Sales,12
+1,T003956,Finance,9
+1,T003957,Sales,13
+1,T003958,Engineering,10
+1,T003959,Sales,16
+1,T003960,Marketing,15
+1,T003961,HR,12
+1,T003962,Operations,13
+1,T003963,Logistics,13
+1,T003964,HR,13
+1,T003965,HR,15
+1,T003966,Engineering,13
+1,T003967,Engineering,12
+1,T003968,Engineering,11
+1,T003969,Logistics,10
+1,T003970,HR,8
+1,T003971,Operations,11
+1,T003972,Marketing,13
+1,T003973,HR,14
+1,T003974,Engineering,7
+1,T003975,Logistics,17
+1,T003976,Engineering,16
+1,T003977,Customer Service,13
+1,T003978,Engineering,17
+1,T003979,Operations,9
+1,T003980,Engineering,11
+1,T003981,Engineering,9
+1,T003982,Finance,14
+1,T003983,Finance,16
+1,T003984,Customer Service,17
+1,T003985,Customer Service,3
+1,T003986,Finance,13
+1,T003987,Marketing,11
+1,T003988,Finance,9
+1,T003989,HR,10
+1,T003990,Finance,11
+1,T003991,Finance,11
+1,T003992,Engineering,18
+1,T003993,Engineering,10
+1,T003994,HR,9
+1,T003995,HR,11
+1,T003996,Sales,9
+1,T003997,Customer Service,11
+1,T003998,Finance,20
+1,T003999,Engineering,14
+2,T000000,Finance,15
+2,T000001,HR,15
+2,T000002,Customer Service,15
+2,T000003,Logistics,14
+2,T000004,Sales,18
+2,T000005,Operations,12
+2,T000006,Customer Service,13
+2,T000007,Logistics,11
+2,T000008,Operations,8
+2,T000009,Engineering,12
+2,T000010,Customer Service,13
+2,T000011,Finance,13
+2,T000012,Engineering,9
+2,T000013,Customer Service,10
+2,T000014,Engineering,11
+2,T000015,Finance,4
+2,T000016,Marketing,12
+2,T000017,HR,11
+2,T000018,Sales,4
+2,T000019,Sales,12
+2,T000020,Customer Service,11
+2,T000021,Customer Service,10
+2,T000022,Customer Service,16
+2,T000023,HR,14
+2,T000024,Customer Service,19
+2,T000025,Engineering,14
+2,T000026,Finance,14
+2,T000027,Customer Service,12
+2,T000028,Sales,15
+2,T000029,Engineering,13
+2,T000030,Sales,15
+2,T000031,Finance,13
+2,T000032,Logistics,15
+2,T000033,Operations,14
+2,T000034,Finance,12
+2,T000035,Finance,10
+2,T000036,Logistics,11
+2,T000037,Operations,4
+2,T000038,HR,12
+2,T000039,Engineering,13
+2,T000040,Sales,11
+2,T000041,Customer Service,11
+2,T000042,Sales,12
+2,T000043,Engineering,13
+2,T000044,Finance,10
+2,T000045,Finance,12
+2,T000046,Sales,14
+2,T000047,Logistics,16
+2,T000048,Marketing,13
+2,T000049,Logistics,18
+2,T000050,Sales,15
+2,T000051,Marketing,15
+2,T000052,Engineering,10
+2,T000053,HR,13
+2,T000054,Logistics,9
+2,T000055,Engineering,14
+2,T000056,Marketing,12
+2,T000057,Operations,16
+2,T000058,Engineering,10
+2,T000059,Logistics,9
+2,T000060,Finance,12
+2,T000061,HR,10
+2,T000062,Engineering,13
+2,T000063,Sales,4
+2,T000064,Finance,12
+2,T000065,HR,8
+2,T000066,Finance,11
+2,T000067,Customer Service,10
+2,T000068,Engineering,11
+2,T000069,HR,19
+2,T000070,Customer Service,13
+2,T000071,Logistics,15
+2,T000072,Finance,12
+2,T000073,Sales,11
+2,T000074,Marketing,12
+2,T000075,HR,14
+2,T000076,Customer Service,12
+2,T000077,Finance,8
+2,T000078,Engineering,13
+2,T000079,Sales,13
+2,T000080,Finance,14
+2,T000081,Marketing,8
+2,T000082,Customer Service,16
+2,T000083,Customer Service,13
+2,T000084,Operations,12
+2,T000085,HR,11
+2,T000086,Customer Service,16
+2,T000087,Engineering,11
+2,T000088,Engineering,11
+2,T000089,Customer Service,16
+2,T000090,HR,13
+2,T000091,HR,9
+2,T000092,Marketing,10
+2,T000093,HR,15
+2,T000094,Logistics,12
+2,T000095,Customer Service,12
+2,T000096,Sales,11
+2,T000097,Operations,18
+2,T000098,HR,13
+2,T000099,Customer Service,16
+2,T000100,Sales,15
+2,T000101,Marketing,15
+2,T000102,Customer Service,15
+2,T000103,Customer Service,12
+2,T000104,Customer Service,15
+2,T000105,Operations,13
+2,T000106,HR,10
+2,T000107,Customer Service,11
+2,T000108,Engineering,13
+2,T000109,Operations,13
+2,T000110,Finance,19
+2,T000111,Sales,14
+2,T000112,Operations,14
+2,T000113,Customer Service,9
+2,T000114,Marketing,9
+2,T000115,Customer Service,11
+2,T000116,Customer Service,12
+2,T000117,Logistics,17
+2,T000118,Engineering,9
+2,T000119,Finance,14
+2,T000120,HR,14
+2,T000121,Engineering,11
+2,T000122,Logistics,17
+2,T000123,Sales,12
+2,T000124,Customer Service,16
+2,T000125,Marketing,11
+2,T000126,Engineering,13
+2,T000127,Marketing,3
+2,T000128,Finance,15
+2,T000129,Customer Service,16
+2,T000130,Logistics,12
+2,T000131,Engineering,11
+2,T000132,Finance,14
+2,T000133,Operations,14
+2,T000134,Marketing,9
+2,T000135,Marketing,3
+2,T000136,Customer Service,14
+2,T000137,Customer Service,17
+2,T000138,Logistics,11
+2,T000139,Logistics,14
+2,T000140,Logistics,17
+2,T000141,Operations,12
+2,T000142,Sales,15
+2,T000143,Finance,16
+2,T000144,Engineering,9
+2,T000145,Logistics,3
+2,T000146,Customer Service,11
+2,T000147,Finance,11
+2,T000148,HR,17
+2,T000149,HR,13
+2,T000150,Logistics,10
+2,T000151,Sales,12
+2,T000152,Finance,11
+2,T000153,Marketing,21
+2,T000154,Finance,16
+2,T000155,Logistics,16
+2,T000156,Logistics,10
+2,T000157,Customer Service,12
+2,T000158,Finance,12
+2,T000159,Logistics,12
+2,T000160,Sales,16
+2,T000161,Marketing,13
+2,T000162,Engineering,15
+2,T000163,Operations,13
+2,T000164,Marketing,12
+2,T000165,Customer Service,10
+2,T000166,Logistics,16
+2,T000167,Operations,13
+2,T000168,Customer Service,9
+2,T000169,Customer Service,13
+2,T000170,Engineering,3
+2,T000171,Sales,9
+2,T000172,Customer Service,12
+2,T000173,Customer Service,16
+2,T000174,Finance,12
+2,T000175,Operations,12
+2,T000176,Operations,12
+2,T000177,Finance,13
+2,T000178,Customer Service,13
+2,T000179,Engineering,12
+2,T000180,Sales,16
+2,T000181,Marketing,13
+2,T000182,Marketing,4
+2,T000183,Operations,16
+2,T000184,HR,12
+2,T000185,Finance,12
+2,T000186,HR,11
+2,T000187,Sales,9
+2,T000188,Marketing,13
+2,T000189,Engineering,12
+2,T000190,HR,10
+2,T000191,Finance,13
+2,T000192,HR,14
+2,T000193,Sales,14
+2,T000194,Engineering,8
+2,T000195,Marketing,12
+2,T000196,Customer Service,14
+2,T000197,Finance,12
+2,T000198,Sales,12
+2,T000199,Marketing,15
+2,T000200,HR,10
+2,T000201,Marketing,10
+2,T000202,Operations,15
+2,T000203,Finance,17
+2,T000204,Logistics,10
+2,T000205,Customer Service,9
+2,T000206,Engineering,15
+2,T000207,Marketing,13
+2,T000208,Sales,11
+2,T000209,Customer Service,9
+2,T000210,Engineering,13
+2,T000211,Engineering,10
+2,T000212,Logistics,16
+2,T000213,HR,17
+2,T000214,Customer Service,15
+2,T000215,Operations,19
+2,T000216,Customer Service,12
+2,T000217,Logistics,10
+2,T000218,Sales,14
+2,T000219,Operations,11
+2,T000220,Operations,14
+2,T000221,Engineering,9
+2,T000222,Engineering,12
+2,T000223,Sales,14
+2,T000224,Logistics,17
+2,T000225,Engineering,10
+2,T000226,Logistics,12
+2,T000227,Customer Service,17
+2,T000228,Operations,9
+2,T000229,Marketing,13
+2,T000230,Customer Service,15
+2,T000231,Operations,13
+2,T000232,Operations,16
+2,T000233,Finance,12
+2,T000234,Sales,12
+2,T000235,Finance,8
+2,T000236,Finance,13
+2,T000237,Marketing,19
+2,T000238,HR,17
+2,T000239,Finance,6
+2,T000240,Operations,9
+2,T000241,HR,4
+2,T000242,Finance,9
+2,T000243,Customer Service,16
+2,T000244,Marketing,12
+2,T000245,Marketing,11
+2,T000246,HR,15
+2,T000247,Engineering,4
+2,T000248,Engineering,12
+2,T000249,Finance,12
+2,T000250,HR,14
+2,T000251,Engineering,16
+2,T000252,Operations,11
+2,T000253,Sales,11
+2,T000254,Sales,11
+2,T000255,Operations,17
+2,T000256,Finance,13
+2,T000257,Engineering,15
+2,T000258,Operations,11
+2,T000259,Engineering,16
+2,T000260,Marketing,11
+2,T000261,Engineering,3
+2,T000262,Logistics,14
+2,T000263,HR,11
+2,T000264,Operations,13
+2,T000265,Logistics,15
+2,T000266,Logistics,11
+2,T000267,Customer Service,18
+2,T000268,Operations,16
+2,T000269,Customer Service,14
+2,T000270,Marketing,15
+2,T000271,Customer Service,11
+2,T000272,Marketing,10
+2,T000273,HR,4
+2,T000274,Engineering,12
+2,T000275,Logistics,10
+2,T000276,Logistics,12
+2,T000277,Marketing,15
+2,T000278,Engineering,10
+2,T000279,HR,9
+2,T000280,HR,15
+2,T000281,Sales,17
+2,T000282,Sales,12
+2,T000283,Finance,11
+2,T000284,HR,3
+2,T000285,Operations,16
+2,T000286,Engineering,9
+2,T000287,Operations,12
+2,T000288,Logistics,15
+2,T000289,HR,15
+2,T000290,Engineering,15
+2,T000291,Customer Service,13
+2,T000292,Logistics,14
+2,T000293,Engineering,12
+2,T000294,Logistics,16
+2,T000295,Customer Service,15
+2,T000296,Customer Service,17
+2,T000297,HR,15
+2,T000298,Logistics,14
+2,T000299,Operations,11
+2,T000300,Sales,13
+2,T000301,Logistics,9
+2,T000302,Finance,17
+2,T000303,Finance,15
+2,T000304,Marketing,13
+2,T000305,Engineering,16
+2,T000306,Marketing,16
+2,T000307,Customer Service,3
+2,T000308,Customer Service,12
+2,T000309,Sales,14
+2,T000310,Logistics,10
+2,T000311,Marketing,9
+2,T000312,Marketing,15
+2,T000313,Operations,11
+2,T000314,Logistics,12
+2,T000315,Finance,13
+2,T000316,Logistics,17
+2,T000317,Operations,15
+2,T000318,Sales,13
+2,T000319,Customer Service,15
+2,T000320,HR,11
+2,T000321,Finance,10
+2,T000322,Logistics,11
+2,T000323,Logistics,13
+2,T000324,Sales,12
+2,T000325,Marketing,20
+2,T000326,Customer Service,13
+2,T000327,Marketing,13
+2,T000328,HR,4
+2,T000329,HR,15
+2,T000330,HR,13
+2,T000331,Engineering,10
+2,T000332,Operations,11
+2,T000333,Finance,13
+2,T000334,Marketing,11
+2,T000335,Logistics,4
+2,T000336,Logistics,11
+2,T000337,Operations,12
+2,T000338,Sales,15
+2,T000339,Logistics,16
+2,T000340,Marketing,11
+2,T000341,Customer Service,11
+2,T000342,Customer Service,9
+2,T000343,Engineering,8
+2,T000344,Customer Service,12
+2,T000345,Marketing,11
+2,T000346,Marketing,13
+2,T000347,Finance,10
+2,T000348,Engineering,14
+2,T000349,Finance,13
+2,T000350,Marketing,17
+2,T000351,HR,15
+2,T000352,Sales,10
+2,T000353,Sales,13
+2,T000354,Operations,12
+2,T000355,Finance,9
+2,T000356,HR,13
+2,T000357,Logistics,19
+2,T000358,Customer Service,10
+2,T000359,Engineering,7
+2,T000360,HR,11
+2,T000361,Marketing,12
+2,T000362,Logistics,11
+2,T000363,Finance,14
+2,T000364,Marketing,11
+2,T000365,Operations,16
+2,T000366,Finance,10
+2,T000367,Logistics,10
+2,T000368,Finance,3
+2,T000369,Sales,3
+2,T000370,Customer Service,18
+2,T000371,Engineering,9
+2,T000372,Finance,15
+2,T000373,Logistics,10
+2,T000374,Finance,10
+2,T000375,Engineering,14
+2,T000376,Operations,15
+2,T000377,Customer Service,14
+2,T000378,Operations,21
+2,T000379,HR,19
+2,T000380,Operations,10
+2,T000381,Customer Service,13
+2,T000382,Marketing,13
+2,T000383,Marketing,11
+2,T000384,Finance,14
+2,T000385,Engineering,16
+2,T000386,Logistics,15
+2,T000387,Customer Service,15
+2,T000388,Finance,11
+2,T000389,Sales,13
+2,T000390,Operations,11
+2,T000391,Finance,15
+2,T000392,Finance,17
+2,T000393,Engineering,13
+2,T000394,Logistics,13
+2,T000395,Finance,15
+2,T000396,Customer Service,16
+2,T000397,Operations,10
+2,T000398,Engineering,15
+2,T000399,Operations,16
+2,T000400,Operations,11
+2,T000401,HR,11
+2,T000402,Operations,13
+2,T000403,Finance,13
+2,T000404,Marketing,13
+2,T000405,Customer Service,13
+2,T000406,HR,12
+2,T000407,HR,12
+2,T000408,Engineering,12
+2,T000409,Customer Service,14
+2,T000410,Operations,17
+2,T000411,Marketing,19
+2,T000412,Sales,12
+2,T000413,HR,9
+2,T000414,Engineering,14
+2,T000415,Engineering,18
+2,T000416,Engineering,18
+2,T000417,Customer Service,14
+2,T000418,Customer Service,12
+2,T000419,Engineering,10
+2,T000420,HR,3
+2,T000421,Sales,13
+2,T000422,Logistics,14
+2,T000423,Logistics,14
+2,T000424,Engineering,14
+2,T000425,HR,3
+2,T000426,HR,15
+2,T000427,Customer Service,4
+2,T000428,Sales,10
+2,T000429,HR,13
+2,T000430,Customer Service,12
+2,T000431,HR,13
+2,T000432,HR,13
+2,T000433,Sales,14
+2,T000434,Logistics,10
+2,T000435,Operations,8
+2,T000436,Engineering,12
+2,T000437,Marketing,13
+2,T000438,Finance,12
+2,T000439,HR,13
+2,T000440,HR,12
+2,T000441,Operations,15
+2,T000442,Sales,15
+2,T000443,Logistics,10
+2,T000444,Customer Service,14
+2,T000445,Operations,13
+2,T000446,Marketing,9
+2,T000447,HR,10
+2,T000448,Marketing,15
+2,T000449,Operations,14
+2,T000450,Marketing,10
+2,T000451,Marketing,13
+2,T000452,Logistics,16
+2,T000453,Engineering,13
+2,T000454,Finance,13
+2,T000455,Operations,14
+2,T000456,Sales,13
+2,T000457,Sales,16
+2,T000458,Finance,11
+2,T000459,Operations,11
+2,T000460,Marketing,10
+2,T000461,Operations,12
+2,T000462,Marketing,12
+2,T000463,HR,13
+2,T000464,Engineering,10
+2,T000465,Finance,13
+2,T000466,Logistics,13
+2,T000467,Logistics,12
+2,T000468,Engineering,15
+2,T000469,Logistics,13
+2,T000470,Operations,13
+2,T000471,Customer Service,18
+2,T000472,Engineering,16
+2,T000473,Marketing,14
+2,T000474,Marketing,7
+2,T000475,Customer Service,14
+2,T000476,Finance,12
+2,T000477,Logistics,11
+2,T000478,Logistics,14
+2,T000479,Sales,11
+2,T000480,Sales,15
+2,T000481,Sales,15
+2,T000482,Marketing,10
+2,T000483,Engineering,10
+2,T000484,Operations,17
+2,T000485,Sales,9
+2,T000486,Logistics,15
+2,T000487,HR,15
+2,T000488,Sales,14
+2,T000489,Engineering,9
+2,T000490,Marketing,17
+2,T000491,Engineering,11
+2,T000492,Customer Service,16
+2,T000493,Engineering,13
+2,T000494,Marketing,12
+2,T000495,Sales,11
+2,T000496,Customer Service,8
+2,T000497,Marketing,11
+2,T000498,HR,10
+2,T000499,Marketing,4
+2,T000500,Sales,7
+2,T000501,HR,4
+2,T000502,Finance,14
+2,T000503,Sales,19
+2,T000504,Sales,13
+2,T000505,Finance,15
+2,T000506,Marketing,3
+2,T000507,Marketing,18
+2,T000508,Operations,9
+2,T000509,Operations,3
+2,T000510,Engineering,12
+2,T000511,Finance,12
+2,T000512,Operations,11
+2,T000513,Sales,14
+2,T000514,Engineering,13
+2,T000515,Sales,10
+2,T000516,Operations,17
+2,T000517,Operations,10
+2,T000518,Finance,9
+2,T000519,Finance,15
+2,T000520,Sales,12
+2,T000521,Finance,14
+2,T000522,Logistics,3
+2,T000523,Logistics,8
+2,T000524,Operations,9
+2,T000525,Engineering,11
+2,T000526,Marketing,12
+2,T000527,Sales,13
+2,T000528,HR,12
+2,T000529,Customer Service,11
+2,T000530,Customer Service,18
+2,T000531,Sales,10
+2,T000532,Engineering,13
+2,T000533,Sales,11
+2,T000534,HR,15
+2,T000535,Logistics,14
+2,T000536,Customer Service,14
+2,T000537,Customer Service,12
+2,T000538,Customer Service,13
+2,T000539,Engineering,20
+2,T000540,Logistics,12
+2,T000541,Operations,14
+2,T000542,Operations,10
+2,T000543,Finance,13
+2,T000544,Finance,15
+2,T000545,Engineering,13
+2,T000546,Finance,14
+2,T000547,Customer Service,14
+2,T000548,Finance,10
+2,T000549,Finance,13
+2,T000550,Marketing,9
+2,T000551,Sales,10
+2,T000552,Logistics,14
+2,T000553,Logistics,11
+2,T000554,Sales,9
+2,T000555,HR,13
+2,T000556,Logistics,14
+2,T000557,Sales,4
+2,T000558,Operations,11
+2,T000559,Sales,11
+2,T000560,Logistics,11
+2,T000561,Finance,8
+2,T000562,Logistics,9
+2,T000563,Sales,13
+2,T000564,Marketing,11
+2,T000565,Marketing,12
+2,T000566,HR,17
+2,T000567,HR,15
+2,T000568,Operations,15
+2,T000569,Sales,3
+2,T000570,HR,17
+2,T000571,Customer Service,14
+2,T000572,Logistics,12
+2,T000573,Customer Service,9
+2,T000574,Finance,14
+2,T000575,Logistics,10
+2,T000576,Sales,12
+2,T000577,Marketing,11
+2,T000578,HR,17
+2,T000579,Marketing,16
+2,T000580,Customer Service,11
+2,T000581,Operations,12
+2,T000582,Customer Service,13
+2,T000583,Sales,9
+2,T000584,Finance,4
+2,T000585,Sales,8
+2,T000586,Operations,13
+2,T000587,Logistics,13
+2,T000588,Finance,14
+2,T000589,Marketing,16
+2,T000590,Logistics,10
+2,T000591,Logistics,16
+2,T000592,Sales,11
+2,T000593,Engineering,17
+2,T000594,Logistics,10
+2,T000595,Customer Service,12
+2,T000596,Finance,15
+2,T000597,Sales,11
+2,T000598,Marketing,10
+2,T000599,Operations,11
+2,T000600,Logistics,12
+2,T000601,Engineering,16
+2,T000602,Finance,11
+2,T000603,HR,14
+2,T000604,Finance,16
+2,T000605,HR,8
+2,T000606,Customer Service,11
+2,T000607,Finance,17
+2,T000608,Engineering,13
+2,T000609,Finance,10
+2,T000610,Customer Service,13
+2,T000611,HR,12
+2,T000612,Finance,16
+2,T000613,Logistics,15
+2,T000614,Engineering,12
+2,T000615,Finance,19
+2,T000616,Logistics,9
+2,T000617,Customer Service,17
+2,T000618,HR,10
+2,T000619,Sales,13
+2,T000620,HR,12
+2,T000621,Finance,15
+2,T000622,Logistics,13
+2,T000623,HR,11
+2,T000624,HR,14
+2,T000625,HR,4
+2,T000626,Finance,4
+2,T000627,Engineering,4
+2,T000628,HR,12
+2,T000629,Finance,12
+2,T000630,Customer Service,4
+2,T000631,Logistics,15
+2,T000632,Finance,12
+2,T000633,Marketing,13
+2,T000634,Operations,15
+2,T000635,HR,15
+2,T000636,Operations,14
+2,T000637,Sales,14
+2,T000638,Operations,10
+2,T000639,Sales,13
+2,T000640,Customer Service,13
+2,T000641,Operations,4
+2,T000642,Logistics,10
+2,T000643,Operations,16
+2,T000644,Marketing,14
+2,T000645,Logistics,10
+2,T000646,Sales,10
+2,T000647,Sales,10
+2,T000648,Engineering,10
+2,T000649,Engineering,13
+2,T000650,Finance,10
+2,T000651,Sales,12
+2,T000652,Sales,11
+2,T000653,Marketing,14
+2,T000654,Sales,14
+2,T000655,Sales,14
+2,T000656,Finance,13
+2,T000657,Sales,13
+2,T000658,Operations,15
+2,T000659,Sales,13
+2,T000660,Finance,11
+2,T000661,Engineering,10
+2,T000662,Customer Service,14
+2,T000663,HR,15
+2,T000664,Engineering,14
+2,T000665,Customer Service,14
+2,T000666,Operations,15
+2,T000667,Engineering,9
+2,T000668,Operations,16
+2,T000669,Engineering,9
+2,T000670,Finance,13
+2,T000671,Customer Service,4
+2,T000672,Engineering,3
+2,T000673,Marketing,12
+2,T000674,Customer Service,10
+2,T000675,Operations,13
+2,T000676,Marketing,10
+2,T000677,Customer Service,9
+2,T000678,Engineering,4
+2,T000679,Customer Service,4
+2,T000680,Customer Service,14
+2,T000681,Operations,16
+2,T000682,Operations,12
+2,T000683,Marketing,15
+2,T000684,Finance,18
+2,T000685,Operations,15
+2,T000686,Logistics,12
+2,T000687,Operations,17
+2,T000688,Operations,11
+2,T000689,Finance,11
+2,T000690,Engineering,14
+2,T000691,HR,15
+2,T000692,Engineering,11
+2,T000693,Finance,12
+2,T000694,Finance,8
+2,T000695,HR,10
+2,T000696,Logistics,12
+2,T000697,Operations,10
+2,T000698,Finance,8
+2,T000699,Customer Service,15
+2,T000700,Logistics,16
+2,T000701,Engineering,10
+2,T000702,Logistics,12
+2,T000703,Logistics,8
+2,T000704,Engineering,12
+2,T000705,HR,10
+2,T000706,Marketing,13
+2,T000707,Engineering,14
+2,T000708,Operations,14
+2,T000709,Operations,10
+2,T000710,Finance,15
+2,T000711,Finance,16
+2,T000712,Marketing,11
+2,T000713,Finance,19
+2,T000714,Finance,12
+2,T000715,HR,11
+2,T000716,Marketing,10
+2,T000717,Finance,18
+2,T000718,Operations,19
+2,T000719,Sales,15
+2,T000720,HR,11
+2,T000721,Customer Service,4
+2,T000722,HR,11
+2,T000723,Sales,15
+2,T000724,Sales,15
+2,T000725,Customer Service,14
+2,T000726,Engineering,8
+2,T000727,Customer Service,10
+2,T000728,Operations,13
+2,T000729,Logistics,9
+2,T000730,Operations,15
+2,T000731,Marketing,19
+2,T000732,Finance,19
+2,T000733,Operations,15
+2,T000734,Engineering,9
+2,T000735,Finance,10
+2,T000736,Operations,19
+2,T000737,Finance,13
+2,T000738,Sales,10
+2,T000739,Marketing,7
+2,T000740,Logistics,10
+2,T000741,Finance,16
+2,T000742,Finance,11
+2,T000743,Marketing,15
+2,T000744,Logistics,17
+2,T000745,Operations,12
+2,T000746,Operations,17
+2,T000747,Engineering,16
+2,T000748,Logistics,10
+2,T000749,HR,10
+2,T000750,Sales,16
+2,T000751,Finance,16
+2,T000752,Logistics,15
+2,T000753,Sales,14
+2,T000754,Operations,18
+2,T000755,Logistics,12
+2,T000756,Sales,4
+2,T000757,Marketing,15
+2,T000758,HR,15
+2,T000759,Customer Service,3
+2,T000760,Logistics,12
+2,T000761,Engineering,11
+2,T000762,Engineering,10
+2,T000763,Logistics,18
+2,T000764,HR,15
+2,T000765,Customer Service,3
+2,T000766,Sales,15
+2,T000767,Logistics,11
+2,T000768,Finance,15
+2,T000769,Operations,11
+2,T000770,Marketing,3
+2,T000771,Finance,14
+2,T000772,Marketing,10
+2,T000773,Finance,13
+2,T000774,Engineering,14
+2,T000775,HR,14
+2,T000776,Logistics,17
+2,T000777,Engineering,18
+2,T000778,Marketing,15
+2,T000779,Sales,9
+2,T000780,Operations,12
+2,T000781,Finance,14
+2,T000782,Sales,16
+2,T000783,Marketing,8
+2,T000784,HR,12
+2,T000785,Finance,17
+2,T000786,Customer Service,17
+2,T000787,Logistics,16
+2,T000788,Logistics,10
+2,T000789,Finance,12
+2,T000790,HR,17
+2,T000791,Engineering,17
+2,T000792,Sales,18
+2,T000793,Customer Service,14
+2,T000794,Finance,14
+2,T000795,Finance,11
+2,T000796,Finance,14
+2,T000797,Engineering,11
+2,T000798,Marketing,16
+2,T000799,Engineering,4
+2,T000800,Sales,14
+2,T000801,Logistics,11
+2,T000802,Marketing,10
+2,T000803,Logistics,10
+2,T000804,Customer Service,10
+2,T000805,Marketing,17
+2,T000806,Logistics,12
+2,T000807,Engineering,13
+2,T000808,Operations,10
+2,T000809,Marketing,16
+2,T000810,Marketing,20
+2,T000811,Operations,13
+2,T000812,Logistics,18
+2,T000813,Engineering,18
+2,T000814,Logistics,14
+2,T000815,HR,10
+2,T000816,Operations,14
+2,T000817,Finance,11
+2,T000818,Operations,16
+2,T000819,Engineering,16
+2,T000820,HR,11
+2,T000821,Logistics,12
+2,T000822,Logistics,14
+2,T000823,Operations,11
+2,T000824,Marketing,16
+2,T000825,HR,13
+2,T000826,Finance,14
+2,T000827,Sales,13
+2,T000828,HR,15
+2,T000829,Sales,15
+2,T000830,Customer Service,15
+2,T000831,Operations,12
+2,T000832,Customer Service,4
+2,T000833,Logistics,12
+2,T000834,Finance,11
+2,T000835,Marketing,16
+2,T000836,Finance,10
+2,T000837,Customer Service,12
+2,T000838,Marketing,9
+2,T000839,Sales,14
+2,T000840,Finance,18
+2,T000841,Marketing,13
+2,T000842,Finance,9
+2,T000843,Finance,12
+2,T000844,Finance,14
+2,T000845,Finance,4
+2,T000846,HR,10
+2,T000847,Marketing,13
+2,T000848,Engineering,12
+2,T000849,Engineering,9
+2,T000850,Finance,15
+2,T000851,HR,11
+2,T000852,Finance,11
+2,T000853,Engineering,14
+2,T000854,Marketing,12
+2,T000855,Finance,12
+2,T000856,HR,10
+2,T000857,HR,20
+2,T000858,Customer Service,13
+2,T000859,Operations,12
+2,T000860,Operations,13
+2,T000861,Engineering,13
+2,T000862,Logistics,15
+2,T000863,Finance,16
+2,T000864,Sales,11
+2,T000865,Finance,17
+2,T000866,Engineering,11
+2,T000867,Customer Service,14
+2,T000868,Sales,17
+2,T000869,Marketing,14
+2,T000870,Sales,9
+2,T000871,HR,14
+2,T000872,Customer Service,16
+2,T000873,Customer Service,9
+2,T000874,Sales,11
+2,T000875,Operations,12
+2,T000876,Operations,12
+2,T000877,Sales,4
+2,T000878,Sales,19
+2,T000879,Finance,10
+2,T000880,Finance,11
+2,T000881,Operations,14
+2,T000882,Customer Service,10
+2,T000883,HR,3
+2,T000884,Customer Service,14
+2,T000885,HR,14
+2,T000886,HR,13
+2,T000887,Operations,12
+2,T000888,Finance,13
+2,T000889,Marketing,12
+2,T000890,Operations,12
+2,T000891,HR,4
+2,T000892,Marketing,12
+2,T000893,Finance,12
+2,T000894,Logistics,10
+2,T000895,Logistics,13
+2,T000896,HR,14
+2,T000897,Customer Service,13
+2,T000898,Customer Service,13
+2,T000899,Operations,15
+2,T000900,Operations,17
+2,T000901,Operations,9
+2,T000902,Sales,12
+2,T000903,Logistics,13
+2,T000904,Finance,10
+2,T000905,Operations,12
+2,T000906,Engineering,12
+2,T000907,Customer Service,9
+2,T000908,Engineering,12
+2,T000909,Engineering,10
+2,T000910,HR,12
+2,T000911,Engineering,3
+2,T000912,Finance,11
+2,T000913,HR,10
+2,T000914,Engineering,9
+2,T000915,Logistics,13
+2,T000916,Marketing,7
+2,T000917,Sales,12
+2,T000918,Customer Service,9
+2,T000919,Operations,14
+2,T000920,HR,14
+2,T000921,Marketing,4
+2,T000922,Operations,10
+2,T000923,Finance,12
+2,T000924,Logistics,14
+2,T000925,Engineering,10
+2,T000926,Sales,15
+2,T000927,Logistics,14
+2,T000928,Finance,17
+2,T000929,Engineering,14
+2,T000930,Logistics,9
+2,T000931,Marketing,12
+2,T000932,Marketing,14
+2,T000933,Logistics,13
+2,T000934,Sales,12
+2,T000935,Customer Service,11
+2,T000936,HR,14
+2,T000937,Marketing,10
+2,T000938,HR,15
+2,T000939,Marketing,11
+2,T000940,Marketing,13
+2,T000941,Customer Service,17
+2,T000942,Engineering,13
+2,T000943,Engineering,16
+2,T000944,Finance,10
+2,T000945,Marketing,13
+2,T000946,Engineering,14
+2,T000947,Customer Service,10
+2,T000948,Marketing,14
+2,T000949,Logistics,14
+2,T000950,Marketing,13
+2,T000951,Logistics,15
+2,T000952,Finance,7
+2,T000953,Logistics,17
+2,T000954,Marketing,10
+2,T000955,Sales,15
+2,T000956,Engineering,10
+2,T000957,Finance,8
+2,T000958,Marketing,13
+2,T000959,Finance,13
+2,T000960,Engineering,15
+2,T000961,Logistics,16
+2,T000962,Logistics,13
+2,T000963,Finance,13
+2,T000964,Operations,13
+2,T000965,Engineering,3
+2,T000966,Engineering,12
+2,T000967,Sales,15
+2,T000968,HR,15
+2,T000969,Engineering,10
+2,T000970,Marketing,14
+2,T000971,Customer Service,11
+2,T000972,Engineering,11
+2,T000973,Sales,13
+2,T000974,HR,12
+2,T000975,Operations,13
+2,T000976,HR,11
+2,T000977,Engineering,15
+2,T000978,Customer Service,10
+2,T000979,HR,8
+2,T000980,Marketing,11
+2,T000981,Engineering,13
+2,T000982,Finance,3
+2,T000983,Logistics,16
+2,T000984,HR,12
+2,T000985,Operations,3
+2,T000986,Sales,10
+2,T000987,HR,3
+2,T000988,Customer Service,3
+2,T000989,Customer Service,3
+2,T000990,Sales,19
+2,T000991,Logistics,14
+2,T000992,Marketing,11
+2,T000993,Customer Service,11
+2,T000994,Logistics,10
+2,T000995,Operations,10
+2,T000996,Sales,14
+2,T000997,Customer Service,10
+2,T000998,Logistics,14
+2,T000999,Marketing,12
+2,T001000,Customer Service,14
+2,T001001,Finance,12
+2,T001002,Logistics,10
+2,T001003,Sales,6
+2,T001004,Sales,16
+2,T001005,Operations,15
+2,T001006,Engineering,10
+2,T001007,Marketing,3
+2,T001008,Engineering,11
+2,T001009,Sales,13
+2,T001010,Logistics,17
+2,T001011,Engineering,3
+2,T001012,Logistics,12
+2,T001013,Engineering,13
+2,T001014,Marketing,8
+2,T001015,Marketing,9
+2,T001016,HR,3
+2,T001017,Engineering,15
+2,T001018,Marketing,13
+2,T001019,Sales,9
+2,T001020,Engineering,14
+2,T001021,Engineering,11
+2,T001022,Customer Service,17
+2,T001023,Engineering,20
+2,T001024,Operations,18
+2,T001025,Marketing,11
+2,T001026,Finance,13
+2,T001027,Engineering,16
+2,T001028,Customer Service,14
+2,T001029,Marketing,9
+2,T001030,Engineering,11
+2,T001031,HR,14
+2,T001032,Logistics,4
+2,T001033,Logistics,12
+2,T001034,Customer Service,10
+2,T001035,Marketing,13
+2,T001036,HR,16
+2,T001037,Finance,14
+2,T001038,Operations,11
+2,T001039,Finance,11
+2,T001040,Finance,10
+2,T001041,Finance,11
+2,T001042,Operations,13
+2,T001043,Customer Service,17
+2,T001044,Operations,11
+2,T001045,Operations,15
+2,T001046,Engineering,18
+2,T001047,Finance,12
+2,T001048,Sales,15
+2,T001049,HR,20
+2,T001050,Operations,11
+2,T001051,Finance,13
+2,T001052,Operations,16
+2,T001053,HR,10
+2,T001054,Marketing,9
+2,T001055,Finance,14
+2,T001056,Operations,13
+2,T001057,Finance,17
+2,T001058,Customer Service,14
+2,T001059,Marketing,17
+2,T001060,Sales,13
+2,T001061,Engineering,14
+2,T001062,HR,15
+2,T001063,HR,12
+2,T001064,Sales,12
+2,T001065,Marketing,14
+2,T001066,Sales,9
+2,T001067,Operations,13
+2,T001068,Marketing,10
+2,T001069,Engineering,13
+2,T001070,Marketing,8
+2,T001071,Logistics,9
+2,T001072,Engineering,13
+2,T001073,Logistics,12
+2,T001074,HR,14
+2,T001075,Logistics,13
+2,T001076,Customer Service,13
+2,T001077,Sales,16
+2,T001078,Engineering,9
+2,T001079,Customer Service,17
+2,T001080,Customer Service,3
+2,T001081,Logistics,10
+2,T001082,Customer Service,9
+2,T001083,Logistics,18
+2,T001084,Sales,10
+2,T001085,Marketing,13
+2,T001086,Operations,12
+2,T001087,Marketing,11
+2,T001088,Customer Service,13
+2,T001089,Marketing,16
+2,T001090,Logistics,12
+2,T001091,HR,14
+2,T001092,Finance,18
+2,T001093,Customer Service,13
+2,T001094,Operations,12
+2,T001095,HR,13
+2,T001096,Logistics,15
+2,T001097,Operations,14
+2,T001098,Marketing,18
+2,T001099,Sales,12
+2,T001100,Logistics,17
+2,T001101,Logistics,12
+2,T001102,HR,8
+2,T001103,Customer Service,14
+2,T001104,HR,17
+2,T001105,Operations,11
+2,T001106,Finance,16
+2,T001107,Customer Service,16
+2,T001108,Engineering,12
+2,T001109,Engineering,15
+2,T001110,Marketing,12
+2,T001111,Marketing,14
+2,T001112,Finance,13
+2,T001113,Engineering,11
+2,T001114,Customer Service,12
+2,T001115,Operations,12
+2,T001116,Engineering,9
+2,T001117,Operations,16
+2,T001118,Engineering,11
+2,T001119,Sales,12
+2,T001120,Engineering,18
+2,T001121,Sales,12
+2,T001122,HR,12
+2,T001123,Sales,16
+2,T001124,Sales,12
+2,T001125,Sales,18
+2,T001126,Operations,4
+2,T001127,Customer Service,13
+2,T001128,Marketing,12
+2,T001129,HR,12
+2,T001130,Engineering,12
+2,T001131,Operations,19
+2,T001132,HR,13
+2,T001133,HR,4
+2,T001134,HR,9
+2,T001135,HR,9
+2,T001136,HR,15
+2,T001137,Finance,16
+2,T001138,Sales,18
+2,T001139,Operations,9
+2,T001140,Sales,11
+2,T001141,Finance,15
+2,T001142,HR,15
+2,T001143,Customer Service,15
+2,T001144,Finance,10
+2,T001145,Finance,15
+2,T001146,Logistics,15
+2,T001147,HR,17
+2,T001148,Finance,12
+2,T001149,Logistics,14
+2,T001150,Marketing,3
+2,T001151,Operations,4
+2,T001152,Customer Service,11
+2,T001153,Marketing,15
+2,T001154,Operations,8
+2,T001155,Finance,16
+2,T001156,HR,14
+2,T001157,Customer Service,12
+2,T001158,Finance,11
+2,T001159,Engineering,13
+2,T001160,HR,15
+2,T001161,HR,17
+2,T001162,HR,18
+2,T001163,Engineering,13
+2,T001164,Operations,11
+2,T001165,Customer Service,10
+2,T001166,Logistics,14
+2,T001167,Logistics,13
+2,T001168,Sales,11
+2,T001169,Marketing,13
+2,T001170,Engineering,12
+2,T001171,Logistics,15
+2,T001172,Marketing,10
+2,T001173,Marketing,11
+2,T001174,HR,11
+2,T001175,Customer Service,13
+2,T001176,Operations,12
+2,T001177,Logistics,3
+2,T001178,Finance,13
+2,T001179,Engineering,13
+2,T001180,Finance,12
+2,T001181,Logistics,14
+2,T001182,Operations,13
+2,T001183,Finance,10
+2,T001184,Customer Service,12
+2,T001185,Finance,14
+2,T001186,Operations,14
+2,T001187,Operations,13
+2,T001188,Logistics,11
+2,T001189,Customer Service,15
+2,T001190,Marketing,13
+2,T001191,Engineering,14
+2,T001192,Sales,16
+2,T001193,Marketing,9
+2,T001194,Customer Service,10
+2,T001195,Operations,15
+2,T001196,Sales,10
+2,T001197,Engineering,7
+2,T001198,Engineering,19
+2,T001199,Finance,9
+2,T001200,Finance,3
+2,T001201,Operations,16
+2,T001202,Logistics,19
+2,T001203,Sales,12
+2,T001204,Marketing,14
+2,T001205,Customer Service,10
+2,T001206,Finance,21
+2,T001207,Logistics,16
+2,T001208,Logistics,11
+2,T001209,Operations,9
+2,T001210,Operations,15
+2,T001211,Operations,23
+2,T001212,Sales,10
+2,T001213,Engineering,16
+2,T001214,Operations,16
+2,T001215,Sales,11
+2,T001216,HR,11
+2,T001217,Marketing,11
+2,T001218,Customer Service,11
+2,T001219,Engineering,12
+2,T001220,Engineering,11
+2,T001221,HR,12
+2,T001222,HR,13
+2,T001223,Logistics,13
+2,T001224,HR,23
+2,T001225,Customer Service,10
+2,T001226,Sales,16
+2,T001227,Logistics,11
+2,T001228,Finance,11
+2,T001229,Logistics,16
+2,T001230,Sales,13
+2,T001231,HR,14
+2,T001232,HR,16
+2,T001233,HR,15
+2,T001234,Operations,15
+2,T001235,Sales,3
+2,T001236,Operations,12
+2,T001237,Sales,12
+2,T001238,HR,3
+2,T001239,HR,13
+2,T001240,Finance,12
+2,T001241,Customer Service,11
+2,T001242,Finance,15
+2,T001243,Finance,15
+2,T001244,Sales,17
+2,T001245,Sales,14
+2,T001246,Logistics,13
+2,T001247,Operations,12
+2,T001248,Operations,4
+2,T001249,Customer Service,12
+2,T001250,Customer Service,15
+2,T001251,Operations,15
+2,T001252,HR,10
+2,T001253,Operations,13
+2,T001254,HR,16
+2,T001255,Engineering,16
+2,T001256,Engineering,12
+2,T001257,HR,15
+2,T001258,Logistics,16
+2,T001259,Customer Service,14
+2,T001260,Sales,16
+2,T001261,Operations,10
+2,T001262,Logistics,17
+2,T001263,HR,16
+2,T001264,Engineering,12
+2,T001265,HR,15
+2,T001266,Logistics,13
+2,T001267,Finance,15
+2,T001268,Sales,12
+2,T001269,HR,14
+2,T001270,Customer Service,9
+2,T001271,Customer Service,19
+2,T001272,Marketing,14
+2,T001273,Operations,17
+2,T001274,Finance,14
+2,T001275,Finance,14
+2,T001276,Marketing,16
+2,T001277,Sales,21
+2,T001278,Sales,3
+2,T001279,HR,12
+2,T001280,Sales,11
+2,T001281,Customer Service,15
+2,T001282,Finance,13
+2,T001283,Logistics,23
+2,T001284,Operations,13
+2,T001285,Finance,10
+2,T001286,Logistics,9
+2,T001287,Engineering,15
+2,T001288,Operations,12
+2,T001289,HR,11
+2,T001290,Marketing,14
+2,T001291,Engineering,11
+2,T001292,Customer Service,12
+2,T001293,Sales,12
+2,T001294,Marketing,15
+2,T001295,HR,14
+2,T001296,Logistics,17
+2,T001297,Customer Service,11
+2,T001298,Customer Service,21
+2,T001299,Logistics,13
+2,T001300,Sales,12
+2,T001301,Logistics,17
+2,T001302,Sales,11
+2,T001303,Engineering,18
+2,T001304,Engineering,8
+2,T001305,Engineering,10
+2,T001306,Sales,13
+2,T001307,Sales,11
+2,T001308,Engineering,14
+2,T001309,Finance,13
+2,T001310,Operations,11
+2,T001311,Customer Service,12
+2,T001312,Sales,8
+2,T001313,Operations,17
+2,T001314,Logistics,9
+2,T001315,Customer Service,12
+2,T001316,Logistics,17
+2,T001317,Marketing,13
+2,T001318,HR,13
+2,T001319,Operations,14
+2,T001320,Customer Service,14
+2,T001321,Marketing,12
+2,T001322,Logistics,10
+2,T001323,Customer Service,14
+2,T001324,Logistics,13
+2,T001325,Logistics,14
+2,T001326,Sales,18
+2,T001327,Operations,13
+2,T001328,HR,11
+2,T001329,Customer Service,12
+2,T001330,Customer Service,16
+2,T001331,Customer Service,11
+2,T001332,Logistics,12
+2,T001333,Operations,17
+2,T001334,Customer Service,13
+2,T001335,Engineering,14
+2,T001336,Sales,17
+2,T001337,Logistics,16
+2,T001338,HR,8
+2,T001339,Engineering,13
+2,T001340,Finance,14
+2,T001341,Engineering,10
+2,T001342,Marketing,11
+2,T001343,Marketing,15
+2,T001344,Engineering,15
+2,T001345,Operations,19
+2,T001346,Engineering,9
+2,T001347,Finance,9
+2,T001348,Customer Service,20
+2,T001349,Engineering,14
+2,T001350,Finance,10
+2,T001351,HR,14
+2,T001352,Operations,14
+2,T001353,HR,3
+2,T001354,Finance,14
+2,T001355,Marketing,15
+2,T001356,Marketing,14
+2,T001357,Finance,13
+2,T001358,Engineering,12
+2,T001359,Logistics,11
+2,T001360,Customer Service,19
+2,T001361,Customer Service,12
+2,T001362,Marketing,11
+2,T001363,Logistics,14
+2,T001364,Customer Service,14
+2,T001365,Finance,13
+2,T001366,Logistics,16
+2,T001367,Marketing,14
+2,T001368,Customer Service,12
+2,T001369,Finance,10
+2,T001370,Finance,10
+2,T001371,Engineering,13
+2,T001372,Sales,4
+2,T001373,Marketing,11
+2,T001374,Logistics,3
+2,T001375,Logistics,10
+2,T001376,Finance,15
+2,T001377,Customer Service,13
+2,T001378,Marketing,14
+2,T001379,Engineering,16
+2,T001380,HR,9
+2,T001381,Operations,18
+2,T001382,Logistics,3
+2,T001383,Customer Service,13
+2,T001384,Marketing,12
+2,T001385,Marketing,13
+2,T001386,Logistics,11
+2,T001387,Customer Service,12
+2,T001388,Finance,14
+2,T001389,Operations,11
+2,T001390,Logistics,12
+2,T001391,Customer Service,11
+2,T001392,HR,15
+2,T001393,Finance,11
+2,T001394,Operations,14
+2,T001395,Engineering,8
+2,T001396,Logistics,12
+2,T001397,Engineering,13
+2,T001398,Operations,12
+2,T001399,Logistics,4
+2,T001400,Logistics,13
+2,T001401,Logistics,16
+2,T001402,HR,13
+2,T001403,Sales,15
+2,T001404,Logistics,14
+2,T001405,Engineering,11
+2,T001406,Customer Service,11
+2,T001407,Marketing,10
+2,T001408,Logistics,3
+2,T001409,Sales,15
+2,T001410,Logistics,10
+2,T001411,Sales,16
+2,T001412,Operations,13
+2,T001413,Sales,12
+2,T001414,Operations,13
+2,T001415,Customer Service,13
+2,T001416,Logistics,14
+2,T001417,Engineering,13
+2,T001418,Marketing,12
+2,T001419,Engineering,16
+2,T001420,Logistics,14
+2,T001421,Customer Service,21
+2,T001422,HR,10
+2,T001423,Engineering,17
+2,T001424,Operations,14
+2,T001425,Marketing,14
+2,T001426,HR,17
+2,T001427,Engineering,9
+2,T001428,Logistics,11
+2,T001429,Engineering,13
+2,T001430,Sales,11
+2,T001431,Finance,8
+2,T001432,HR,11
+2,T001433,Operations,14
+2,T001434,Operations,14
+2,T001435,Sales,8
+2,T001436,Logistics,12
+2,T001437,Customer Service,16
+2,T001438,Finance,4
+2,T001439,Customer Service,14
+2,T001440,Logistics,14
+2,T001441,Finance,19
+2,T001442,Customer Service,12
+2,T001443,Marketing,9
+2,T001444,Customer Service,14
+2,T001445,Customer Service,14
+2,T001446,Engineering,13
+2,T001447,Finance,18
+2,T001448,HR,14
+2,T001449,Marketing,9
+2,T001450,Marketing,14
+2,T001451,Customer Service,9
+2,T001452,Marketing,13
+2,T001453,Sales,13
+2,T001454,Engineering,3
+2,T001455,Operations,7
+2,T001456,Logistics,11
+2,T001457,Customer Service,12
+2,T001458,HR,12
+2,T001459,Marketing,10
+2,T001460,Sales,14
+2,T001461,Operations,17
+2,T001462,Marketing,9
+2,T001463,Customer Service,15
+2,T001464,Marketing,12
+2,T001465,Customer Service,11
+2,T001466,Finance,15
+2,T001467,Engineering,17
+2,T001468,HR,19
+2,T001469,Engineering,17
+2,T001470,Operations,10
+2,T001471,Sales,8
+2,T001472,Customer Service,15
+2,T001473,Finance,15
+2,T001474,Finance,10
+2,T001475,Sales,13
+2,T001476,Logistics,14
+2,T001477,HR,12
+2,T001478,HR,10
+2,T001479,HR,12
+2,T001480,Operations,11
+2,T001481,HR,8
+2,T001482,Marketing,3
+2,T001483,Sales,11
+2,T001484,Marketing,11
+2,T001485,HR,14
+2,T001486,Customer Service,14
+2,T001487,Customer Service,14
+2,T001488,Engineering,11
+2,T001489,Operations,13
+2,T001490,Customer Service,10
+2,T001491,HR,15
+2,T001492,Customer Service,17
+2,T001493,Customer Service,15
+2,T001494,HR,14
+2,T001495,Operations,4
+2,T001496,Finance,13
+2,T001497,Logistics,15
+2,T001498,Operations,13
+2,T001499,Logistics,11
+2,T001500,Operations,15
+2,T001501,Marketing,13
+2,T001502,HR,17
+2,T001503,Customer Service,13
+2,T001504,Engineering,13
+2,T001505,Engineering,9
+2,T001506,Operations,11
+2,T001507,Marketing,14
+2,T001508,Engineering,12
+2,T001509,Logistics,17
+2,T001510,Engineering,14
+2,T001511,Sales,11
+2,T001512,Engineering,11
+2,T001513,Customer Service,11
+2,T001514,Operations,11
+2,T001515,Operations,13
+2,T001516,Operations,10
+2,T001517,Customer Service,13
+2,T001518,Marketing,12
+2,T001519,Marketing,16
+2,T001520,Engineering,16
+2,T001521,Customer Service,11
+2,T001522,Operations,11
+2,T001523,Finance,12
+2,T001524,Operations,13
+2,T001525,Finance,14
+2,T001526,Finance,18
+2,T001527,Logistics,16
+2,T001528,HR,12
+2,T001529,Sales,13
+2,T001530,Operations,13
+2,T001531,Operations,16
+2,T001532,Marketing,10
+2,T001533,Logistics,15
+2,T001534,Operations,11
+2,T001535,Logistics,10
+2,T001536,Logistics,19
+2,T001537,Operations,12
+2,T001538,Sales,15
+2,T001539,Logistics,12
+2,T001540,Logistics,11
+2,T001541,Engineering,13
+2,T001542,Operations,3
+2,T001543,Logistics,11
+2,T001544,Marketing,11
+2,T001545,Logistics,9
+2,T001546,Sales,14
+2,T001547,Sales,3
+2,T001548,HR,17
+2,T001549,Sales,7
+2,T001550,Engineering,11
+2,T001551,Engineering,16
+2,T001552,Logistics,13
+2,T001553,Logistics,10
+2,T001554,Engineering,11
+2,T001555,Customer Service,11
+2,T001556,Logistics,9
+2,T001557,Finance,10
+2,T001558,Logistics,10
+2,T001559,Customer Service,13
+2,T001560,HR,15
+2,T001561,Engineering,13
+2,T001562,Operations,14
+2,T001563,Engineering,16
+2,T001564,Logistics,4
+2,T001565,Operations,15
+2,T001566,Engineering,10
+2,T001567,Logistics,8
+2,T001568,Marketing,17
+2,T001569,Customer Service,11
+2,T001570,Sales,16
+2,T001571,Finance,10
+2,T001572,Customer Service,16
+2,T001573,Engineering,12
+2,T001574,Customer Service,8
+2,T001575,Logistics,20
+2,T001576,Finance,10
+2,T001577,Finance,8
+2,T001578,Finance,15
+2,T001579,Operations,12
+2,T001580,Sales,9
+2,T001581,Finance,8
+2,T001582,Engineering,12
+2,T001583,Marketing,10
+2,T001584,Operations,12
+2,T001585,Customer Service,14
+2,T001586,Operations,18
+2,T001587,Sales,11
+2,T001588,Logistics,13
+2,T001589,Logistics,14
+2,T001590,Engineering,15
+2,T001591,Marketing,13
+2,T001592,Operations,15
+2,T001593,Sales,13
+2,T001594,Operations,15
+2,T001595,Customer Service,14
+2,T001596,Customer Service,13
+2,T001597,Logistics,16
+2,T001598,Customer Service,12
+2,T001599,Customer Service,12
+2,T001600,HR,13
+2,T001601,Sales,9
+2,T001602,Marketing,13
+2,T001603,Finance,8
+2,T001604,Customer Service,16
+2,T001605,HR,12
+2,T001606,Engineering,4
+2,T001607,Logistics,16
+2,T001608,HR,10
+2,T001609,HR,14
+2,T001610,Engineering,13
+2,T001611,Sales,13
+2,T001612,Sales,17
+2,T001613,Logistics,10
+2,T001614,Sales,17
+2,T001615,Logistics,11
+2,T001616,Sales,11
+2,T001617,Finance,14
+2,T001618,Finance,12
+2,T001619,Sales,10
+2,T001620,Logistics,13
+2,T001621,Customer Service,16
+2,T001622,Marketing,8
+2,T001623,Marketing,12
+2,T001624,HR,11
+2,T001625,Logistics,14
+2,T001626,Customer Service,15
+2,T001627,Sales,10
+2,T001628,Engineering,16
+2,T001629,Finance,12
+2,T001630,Marketing,15
+2,T001631,Engineering,10
+2,T001632,HR,13
+2,T001633,Sales,14
+2,T001634,Marketing,13
+2,T001635,Marketing,14
+2,T001636,Marketing,15
+2,T001637,Engineering,17
+2,T001638,Sales,14
+2,T001639,Sales,11
+2,T001640,Finance,15
+2,T001641,Operations,12
+2,T001642,Operations,3
+2,T001643,Customer Service,14
+2,T001644,Customer Service,14
+2,T001645,HR,16
+2,T001646,Sales,3
+2,T001647,Operations,13
+2,T001648,Logistics,11
+2,T001649,Marketing,3
+2,T001650,Operations,12
+2,T001651,Operations,14
+2,T001652,HR,4
+2,T001653,Marketing,13
+2,T001654,HR,11
+2,T001655,Marketing,4
+2,T001656,Operations,15
+2,T001657,Sales,4
+2,T001658,Operations,13
+2,T001659,HR,13
+2,T001660,Marketing,11
+2,T001661,Marketing,13
+2,T001662,HR,11
+2,T001663,Customer Service,4
+2,T001664,Finance,12
+2,T001665,Marketing,12
+2,T001666,Sales,14
+2,T001667,Logistics,12
+2,T001668,Customer Service,16
+2,T001669,Customer Service,15
+2,T001670,Customer Service,19
+2,T001671,Logistics,14
+2,T001672,HR,12
+2,T001673,Finance,12
+2,T001674,HR,9
+2,T001675,Sales,14
+2,T001676,Logistics,12
+2,T001677,Operations,8
+2,T001678,Logistics,17
+2,T001679,Engineering,11
+2,T001680,HR,10
+2,T001681,Sales,15
+2,T001682,Sales,15
+2,T001683,Sales,15
+2,T001684,Sales,14
+2,T001685,HR,8
+2,T001686,Operations,13
+2,T001687,Engineering,18
+2,T001688,Operations,13
+2,T001689,Engineering,11
+2,T001690,Customer Service,13
+2,T001691,Marketing,14
+2,T001692,Logistics,11
+2,T001693,Customer Service,4
+2,T001694,Operations,15
+2,T001695,Customer Service,16
+2,T001696,Sales,8
+2,T001697,Engineering,10
+2,T001698,Sales,13
+2,T001699,Marketing,9
+2,T001700,HR,11
+2,T001701,Customer Service,16
+2,T001702,Marketing,22
+2,T001703,Operations,16
+2,T001704,Logistics,10
+2,T001705,Operations,15
+2,T001706,Logistics,13
+2,T001707,Marketing,21
+2,T001708,Engineering,11
+2,T001709,Engineering,16
+2,T001710,Engineering,8
+2,T001711,Operations,11
+2,T001712,Logistics,17
+2,T001713,Engineering,13
+2,T001714,Logistics,11
+2,T001715,Sales,14
+2,T001716,HR,12
+2,T001717,Finance,13
+2,T001718,Logistics,12
+2,T001719,Sales,9
+2,T001720,Customer Service,3
+2,T001721,Operations,9
+2,T001722,Operations,17
+2,T001723,Operations,16
+2,T001724,Engineering,13
+2,T001725,Engineering,11
+2,T001726,Engineering,10
+2,T001727,Operations,18
+2,T001728,HR,13
+2,T001729,Finance,8
+2,T001730,Finance,14
+2,T001731,Marketing,15
+2,T001732,Sales,12
+2,T001733,Engineering,19
+2,T001734,Customer Service,9
+2,T001735,Logistics,10
+2,T001736,Sales,4
+2,T001737,Customer Service,14
+2,T001738,Customer Service,13
+2,T001739,Engineering,12
+2,T001740,Logistics,14
+2,T001741,Sales,17
+2,T001742,Customer Service,16
+2,T001743,Customer Service,14
+2,T001744,HR,11
+2,T001745,Operations,12
+2,T001746,Engineering,11
+2,T001747,Engineering,16
+2,T001748,HR,14
+2,T001749,HR,13
+2,T001750,Customer Service,9
+2,T001751,Logistics,16
+2,T001752,Logistics,10
+2,T001753,Engineering,13
+2,T001754,Logistics,3
+2,T001755,Finance,17
+2,T001756,Marketing,12
+2,T001757,Marketing,13
+2,T001758,Finance,17
+2,T001759,Marketing,11
+2,T001760,Operations,12
+2,T001761,Operations,12
+2,T001762,Sales,12
+2,T001763,HR,12
+2,T001764,Customer Service,20
+2,T001765,HR,15
+2,T001766,HR,9
+2,T001767,Marketing,14
+2,T001768,Logistics,8
+2,T001769,Sales,9
+2,T001770,HR,13
+2,T001771,Operations,14
+2,T001772,Marketing,10
+2,T001773,Logistics,12
+2,T001774,Logistics,12
+2,T001775,Customer Service,14
+2,T001776,Logistics,12
+2,T001777,Customer Service,12
+2,T001778,Customer Service,15
+2,T001779,Logistics,14
+2,T001780,Engineering,10
+2,T001781,Logistics,3
+2,T001782,Customer Service,13
+2,T001783,Finance,11
+2,T001784,Logistics,11
+2,T001785,Customer Service,14
+2,T001786,Logistics,16
+2,T001787,Marketing,12
+2,T001788,Logistics,13
+2,T001789,HR,9
+2,T001790,Logistics,15
+2,T001791,Marketing,10
+2,T001792,Customer Service,12
+2,T001793,Engineering,11
+2,T001794,Customer Service,13
+2,T001795,Customer Service,11
+2,T001796,Finance,13
+2,T001797,Finance,12
+2,T001798,Marketing,14
+2,T001799,Operations,14
+2,T001800,Logistics,13
+2,T001801,Sales,15
+2,T001802,Operations,16
+2,T001803,Marketing,13
+2,T001804,Customer Service,9
+2,T001805,Operations,15
+2,T001806,Marketing,13
+2,T001807,Logistics,15
+2,T001808,Operations,16
+2,T001809,Operations,9
+2,T001810,Engineering,12
+2,T001811,Engineering,15
+2,T001812,HR,13
+2,T001813,Logistics,12
+2,T001814,Customer Service,13
+2,T001815,HR,20
+2,T001816,HR,11
+2,T001817,Logistics,10
+2,T001818,Logistics,15
+2,T001819,Customer Service,16
+2,T001820,Customer Service,9
+2,T001821,Sales,3
+2,T001822,Engineering,14
+2,T001823,Operations,16
+2,T001824,Customer Service,14
+2,T001825,Finance,10
+2,T001826,Sales,10
+2,T001827,Logistics,12
+2,T001828,Logistics,12
+2,T001829,Engineering,10
+2,T001830,Logistics,13
+2,T001831,Finance,11
+2,T001832,Engineering,9
+2,T001833,Finance,13
+2,T001834,HR,17
+2,T001835,Engineering,10
+2,T001836,Marketing,11
+2,T001837,Customer Service,13
+2,T001838,Customer Service,18
+2,T001839,Sales,13
+2,T001840,Finance,11
+2,T001841,Operations,13
+2,T001842,Logistics,12
+2,T001843,Customer Service,10
+2,T001844,Engineering,14
+2,T001845,HR,12
+2,T001846,Operations,18
+2,T001847,HR,12
+2,T001848,Logistics,10
+2,T001849,Engineering,12
+2,T001850,Operations,13
+2,T001851,Operations,11
+2,T001852,Engineering,12
+2,T001853,Finance,14
+2,T001854,Marketing,15
+2,T001855,Logistics,13
+2,T001856,Engineering,13
+2,T001857,HR,10
+2,T001858,Logistics,14
+2,T001859,HR,11
+2,T001860,HR,15
+2,T001861,Logistics,4
+2,T001862,Logistics,18
+2,T001863,Logistics,16
+2,T001864,Operations,11
+2,T001865,Logistics,13
+2,T001866,Customer Service,12
+2,T001867,Logistics,15
+2,T001868,Finance,12
+2,T001869,Marketing,12
+2,T001870,Customer Service,13
+2,T001871,Engineering,13
+2,T001872,Customer Service,16
+2,T001873,Marketing,17
+2,T001874,Logistics,16
+2,T001875,Engineering,20
+2,T001876,Engineering,13
+2,T001877,Customer Service,12
+2,T001878,Sales,14
+2,T001879,Operations,16
+2,T001880,Operations,14
+2,T001881,Finance,13
+2,T001882,Finance,10
+2,T001883,Customer Service,14
+2,T001884,Logistics,17
+2,T001885,Finance,13
+2,T001886,HR,16
+2,T001887,HR,13
+2,T001888,Finance,11
+2,T001889,Sales,19
+2,T001890,Customer Service,15
+2,T001891,Engineering,19
+2,T001892,Marketing,14
+2,T001893,Logistics,15
+2,T001894,Marketing,11
+2,T001895,Marketing,13
+2,T001896,Marketing,12
+2,T001897,Engineering,14
+2,T001898,Marketing,17
+2,T001899,HR,13
+2,T001900,Customer Service,7
+2,T001901,Customer Service,12
+2,T001902,HR,13
+2,T001903,Customer Service,15
+2,T001904,Sales,13
+2,T001905,Customer Service,4
+2,T001906,Logistics,11
+2,T001907,Engineering,14
+2,T001908,HR,16
+2,T001909,Operations,13
+2,T001910,HR,16
+2,T001911,Marketing,13
+2,T001912,Logistics,9
+2,T001913,HR,19
+2,T001914,Marketing,9
+2,T001915,HR,11
+2,T001916,Logistics,14
+2,T001917,Operations,15
+2,T001918,Operations,11
+2,T001919,Engineering,4
+2,T001920,Finance,16
+2,T001921,Customer Service,14
+2,T001922,Sales,10
+2,T001923,Engineering,4
+2,T001924,Sales,12
+2,T001925,Customer Service,16
+2,T001926,Engineering,12
+2,T001927,Sales,16
+2,T001928,Marketing,11
+2,T001929,Logistics,16
+2,T001930,Engineering,4
+2,T001931,Operations,4
+2,T001932,Marketing,14
+2,T001933,Finance,8
+2,T001934,Sales,10
+2,T001935,Logistics,15
+2,T001936,Operations,16
+2,T001937,Engineering,12
+2,T001938,Engineering,11
+2,T001939,Operations,19
+2,T001940,HR,16
+2,T001941,Logistics,21
+2,T001942,Marketing,10
+2,T001943,Logistics,3
+2,T001944,Finance,13
+2,T001945,HR,10
+2,T001946,Engineering,14
+2,T001947,Sales,12
+2,T001948,Marketing,10
+2,T001949,HR,10
+2,T001950,Sales,17
+2,T001951,Engineering,16
+2,T001952,Sales,18
+2,T001953,Operations,16
+2,T001954,Marketing,13
+2,T001955,Logistics,13
+2,T001956,Marketing,13
+2,T001957,HR,15
+2,T001958,Logistics,11
+2,T001959,Finance,12
+2,T001960,Finance,12
+2,T001961,Sales,15
+2,T001962,Finance,9
+2,T001963,Engineering,14
+2,T001964,HR,10
+2,T001965,Customer Service,13
+2,T001966,Operations,11
+2,T001967,Engineering,19
+2,T001968,Operations,10
+2,T001969,Engineering,12
+2,T001970,Engineering,4
+2,T001971,HR,11
+2,T001972,Marketing,11
+2,T001973,Engineering,14
+2,T001974,Engineering,9
+2,T001975,HR,14
+2,T001976,Customer Service,13
+2,T001977,Customer Service,9
+2,T001978,Engineering,17
+2,T001979,Engineering,13
+2,T001980,Operations,9
+2,T001981,Finance,13
+2,T001982,HR,12
+2,T001983,HR,10
+2,T001984,Customer Service,15
+2,T001985,Engineering,16
+2,T001986,Finance,14
+2,T001987,Operations,13
+2,T001988,Finance,15
+2,T001989,Sales,4
+2,T001990,Finance,8
+2,T001991,HR,11
+2,T001992,Sales,13
+2,T001993,Logistics,11
+2,T001994,Sales,3
+2,T001995,Sales,14
+2,T001996,Sales,13
+2,T001997,Customer Service,15
+2,T001998,Customer Service,19
+2,T001999,Logistics,9
+2,T002000,Marketing,15
+2,T002001,HR,9
+2,T002002,Engineering,13
+2,T002003,Logistics,12
+2,T002004,Marketing,13
+2,T002005,Marketing,15
+2,T002006,Finance,7
+2,T002007,HR,14
+2,T002008,Customer Service,16
+2,T002009,Finance,16
+2,T002010,Marketing,13
+2,T002011,Finance,14
+2,T002012,Customer Service,10
+2,T002013,Marketing,11
+2,T002014,Marketing,19
+2,T002015,Operations,9
+2,T002016,Engineering,17
+2,T002017,Marketing,11
+2,T002018,Operations,13
+2,T002019,Finance,3
+2,T002020,Finance,11
+2,T002021,Marketing,10
+2,T002022,Sales,16
+2,T002023,Logistics,14
+2,T002024,Finance,16
+2,T002025,Operations,14
+2,T002026,Marketing,14
+2,T002027,Finance,10
+2,T002028,Sales,8
+2,T002029,Engineering,10
+2,T002030,Finance,16
+2,T002031,Sales,9
+2,T002032,HR,10
+2,T002033,HR,10
+2,T002034,Engineering,9
+2,T002035,Marketing,12
+2,T002036,HR,13
+2,T002037,Logistics,17
+2,T002038,HR,10
+2,T002039,HR,9
+2,T002040,Marketing,18
+2,T002041,Finance,10
+2,T002042,Sales,15
+2,T002043,Logistics,17
+2,T002044,Finance,12
+2,T002045,Sales,19
+2,T002046,Operations,12
+2,T002047,Engineering,10
+2,T002048,Marketing,16
+2,T002049,Customer Service,14
+2,T002050,Customer Service,3
+2,T002051,Operations,11
+2,T002052,HR,9
+2,T002053,Engineering,11
+2,T002054,Operations,14
+2,T002055,Customer Service,13
+2,T002056,Marketing,11
+2,T002057,Engineering,12
+2,T002058,Sales,12
+2,T002059,Operations,9
+2,T002060,Finance,14
+2,T002061,Logistics,13
+2,T002062,Customer Service,16
+2,T002063,Sales,15
+2,T002064,Sales,12
+2,T002065,Customer Service,15
+2,T002066,Finance,14
+2,T002067,Engineering,17
+2,T002068,Customer Service,11
+2,T002069,Operations,3
+2,T002070,Customer Service,11
+2,T002071,Finance,13
+2,T002072,Operations,10
+2,T002073,Finance,13
+2,T002074,Customer Service,12
+2,T002075,Logistics,15
+2,T002076,HR,15
+2,T002077,Customer Service,10
+2,T002078,Engineering,21
+2,T002079,Finance,15
+2,T002080,Operations,15
+2,T002081,HR,11
+2,T002082,Finance,11
+2,T002083,Engineering,16
+2,T002084,Operations,9
+2,T002085,Logistics,10
+2,T002086,Marketing,14
+2,T002087,Finance,11
+2,T002088,Engineering,13
+2,T002089,Logistics,13
+2,T002090,Operations,12
+2,T002091,Marketing,15
+2,T002092,HR,11
+2,T002093,Logistics,4
+2,T002094,Customer Service,15
+2,T002095,Engineering,12
+2,T002096,Marketing,17
+2,T002097,Finance,10
+2,T002098,Sales,11
+2,T002099,Engineering,12
+2,T002100,HR,11
+2,T002101,Customer Service,12
+2,T002102,Logistics,12
+2,T002103,Logistics,4
+2,T002104,Sales,15
+2,T002105,Customer Service,14
+2,T002106,Operations,15
+2,T002107,Finance,13
+2,T002108,HR,11
+2,T002109,Customer Service,10
+2,T002110,Marketing,18
+2,T002111,Marketing,14
+2,T002112,Logistics,11
+2,T002113,HR,12
+2,T002114,Operations,13
+2,T002115,Operations,13
+2,T002116,Customer Service,9
+2,T002117,Operations,3
+2,T002118,Engineering,12
+2,T002119,Marketing,13
+2,T002120,Finance,15
+2,T002121,Operations,11
+2,T002122,Finance,11
+2,T002123,HR,12
+2,T002124,HR,11
+2,T002125,Customer Service,15
+2,T002126,Operations,13
+2,T002127,Marketing,11
+2,T002128,Customer Service,13
+2,T002129,HR,13
+2,T002130,Customer Service,11
+2,T002131,Engineering,13
+2,T002132,Customer Service,15
+2,T002133,Sales,11
+2,T002134,Marketing,11
+2,T002135,Sales,10
+2,T002136,Engineering,12
+2,T002137,Sales,15
+2,T002138,Finance,15
+2,T002139,Operations,17
+2,T002140,Engineering,12
+2,T002141,HR,10
+2,T002142,Marketing,10
+2,T002143,Finance,13
+2,T002144,Sales,10
+2,T002145,Operations,14
+2,T002146,HR,11
+2,T002147,Engineering,13
+2,T002148,Sales,12
+2,T002149,Finance,12
+2,T002150,Customer Service,16
+2,T002151,Customer Service,9
+2,T002152,Sales,16
+2,T002153,Marketing,10
+2,T002154,Operations,10
+2,T002155,Sales,11
+2,T002156,HR,16
+2,T002157,Finance,19
+2,T002158,Operations,10
+2,T002159,Operations,13
+2,T002160,Finance,13
+2,T002161,Customer Service,11
+2,T002162,Sales,14
+2,T002163,Logistics,13
+2,T002164,Finance,11
+2,T002165,HR,11
+2,T002166,Logistics,14
+2,T002167,Marketing,9
+2,T002168,Engineering,15
+2,T002169,Marketing,15
+2,T002170,Marketing,13
+2,T002171,Customer Service,3
+2,T002172,HR,4
+2,T002173,Engineering,8
+2,T002174,HR,14
+2,T002175,Operations,4
+2,T002176,HR,12
+2,T002177,Marketing,9
+2,T002178,Customer Service,12
+2,T002179,Logistics,12
+2,T002180,Sales,10
+2,T002181,Operations,3
+2,T002182,Customer Service,18
+2,T002183,HR,12
+2,T002184,Operations,15
+2,T002185,HR,13
+2,T002186,Marketing,12
+2,T002187,Engineering,13
+2,T002188,Engineering,13
+2,T002189,Customer Service,12
+2,T002190,Logistics,10
+2,T002191,Operations,16
+2,T002192,Finance,13
+2,T002193,Engineering,13
+2,T002194,Operations,13
+2,T002195,Finance,12
+2,T002196,Operations,17
+2,T002197,Logistics,17
+2,T002198,Operations,15
+2,T002199,Marketing,9
+2,T002200,Finance,12
+2,T002201,Marketing,14
+2,T002202,HR,13
+2,T002203,Logistics,15
+2,T002204,HR,11
+2,T002205,Operations,16
+2,T002206,Finance,12
+2,T002207,HR,13
+2,T002208,Engineering,11
+2,T002209,Sales,15
+2,T002210,Operations,10
+2,T002211,Operations,15
+2,T002212,Customer Service,14
+2,T002213,Marketing,4
+2,T002214,Logistics,11
+2,T002215,Customer Service,15
+2,T002216,Operations,9
+2,T002217,Marketing,12
+2,T002218,Logistics,15
+2,T002219,HR,11
+2,T002220,Marketing,14
+2,T002221,Customer Service,13
+2,T002222,Sales,7
+2,T002223,Logistics,4
+2,T002224,Customer Service,12
+2,T002225,Logistics,21
+2,T002226,Sales,9
+2,T002227,Customer Service,10
+2,T002228,Customer Service,8
+2,T002229,Finance,13
+2,T002230,Operations,11
+2,T002231,Customer Service,9
+2,T002232,Operations,10
+2,T002233,Operations,9
+2,T002234,Marketing,14
+2,T002235,Logistics,10
+2,T002236,Logistics,18
+2,T002237,Engineering,13
+2,T002238,Sales,3
+2,T002239,Logistics,12
+2,T002240,Customer Service,17
+2,T002241,Engineering,15
+2,T002242,Sales,12
+2,T002243,Engineering,13
+2,T002244,Engineering,14
+2,T002245,Engineering,17
+2,T002246,HR,18
+2,T002247,Finance,15
+2,T002248,Engineering,10
+2,T002249,Operations,13
+2,T002250,Logistics,9
+2,T002251,Engineering,12
+2,T002252,Operations,15
+2,T002253,Logistics,15
+2,T002254,Marketing,12
+2,T002255,Logistics,11
+2,T002256,Engineering,14
+2,T002257,Operations,17
+2,T002258,HR,15
+2,T002259,Finance,4
+2,T002260,Sales,14
+2,T002261,Finance,12
+2,T002262,Marketing,12
+2,T002263,Customer Service,15
+2,T002264,Customer Service,14
+2,T002265,Marketing,8
+2,T002266,Engineering,13
+2,T002267,Finance,19
+2,T002268,Engineering,11
+2,T002269,Customer Service,18
+2,T002270,Operations,15
+2,T002271,HR,3
+2,T002272,Finance,13
+2,T002273,Operations,10
+2,T002274,Operations,13
+2,T002275,Customer Service,4
+2,T002276,Sales,18
+2,T002277,Finance,6
+2,T002278,Marketing,12
+2,T002279,Logistics,12
+2,T002280,Operations,15
+2,T002281,Marketing,9
+2,T002282,Logistics,11
+2,T002283,Operations,17
+2,T002284,Engineering,15
+2,T002285,Customer Service,11
+2,T002286,Customer Service,15
+2,T002287,HR,17
+2,T002288,Logistics,19
+2,T002289,HR,19
+2,T002290,HR,13
+2,T002291,Finance,10
+2,T002292,Sales,13
+2,T002293,Marketing,10
+2,T002294,HR,13
+2,T002295,Sales,9
+2,T002296,Finance,14
+2,T002297,HR,4
+2,T002298,Finance,9
+2,T002299,Logistics,11
+2,T002300,Engineering,16
+2,T002301,Operations,10
+2,T002302,Customer Service,11
+2,T002303,Operations,12
+2,T002304,Sales,12
+2,T002305,Finance,15
+2,T002306,Sales,9
+2,T002307,HR,12
+2,T002308,HR,15
+2,T002309,Finance,15
+2,T002310,Operations,17
+2,T002311,Finance,8
+2,T002312,Finance,20
+2,T002313,Marketing,12
+2,T002314,Logistics,17
+2,T002315,Customer Service,20
+2,T002316,Logistics,12
+2,T002317,Sales,13
+2,T002318,Logistics,13
+2,T002319,Finance,22
+2,T002320,Logistics,13
+2,T002321,HR,14
+2,T002322,Marketing,12
+2,T002323,Sales,14
+2,T002324,Sales,14
+2,T002325,Logistics,14
+2,T002326,Engineering,13
+2,T002327,Marketing,13
+2,T002328,Customer Service,12
+2,T002329,Finance,13
+2,T002330,Logistics,13
+2,T002331,Finance,14
+2,T002332,Sales,9
+2,T002333,Operations,10
+2,T002334,Finance,15
+2,T002335,Sales,15
+2,T002336,Customer Service,10
+2,T002337,Marketing,15
+2,T002338,Sales,18
+2,T002339,Logistics,18
+2,T002340,Logistics,13
+2,T002341,Customer Service,10
+2,T002342,Customer Service,15
+2,T002343,Sales,13
+2,T002344,HR,17
+2,T002345,Sales,13
+2,T002346,Engineering,11
+2,T002347,HR,10
+2,T002348,Finance,4
+2,T002349,HR,8
+2,T002350,Marketing,16
+2,T002351,HR,17
+2,T002352,Customer Service,10
+2,T002353,Logistics,14
+2,T002354,Operations,11
+2,T002355,Logistics,16
+2,T002356,Customer Service,18
+2,T002357,Logistics,12
+2,T002358,Marketing,12
+2,T002359,Engineering,16
+2,T002360,Engineering,11
+2,T002361,Finance,16
+2,T002362,Finance,18
+2,T002363,Logistics,11
+2,T002364,HR,12
+2,T002365,Marketing,15
+2,T002366,Marketing,3
+2,T002367,Sales,11
+2,T002368,Customer Service,14
+2,T002369,Logistics,12
+2,T002370,Finance,4
+2,T002371,HR,18
+2,T002372,Operations,16
+2,T002373,Operations,17
+2,T002374,Logistics,13
+2,T002375,Engineering,15
+2,T002376,Customer Service,11
+2,T002377,HR,14
+2,T002378,Finance,10
+2,T002379,Marketing,11
+2,T002380,Engineering,14
+2,T002381,Finance,16
+2,T002382,HR,11
+2,T002383,Marketing,3
+2,T002384,Finance,11
+2,T002385,HR,10
+2,T002386,Sales,8
+2,T002387,Logistics,11
+2,T002388,Sales,12
+2,T002389,Customer Service,9
+2,T002390,Marketing,10
+2,T002391,Operations,14
+2,T002392,Operations,16
+2,T002393,Sales,9
+2,T002394,Operations,15
+2,T002395,Customer Service,12
+2,T002396,Logistics,12
+2,T002397,HR,18
+2,T002398,HR,12
+2,T002399,Logistics,11
+2,T002400,Engineering,15
+2,T002401,Finance,11
+2,T002402,Marketing,14
+2,T002403,Operations,14
+2,T002404,Sales,10
+2,T002405,Sales,15
+2,T002406,Logistics,14
+2,T002407,Customer Service,10
+2,T002408,Engineering,15
+2,T002409,Sales,12
+2,T002410,HR,12
+2,T002411,Marketing,15
+2,T002412,Finance,9
+2,T002413,HR,15
+2,T002414,Engineering,13
+2,T002415,Marketing,14
+2,T002416,HR,15
+2,T002417,Logistics,16
+2,T002418,Sales,16
+2,T002419,Operations,11
+2,T002420,Sales,13
+2,T002421,Finance,13
+2,T002422,Sales,14
+2,T002423,Customer Service,15
+2,T002424,Operations,12
+2,T002425,Operations,13
+2,T002426,Customer Service,14
+2,T002427,Sales,10
+2,T002428,HR,4
+2,T002429,Operations,3
+2,T002430,Logistics,3
+2,T002431,Logistics,16
+2,T002432,HR,13
+2,T002433,Customer Service,10
+2,T002434,Marketing,11
+2,T002435,Operations,9
+2,T002436,Logistics,11
+2,T002437,Sales,4
+2,T002438,Logistics,10
+2,T002439,Marketing,15
+2,T002440,Engineering,15
+2,T002441,Engineering,11
+2,T002442,Logistics,13
+2,T002443,Operations,3
+2,T002444,Logistics,11
+2,T002445,Operations,8
+2,T002446,Logistics,12
+2,T002447,Finance,14
+2,T002448,Logistics,13
+2,T002449,Engineering,13
+2,T002450,Customer Service,12
+2,T002451,Logistics,15
+2,T002452,Marketing,18
+2,T002453,HR,9
+2,T002454,Customer Service,10
+2,T002455,Logistics,14
+2,T002456,Logistics,15
+2,T002457,Logistics,13
+2,T002458,Customer Service,10
+2,T002459,Logistics,12
+2,T002460,Logistics,13
+2,T002461,Finance,14
+2,T002462,Finance,12
+2,T002463,HR,13
+2,T002464,HR,15
+2,T002465,HR,14
+2,T002466,Sales,11
+2,T002467,Sales,11
+2,T002468,Finance,13
+2,T002469,Logistics,16
+2,T002470,Engineering,18
+2,T002471,Operations,10
+2,T002472,Marketing,15
+2,T002473,HR,11
+2,T002474,HR,11
+2,T002475,Marketing,13
+2,T002476,Marketing,17
+2,T002477,Customer Service,11
+2,T002478,HR,10
+2,T002479,HR,12
+2,T002480,Logistics,12
+2,T002481,Marketing,16
+2,T002482,Engineering,14
+2,T002483,Customer Service,14
+2,T002484,Customer Service,12
+2,T002485,Marketing,13
+2,T002486,Engineering,15
+2,T002487,Marketing,9
+2,T002488,Customer Service,16
+2,T002489,Customer Service,14
+2,T002490,HR,9
+2,T002491,Sales,14
+2,T002492,HR,12
+2,T002493,HR,9
+2,T002494,Marketing,14
+2,T002495,Sales,3
+2,T002496,Logistics,14
+2,T002497,Operations,14
+2,T002498,Customer Service,12
+2,T002499,Sales,10
+2,T002500,Logistics,11
+2,T002501,Customer Service,12
+2,T002502,HR,11
+2,T002503,Engineering,12
+2,T002504,Finance,12
+2,T002505,HR,17
+2,T002506,Operations,13
+2,T002507,Customer Service,3
+2,T002508,HR,16
+2,T002509,Marketing,10
+2,T002510,Operations,15
+2,T002511,Logistics,4
+2,T002512,HR,15
+2,T002513,Finance,14
+2,T002514,Sales,12
+2,T002515,Marketing,16
+2,T002516,Customer Service,14
+2,T002517,Customer Service,13
+2,T002518,Operations,16
+2,T002519,Sales,21
+2,T002520,Operations,14
+2,T002521,Finance,12
+2,T002522,Sales,10
+2,T002523,Sales,12
+2,T002524,Finance,17
+2,T002525,HR,13
+2,T002526,Sales,12
+2,T002527,Engineering,15
+2,T002528,HR,12
+2,T002529,Customer Service,14
+2,T002530,HR,20
+2,T002531,Finance,14
+2,T002532,Operations,14
+2,T002533,Operations,11
+2,T002534,Finance,16
+2,T002535,Customer Service,12
+2,T002536,Customer Service,14
+2,T002537,Finance,9
+2,T002538,HR,12
+2,T002539,Sales,14
+2,T002540,Finance,11
+2,T002541,Engineering,13
+2,T002542,Customer Service,13
+2,T002543,Finance,14
+2,T002544,Engineering,13
+2,T002545,Sales,12
+2,T002546,Finance,12
+2,T002547,Operations,13
+2,T002548,Finance,10
+2,T002549,Engineering,11
+2,T002550,Finance,16
+2,T002551,Engineering,10
+2,T002552,Sales,13
+2,T002553,Finance,16
+2,T002554,HR,15
+2,T002555,Engineering,11
+2,T002556,Sales,12
+2,T002557,Engineering,12
+2,T002558,Sales,11
+2,T002559,Finance,12
+2,T002560,Customer Service,16
+2,T002561,Engineering,16
+2,T002562,Marketing,13
+2,T002563,Marketing,13
+2,T002564,Logistics,4
+2,T002565,Customer Service,13
+2,T002566,Logistics,14
+2,T002567,Sales,15
+2,T002568,Sales,12
+2,T002569,Operations,15
+2,T002570,Operations,18
+2,T002571,Sales,14
+2,T002572,Sales,3
+2,T002573,Engineering,15
+2,T002574,HR,10
+2,T002575,Engineering,11
+2,T002576,Sales,12
+2,T002577,Marketing,12
+2,T002578,HR,15
+2,T002579,Marketing,10
+2,T002580,Customer Service,11
+2,T002581,Logistics,13
+2,T002582,Finance,15
+2,T002583,Marketing,13
+2,T002584,Operations,15
+2,T002585,HR,12
+2,T002586,Marketing,12
+2,T002587,Logistics,13
+2,T002588,Engineering,10
+2,T002589,Marketing,12
+2,T002590,Operations,12
+2,T002591,Finance,13
+2,T002592,Logistics,10
+2,T002593,Engineering,15
+2,T002594,Finance,15
+2,T002595,Sales,14
+2,T002596,Sales,12
+2,T002597,Logistics,16
+2,T002598,Operations,12
+2,T002599,Customer Service,12
+2,T002600,Operations,10
+2,T002601,Finance,9
+2,T002602,Sales,14
+2,T002603,Logistics,13
+2,T002604,Customer Service,11
+2,T002605,Customer Service,12
+2,T002606,Logistics,12
+2,T002607,Finance,11
+2,T002608,Sales,11
+2,T002609,Logistics,9
+2,T002610,Engineering,11
+2,T002611,Logistics,8
+2,T002612,Customer Service,12
+2,T002613,Finance,10
+2,T002614,Sales,13
+2,T002615,Finance,17
+2,T002616,Customer Service,13
+2,T002617,Operations,12
+2,T002618,HR,17
+2,T002619,Sales,13
+2,T002620,Logistics,13
+2,T002621,Engineering,11
+2,T002622,Logistics,16
+2,T002623,Operations,21
+2,T002624,Sales,9
+2,T002625,Sales,12
+2,T002626,Engineering,16
+2,T002627,Marketing,10
+2,T002628,Finance,15
+2,T002629,Logistics,14
+2,T002630,Marketing,14
+2,T002631,Marketing,12
+2,T002632,Marketing,14
+2,T002633,Logistics,14
+2,T002634,Finance,14
+2,T002635,Customer Service,12
+2,T002636,Sales,14
+2,T002637,Marketing,8
+2,T002638,Finance,9
+2,T002639,HR,11
+2,T002640,Customer Service,9
+2,T002641,Engineering,13
+2,T002642,Finance,14
+2,T002643,Finance,8
+2,T002644,Finance,13
+2,T002645,Engineering,15
+2,T002646,Customer Service,13
+2,T002647,Operations,14
+2,T002648,Logistics,16
+2,T002649,Finance,12
+2,T002650,Marketing,9
+2,T002651,Marketing,11
+2,T002652,Finance,8
+2,T002653,HR,11
+2,T002654,Engineering,16
+2,T002655,Marketing,14
+2,T002656,HR,15
+2,T002657,Engineering,15
+2,T002658,Sales,14
+2,T002659,Sales,12
+2,T002660,HR,12
+2,T002661,Operations,12
+2,T002662,Finance,11
+2,T002663,Engineering,14
+2,T002664,Sales,10
+2,T002665,HR,15
+2,T002666,Customer Service,14
+2,T002667,Finance,16
+2,T002668,Operations,12
+2,T002669,Marketing,16
+2,T002670,Finance,15
+2,T002671,Operations,13
+2,T002672,Finance,14
+2,T002673,Finance,4
+2,T002674,Engineering,12
+2,T002675,Sales,8
+2,T002676,Logistics,13
+2,T002677,Marketing,12
+2,T002678,Engineering,3
+2,T002679,Customer Service,15
+2,T002680,HR,8
+2,T002681,Customer Service,10
+2,T002682,Finance,11
+2,T002683,Customer Service,12
+2,T002684,Finance,15
+2,T002685,Operations,17
+2,T002686,Engineering,13
+2,T002687,Logistics,15
+2,T002688,HR,14
+2,T002689,HR,10
+2,T002690,Logistics,10
+2,T002691,Operations,11
+2,T002692,Finance,16
+2,T002693,Sales,7
+2,T002694,Operations,7
+2,T002695,Sales,16
+2,T002696,Marketing,15
+2,T002697,Marketing,16
+2,T002698,Customer Service,14
+2,T002699,Marketing,15
+2,T002700,HR,3
+2,T002701,Customer Service,10
+2,T002702,Finance,3
+2,T002703,Marketing,13
+2,T002704,Logistics,12
+2,T002705,HR,13
+2,T002706,Customer Service,12
+2,T002707,Operations,11
+2,T002708,Customer Service,11
+2,T002709,Marketing,10
+2,T002710,Customer Service,12
+2,T002711,Sales,16
+2,T002712,Finance,13
+2,T002713,Marketing,11
+2,T002714,Operations,17
+2,T002715,Operations,12
+2,T002716,Customer Service,12
+2,T002717,Operations,15
+2,T002718,Operations,3
+2,T002719,Logistics,12
+2,T002720,Operations,11
+2,T002721,Logistics,12
+2,T002722,HR,13
+2,T002723,Marketing,4
+2,T002724,Engineering,17
+2,T002725,Operations,15
+2,T002726,Sales,16
+2,T002727,Finance,13
+2,T002728,Operations,13
+2,T002729,Engineering,12
+2,T002730,Logistics,10
+2,T002731,Sales,15
+2,T002732,Operations,10
+2,T002733,Operations,11
+2,T002734,Operations,3
+2,T002735,Sales,11
+2,T002736,Finance,13
+2,T002737,Logistics,14
+2,T002738,Logistics,11
+2,T002739,Operations,11
+2,T002740,Sales,4
+2,T002741,Finance,11
+2,T002742,Sales,12
+2,T002743,Operations,12
+2,T002744,Operations,15
+2,T002745,Marketing,17
+2,T002746,Sales,14
+2,T002747,HR,9
+2,T002748,HR,13
+2,T002749,Customer Service,13
+2,T002750,Finance,16
+2,T002751,Sales,12
+2,T002752,Customer Service,14
+2,T002753,Operations,15
+2,T002754,Marketing,13
+2,T002755,HR,13
+2,T002756,Logistics,10
+2,T002757,HR,9
+2,T002758,Finance,18
+2,T002759,Customer Service,4
+2,T002760,Operations,13
+2,T002761,Sales,11
+2,T002762,Marketing,15
+2,T002763,Engineering,9
+2,T002764,Engineering,17
+2,T002765,Finance,10
+2,T002766,Sales,19
+2,T002767,HR,11
+2,T002768,Finance,17
+2,T002769,Engineering,9
+2,T002770,Marketing,10
+2,T002771,Marketing,9
+2,T002772,Customer Service,11
+2,T002773,Sales,15
+2,T002774,Engineering,10
+2,T002775,Sales,10
+2,T002776,Sales,14
+2,T002777,Engineering,13
+2,T002778,Finance,9
+2,T002779,Sales,11
+2,T002780,Operations,15
+2,T002781,Finance,13
+2,T002782,Customer Service,17
+2,T002783,HR,15
+2,T002784,Logistics,15
+2,T002785,Sales,15
+2,T002786,Engineering,10
+2,T002787,Finance,12
+2,T002788,Logistics,15
+2,T002789,HR,11
+2,T002790,HR,12
+2,T002791,HR,14
+2,T002792,Marketing,10
+2,T002793,Sales,14
+2,T002794,Marketing,12
+2,T002795,Customer Service,16
+2,T002796,Customer Service,3
+2,T002797,Marketing,13
+2,T002798,Sales,9
+2,T002799,Engineering,15
+2,T002800,Logistics,14
+2,T002801,Finance,18
+2,T002802,Sales,15
+2,T002803,Marketing,13
+2,T002804,Operations,15
+2,T002805,Customer Service,11
+2,T002806,Customer Service,17
+2,T002807,Operations,15
+2,T002808,Marketing,13
+2,T002809,Customer Service,9
+2,T002810,Engineering,12
+2,T002811,Finance,12
+2,T002812,Logistics,14
+2,T002813,Logistics,20
+2,T002814,Sales,12
+2,T002815,Logistics,17
+2,T002816,Logistics,14
+2,T002817,Engineering,10
+2,T002818,HR,14
+2,T002819,Engineering,13
+2,T002820,Logistics,11
+2,T002821,Finance,10
+2,T002822,Customer Service,10
+2,T002823,Logistics,16
+2,T002824,Marketing,13
+2,T002825,Operations,13
+2,T002826,Finance,15
+2,T002827,HR,11
+2,T002828,HR,11
+2,T002829,Marketing,15
+2,T002830,Logistics,12
+2,T002831,Marketing,10
+2,T002832,Logistics,15
+2,T002833,Sales,12
+2,T002834,Operations,10
+2,T002835,HR,14
+2,T002836,Marketing,11
+2,T002837,Finance,10
+2,T002838,Operations,11
+2,T002839,Engineering,4
+2,T002840,Sales,14
+2,T002841,Logistics,11
+2,T002842,Marketing,10
+2,T002843,Sales,13
+2,T002844,Marketing,11
+2,T002845,Marketing,10
+2,T002846,Operations,13
+2,T002847,Operations,12
+2,T002848,HR,13
+2,T002849,Logistics,15
+2,T002850,Sales,13
+2,T002851,HR,16
+2,T002852,Operations,9
+2,T002853,Finance,15
+2,T002854,Marketing,10
+2,T002855,Operations,10
+2,T002856,Engineering,14
+2,T002857,HR,16
+2,T002858,Operations,11
+2,T002859,Customer Service,13
+2,T002860,Marketing,15
+2,T002861,Sales,11
+2,T002862,Finance,12
+2,T002863,Marketing,13
+2,T002864,Sales,15
+2,T002865,Operations,13
+2,T002866,Sales,10
+2,T002867,Operations,16
+2,T002868,Logistics,3
+2,T002869,Customer Service,15
+2,T002870,Marketing,14
+2,T002871,Sales,15
+2,T002872,Customer Service,13
+2,T002873,Marketing,14
+2,T002874,HR,22
+2,T002875,Sales,19
+2,T002876,Finance,11
+2,T002877,HR,14
+2,T002878,Sales,16
+2,T002879,HR,9
+2,T002880,HR,13
+2,T002881,Operations,10
+2,T002882,Sales,11
+2,T002883,Customer Service,12
+2,T002884,Sales,13
+2,T002885,Operations,13
+2,T002886,Customer Service,13
+2,T002887,Finance,18
+2,T002888,Engineering,13
+2,T002889,Operations,4
+2,T002890,Finance,15
+2,T002891,Customer Service,12
+2,T002892,Operations,15
+2,T002893,Engineering,15
+2,T002894,Engineering,14
+2,T002895,Engineering,15
+2,T002896,Sales,13
+2,T002897,Sales,16
+2,T002898,Logistics,16
+2,T002899,Logistics,10
+2,T002900,Engineering,12
+2,T002901,Sales,10
+2,T002902,Finance,18
+2,T002903,Engineering,12
+2,T002904,Logistics,11
+2,T002905,Marketing,16
+2,T002906,Operations,10
+2,T002907,Engineering,10
+2,T002908,Sales,14
+2,T002909,HR,13
+2,T002910,Engineering,11
+2,T002911,Engineering,13
+2,T002912,Customer Service,4
+2,T002913,Logistics,11
+2,T002914,Marketing,12
+2,T002915,Operations,14
+2,T002916,Customer Service,16
+2,T002917,Sales,14
+2,T002918,Operations,14
+2,T002919,Sales,15
+2,T002920,Finance,12
+2,T002921,HR,19
+2,T002922,Engineering,14
+2,T002923,HR,11
+2,T002924,Logistics,9
+2,T002925,Customer Service,10
+2,T002926,Finance,3
+2,T002927,Logistics,11
+2,T002928,HR,15
+2,T002929,Finance,15
+2,T002930,Operations,17
+2,T002931,Customer Service,14
+2,T002932,Sales,11
+2,T002933,Finance,16
+2,T002934,Logistics,18
+2,T002935,Engineering,14
+2,T002936,HR,9
+2,T002937,Operations,12
+2,T002938,Marketing,11
+2,T002939,Customer Service,17
+2,T002940,Sales,15
+2,T002941,Engineering,9
+2,T002942,Logistics,14
+2,T002943,Marketing,19
+2,T002944,HR,13
+2,T002945,HR,16
+2,T002946,Sales,15
+2,T002947,Logistics,13
+2,T002948,Finance,12
+2,T002949,Engineering,10
+2,T002950,Marketing,12
+2,T002951,HR,11
+2,T002952,Operations,16
+2,T002953,Customer Service,14
+2,T002954,Engineering,17
+2,T002955,Operations,12
+2,T002956,Customer Service,14
+2,T002957,Customer Service,3
+2,T002958,Logistics,16
+2,T002959,HR,8
+2,T002960,HR,12
+2,T002961,Sales,12
+2,T002962,Marketing,17
+2,T002963,Logistics,16
+2,T002964,Finance,10
+2,T002965,Finance,18
+2,T002966,Engineering,14
+2,T002967,Finance,9
+2,T002968,Sales,14
+2,T002969,Customer Service,16
+2,T002970,HR,11
+2,T002971,Logistics,12
+2,T002972,Operations,11
+2,T002973,Operations,14
+2,T002974,Operations,14
+2,T002975,Operations,15
+2,T002976,Marketing,17
+2,T002977,Marketing,11
+2,T002978,HR,14
+2,T002979,Marketing,14
+2,T002980,Sales,11
+2,T002981,Finance,19
+2,T002982,Sales,13
+2,T002983,Marketing,18
+2,T002984,Engineering,18
+2,T002985,Logistics,16
+2,T002986,Engineering,13
+2,T002987,Customer Service,11
+2,T002988,Marketing,13
+2,T002989,HR,12
+2,T002990,Finance,13
+2,T002991,Logistics,11
+2,T002992,HR,16
+2,T002993,Logistics,14
+2,T002994,Marketing,16
+2,T002995,Customer Service,13
+2,T002996,Customer Service,10
+2,T002997,Sales,16
+2,T002998,Operations,9
+2,T002999,HR,10
+2,T003000,HR,17
+2,T003001,HR,13
+2,T003002,HR,14
+2,T003003,Logistics,15
+2,T003004,Engineering,14
+2,T003005,HR,12
+2,T003006,Customer Service,13
+2,T003007,HR,12
+2,T003008,Marketing,13
+2,T003009,Marketing,7
+2,T003010,Finance,13
+2,T003011,Sales,8
+2,T003012,Marketing,10
+2,T003013,Sales,16
+2,T003014,Engineering,4
+2,T003015,Sales,14
+2,T003016,Finance,11
+2,T003017,Sales,15
+2,T003018,Customer Service,13
+2,T003019,Engineering,10
+2,T003020,Logistics,17
+2,T003021,Sales,10
+2,T003022,Engineering,8
+2,T003023,HR,11
+2,T003024,Engineering,10
+2,T003025,HR,8
+2,T003026,Engineering,14
+2,T003027,Finance,10
+2,T003028,Operations,13
+2,T003029,Sales,11
+2,T003030,Customer Service,17
+2,T003031,HR,11
+2,T003032,Customer Service,13
+2,T003033,Operations,15
+2,T003034,Marketing,12
+2,T003035,Sales,15
+2,T003036,Logistics,12
+2,T003037,Customer Service,12
+2,T003038,Operations,12
+2,T003039,Logistics,12
+2,T003040,Operations,14
+2,T003041,Sales,11
+2,T003042,HR,12
+2,T003043,Marketing,11
+2,T003044,Sales,11
+2,T003045,Sales,15
+2,T003046,Logistics,14
+2,T003047,HR,18
+2,T003048,HR,18
+2,T003049,HR,11
+2,T003050,Engineering,11
+2,T003051,HR,17
+2,T003052,HR,10
+2,T003053,Logistics,15
+2,T003054,Operations,11
+2,T003055,HR,10
+2,T003056,Customer Service,12
+2,T003057,Operations,14
+2,T003058,Sales,16
+2,T003059,Logistics,11
+2,T003060,Customer Service,10
+2,T003061,Engineering,15
+2,T003062,Customer Service,12
+2,T003063,HR,14
+2,T003064,Operations,13
+2,T003065,Finance,15
+2,T003066,Engineering,20
+2,T003067,Customer Service,14
+2,T003068,HR,12
+2,T003069,Sales,3
+2,T003070,Finance,10
+2,T003071,Engineering,10
+2,T003072,Customer Service,14
+2,T003073,Finance,11
+2,T003074,Logistics,11
+2,T003075,HR,12
+2,T003076,Engineering,13
+2,T003077,Logistics,12
+2,T003078,Marketing,18
+2,T003079,Engineering,11
+2,T003080,Operations,14
+2,T003081,Engineering,8
+2,T003082,Operations,9
+2,T003083,Marketing,11
+2,T003084,Sales,11
+2,T003085,Operations,13
+2,T003086,Marketing,13
+2,T003087,HR,10
+2,T003088,Customer Service,13
+2,T003089,Engineering,10
+2,T003090,Finance,12
+2,T003091,HR,15
+2,T003092,Customer Service,13
+2,T003093,HR,14
+2,T003094,Logistics,11
+2,T003095,Marketing,14
+2,T003096,Operations,19
+2,T003097,Finance,14
+2,T003098,Sales,19
+2,T003099,Operations,16
+2,T003100,Finance,15
+2,T003101,Sales,13
+2,T003102,Logistics,13
+2,T003103,HR,11
+2,T003104,Finance,16
+2,T003105,Operations,8
+2,T003106,Sales,15
+2,T003107,Sales,17
+2,T003108,Logistics,12
+2,T003109,Finance,15
+2,T003110,Marketing,12
+2,T003111,Engineering,16
+2,T003112,Logistics,14
+2,T003113,Marketing,9
+2,T003114,HR,12
+2,T003115,Engineering,8
+2,T003116,HR,15
+2,T003117,Engineering,16
+2,T003118,Customer Service,21
+2,T003119,Marketing,13
+2,T003120,HR,12
+2,T003121,Marketing,13
+2,T003122,Marketing,12
+2,T003123,Operations,11
+2,T003124,Logistics,17
+2,T003125,HR,12
+2,T003126,Operations,16
+2,T003127,Logistics,13
+2,T003128,Finance,16
+2,T003129,Logistics,14
+2,T003130,Finance,13
+2,T003131,Customer Service,14
+2,T003132,Marketing,14
+2,T003133,Engineering,16
+2,T003134,Engineering,13
+2,T003135,Logistics,13
+2,T003136,HR,15
+2,T003137,Operations,13
+2,T003138,HR,14
+2,T003139,Finance,11
+2,T003140,HR,19
+2,T003141,Sales,14
+2,T003142,Customer Service,14
+2,T003143,HR,15
+2,T003144,Logistics,15
+2,T003145,Marketing,10
+2,T003146,Engineering,12
+2,T003147,Marketing,13
+2,T003148,Finance,20
+2,T003149,Sales,13
+2,T003150,Logistics,7
+2,T003151,Logistics,18
+2,T003152,Logistics,13
+2,T003153,Engineering,9
+2,T003154,Sales,12
+2,T003155,Marketing,18
+2,T003156,Sales,12
+2,T003157,Logistics,13
+2,T003158,Marketing,12
+2,T003159,Customer Service,14
+2,T003160,Customer Service,13
+2,T003161,HR,12
+2,T003162,Finance,10
+2,T003163,HR,11
+2,T003164,Logistics,14
+2,T003165,Operations,13
+2,T003166,Finance,12
+2,T003167,Finance,13
+2,T003168,Marketing,12
+2,T003169,Customer Service,13
+2,T003170,Engineering,13
+2,T003171,Marketing,14
+2,T003172,Engineering,18
+2,T003173,Marketing,11
+2,T003174,Logistics,19
+2,T003175,Marketing,19
+2,T003176,Engineering,15
+2,T003177,Engineering,14
+2,T003178,Logistics,9
+2,T003179,Logistics,15
+2,T003180,Customer Service,14
+2,T003181,Engineering,11
+2,T003182,Finance,11
+2,T003183,Operations,12
+2,T003184,Engineering,12
+2,T003185,Marketing,12
+2,T003186,Operations,13
+2,T003187,Operations,15
+2,T003188,Logistics,12
+2,T003189,Logistics,8
+2,T003190,Logistics,14
+2,T003191,HR,7
+2,T003192,Sales,13
+2,T003193,Sales,14
+2,T003194,HR,14
+2,T003195,Sales,15
+2,T003196,Operations,17
+2,T003197,HR,12
+2,T003198,Engineering,14
+2,T003199,Sales,16
+2,T003200,Customer Service,16
+2,T003201,Sales,15
+2,T003202,Operations,13
+2,T003203,Finance,15
+2,T003204,HR,11
+2,T003205,Finance,13
+2,T003206,Operations,13
+2,T003207,Customer Service,10
+2,T003208,Logistics,16
+2,T003209,Operations,12
+2,T003210,Logistics,12
+2,T003211,Customer Service,13
+2,T003212,Operations,13
+2,T003213,Finance,12
+2,T003214,Marketing,14
+2,T003215,Customer Service,11
+2,T003216,Engineering,13
+2,T003217,Operations,8
+2,T003218,Marketing,9
+2,T003219,Sales,9
+2,T003220,Operations,14
+2,T003221,Finance,13
+2,T003222,Customer Service,12
+2,T003223,Operations,12
+2,T003224,Marketing,16
+2,T003225,Finance,14
+2,T003226,Marketing,11
+2,T003227,Customer Service,12
+2,T003228,HR,18
+2,T003229,Logistics,12
+2,T003230,Finance,4
+2,T003231,Sales,13
+2,T003232,Logistics,14
+2,T003233,Engineering,11
+2,T003234,Marketing,14
+2,T003235,Engineering,11
+2,T003236,Operations,16
+2,T003237,Operations,12
+2,T003238,Marketing,19
+2,T003239,Finance,9
+2,T003240,HR,13
+2,T003241,Sales,12
+2,T003242,Operations,11
+2,T003243,Operations,10
+2,T003244,Logistics,9
+2,T003245,Sales,15
+2,T003246,Customer Service,10
+2,T003247,Finance,9
+2,T003248,HR,13
+2,T003249,Logistics,11
+2,T003250,Engineering,12
+2,T003251,Operations,15
+2,T003252,HR,13
+2,T003253,Logistics,10
+2,T003254,Logistics,10
+2,T003255,Engineering,13
+2,T003256,Marketing,16
+2,T003257,Marketing,13
+2,T003258,Operations,14
+2,T003259,Customer Service,15
+2,T003260,Operations,10
+2,T003261,HR,14
+2,T003262,Marketing,19
+2,T003263,Marketing,14
+2,T003264,Engineering,14
+2,T003265,Marketing,10
+2,T003266,Customer Service,13
+2,T003267,Logistics,10
+2,T003268,Sales,14
+2,T003269,Customer Service,13
+2,T003270,Marketing,9
+2,T003271,Finance,11
+2,T003272,Logistics,12
+2,T003273,Engineering,10
+2,T003274,Finance,12
+2,T003275,Operations,23
+2,T003276,Engineering,11
+2,T003277,HR,13
+2,T003278,Engineering,7
+2,T003279,Operations,17
+2,T003280,Customer Service,16
+2,T003281,Operations,9
+2,T003282,Operations,10
+2,T003283,Logistics,13
+2,T003284,Logistics,10
+2,T003285,Marketing,12
+2,T003286,HR,15
+2,T003287,HR,14
+2,T003288,Finance,14
+2,T003289,Customer Service,9
+2,T003290,Operations,11
+2,T003291,HR,10
+2,T003292,Marketing,4
+2,T003293,Finance,13
+2,T003294,HR,15
+2,T003295,Marketing,4
+2,T003296,Logistics,13
+2,T003297,HR,15
+2,T003298,Logistics,9
+2,T003299,Operations,10
+2,T003300,Marketing,9
+2,T003301,Engineering,12
+2,T003302,Engineering,11
+2,T003303,HR,4
+2,T003304,Engineering,17
+2,T003305,Operations,10
+2,T003306,Marketing,15
+2,T003307,Logistics,9
+2,T003308,Operations,11
+2,T003309,Sales,12
+2,T003310,Engineering,17
+2,T003311,Logistics,18
+2,T003312,Sales,14
+2,T003313,Logistics,12
+2,T003314,Finance,16
+2,T003315,HR,13
+2,T003316,Finance,3
+2,T003317,Operations,10
+2,T003318,Marketing,12
+2,T003319,Customer Service,10
+2,T003320,Operations,15
+2,T003321,Finance,11
+2,T003322,HR,12
+2,T003323,Marketing,14
+2,T003324,Customer Service,13
+2,T003325,Engineering,15
+2,T003326,Customer Service,15
+2,T003327,Operations,17
+2,T003328,Finance,13
+2,T003329,Logistics,12
+2,T003330,Customer Service,9
+2,T003331,Sales,10
+2,T003332,Finance,11
+2,T003333,Sales,10
+2,T003334,Finance,7
+2,T003335,Customer Service,4
+2,T003336,Operations,12
+2,T003337,Customer Service,10
+2,T003338,Customer Service,12
+2,T003339,Engineering,12
+2,T003340,Sales,12
+2,T003341,Engineering,13
+2,T003342,Engineering,12
+2,T003343,Marketing,11
+2,T003344,Logistics,14
+2,T003345,HR,10
+2,T003346,Finance,12
+2,T003347,Marketing,10
+2,T003348,Operations,8
+2,T003349,Finance,15
+2,T003350,Finance,15
+2,T003351,Logistics,16
+2,T003352,Operations,14
+2,T003353,Operations,16
+2,T003354,HR,12
+2,T003355,Marketing,13
+2,T003356,Operations,13
+2,T003357,Operations,9
+2,T003358,Finance,16
+2,T003359,Engineering,16
+2,T003360,Sales,19
+2,T003361,Engineering,16
+2,T003362,Engineering,17
+2,T003363,Customer Service,19
+2,T003364,HR,12
+2,T003365,HR,9
+2,T003366,HR,13
+2,T003367,Engineering,15
+2,T003368,Marketing,18
+2,T003369,HR,11
+2,T003370,Customer Service,12
+2,T003371,Finance,18
+2,T003372,Sales,15
+2,T003373,HR,10
+2,T003374,Logistics,18
+2,T003375,Operations,9
+2,T003376,Operations,8
+2,T003377,Engineering,11
+2,T003378,Logistics,11
+2,T003379,Finance,11
+2,T003380,Logistics,14
+2,T003381,Sales,17
+2,T003382,Logistics,12
+2,T003383,Sales,11
+2,T003384,Logistics,13
+2,T003385,HR,10
+2,T003386,Marketing,16
+2,T003387,Operations,12
+2,T003388,Logistics,13
+2,T003389,Customer Service,17
+2,T003390,Operations,13
+2,T003391,Sales,13
+2,T003392,Customer Service,14
+2,T003393,Operations,16
+2,T003394,Sales,10
+2,T003395,Marketing,14
+2,T003396,Engineering,12
+2,T003397,Operations,10
+2,T003398,Logistics,16
+2,T003399,Finance,17
+2,T003400,Finance,4
+2,T003401,Engineering,10
+2,T003402,Engineering,13
+2,T003403,Engineering,21
+2,T003404,Operations,14
+2,T003405,Operations,12
+2,T003406,Sales,10
+2,T003407,Logistics,19
+2,T003408,Customer Service,14
+2,T003409,Engineering,12
+2,T003410,HR,11
+2,T003411,Sales,17
+2,T003412,Logistics,14
+2,T003413,Logistics,8
+2,T003414,HR,14
+2,T003415,Operations,15
+2,T003416,Engineering,13
+2,T003417,Marketing,10
+2,T003418,Engineering,12
+2,T003419,Marketing,13
+2,T003420,Logistics,13
+2,T003421,Marketing,10
+2,T003422,Operations,12
+2,T003423,Customer Service,13
+2,T003424,Engineering,11
+2,T003425,Operations,9
+2,T003426,Customer Service,10
+2,T003427,Sales,13
+2,T003428,Finance,8
+2,T003429,Finance,10
+2,T003430,Sales,11
+2,T003431,Finance,12
+2,T003432,Customer Service,12
+2,T003433,Operations,12
+2,T003434,Operations,9
+2,T003435,Customer Service,17
+2,T003436,Engineering,16
+2,T003437,Sales,12
+2,T003438,HR,16
+2,T003439,Finance,3
+2,T003440,Logistics,16
+2,T003441,HR,16
+2,T003442,Logistics,11
+2,T003443,Sales,13
+2,T003444,Marketing,4
+2,T003445,Customer Service,18
+2,T003446,HR,13
+2,T003447,Engineering,15
+2,T003448,HR,13
+2,T003449,Finance,16
+2,T003450,Sales,13
+2,T003451,Operations,15
+2,T003452,HR,10
+2,T003453,Finance,13
+2,T003454,Logistics,8
+2,T003455,Finance,14
+2,T003456,Customer Service,14
+2,T003457,HR,17
+2,T003458,Logistics,10
+2,T003459,Sales,17
+2,T003460,HR,16
+2,T003461,Finance,13
+2,T003462,HR,9
+2,T003463,Finance,17
+2,T003464,Operations,13
+2,T003465,Logistics,11
+2,T003466,Engineering,13
+2,T003467,HR,13
+2,T003468,Operations,10
+2,T003469,Marketing,13
+2,T003470,Logistics,9
+2,T003471,Finance,10
+2,T003472,Customer Service,15
+2,T003473,Finance,12
+2,T003474,Logistics,18
+2,T003475,Logistics,4
+2,T003476,Finance,15
+2,T003477,Finance,11
+2,T003478,Sales,13
+2,T003479,Logistics,16
+2,T003480,Engineering,11
+2,T003481,HR,13
+2,T003482,Finance,18
+2,T003483,Logistics,12
+2,T003484,Logistics,12
+2,T003485,HR,12
+2,T003486,Marketing,15
+2,T003487,Customer Service,13
+2,T003488,HR,12
+2,T003489,Customer Service,17
+2,T003490,HR,17
+2,T003491,Finance,14
+2,T003492,Customer Service,11
+2,T003493,Engineering,13
+2,T003494,Engineering,11
+2,T003495,Logistics,15
+2,T003496,Sales,13
+2,T003497,Engineering,15
+2,T003498,Engineering,13
+2,T003499,Customer Service,14
+2,T003500,Logistics,18
+2,T003501,Operations,13
+2,T003502,Customer Service,4
+2,T003503,Finance,17
+2,T003504,Sales,12
+2,T003505,Finance,11
+2,T003506,Finance,21
+2,T003507,Engineering,14
+2,T003508,Finance,9
+2,T003509,Operations,16
+2,T003510,Customer Service,14
+2,T003511,Logistics,8
+2,T003512,Finance,13
+2,T003513,Marketing,4
+2,T003514,Finance,24
+2,T003515,Finance,12
+2,T003516,Operations,17
+2,T003517,HR,4
+2,T003518,Marketing,12
+2,T003519,Customer Service,15
+2,T003520,Customer Service,16
+2,T003521,Marketing,13
+2,T003522,Marketing,13
+2,T003523,Operations,15
+2,T003524,Finance,12
+2,T003525,Operations,13
+2,T003526,Customer Service,4
+2,T003527,Logistics,12
+2,T003528,Engineering,16
+2,T003529,HR,17
+2,T003530,Customer Service,10
+2,T003531,HR,16
+2,T003532,HR,12
+2,T003533,Operations,12
+2,T003534,Logistics,9
+2,T003535,Operations,14
+2,T003536,Operations,13
+2,T003537,Operations,12
+2,T003538,Operations,12
+2,T003539,Engineering,16
+2,T003540,Sales,11
+2,T003541,HR,12
+2,T003542,Engineering,13
+2,T003543,Engineering,16
+2,T003544,Customer Service,17
+2,T003545,Marketing,11
+2,T003546,HR,9
+2,T003547,Finance,4
+2,T003548,Logistics,10
+2,T003549,HR,9
+2,T003550,Customer Service,12
+2,T003551,Logistics,3
+2,T003552,Sales,11
+2,T003553,Sales,6
+2,T003554,Logistics,16
+2,T003555,Marketing,16
+2,T003556,Finance,10
+2,T003557,Marketing,11
+2,T003558,Engineering,19
+2,T003559,Operations,15
+2,T003560,Sales,13
+2,T003561,Customer Service,12
+2,T003562,Finance,13
+2,T003563,Sales,15
+2,T003564,Operations,10
+2,T003565,Customer Service,10
+2,T003566,Finance,9
+2,T003567,Operations,11
+2,T003568,Finance,16
+2,T003569,Finance,9
+2,T003570,Engineering,13
+2,T003571,Finance,15
+2,T003572,Marketing,12
+2,T003573,HR,17
+2,T003574,Engineering,12
+2,T003575,Marketing,15
+2,T003576,Customer Service,10
+2,T003577,Sales,14
+2,T003578,Sales,11
+2,T003579,Customer Service,12
+2,T003580,Sales,13
+2,T003581,HR,13
+2,T003582,Sales,18
+2,T003583,Logistics,15
+2,T003584,Engineering,10
+2,T003585,Operations,14
+2,T003586,Finance,10
+2,T003587,Finance,12
+2,T003588,Logistics,8
+2,T003589,Logistics,10
+2,T003590,Finance,14
+2,T003591,Marketing,12
+2,T003592,Marketing,18
+2,T003593,HR,13
+2,T003594,Operations,15
+2,T003595,Finance,20
+2,T003596,HR,19
+2,T003597,Logistics,13
+2,T003598,Engineering,13
+2,T003599,Sales,10
+2,T003600,Customer Service,14
+2,T003601,Logistics,12
+2,T003602,Operations,15
+2,T003603,Finance,3
+2,T003604,Operations,13
+2,T003605,Customer Service,13
+2,T003606,Logistics,15
+2,T003607,Finance,15
+2,T003608,Customer Service,14
+2,T003609,Customer Service,10
+2,T003610,Marketing,13
+2,T003611,Sales,16
+2,T003612,Marketing,14
+2,T003613,Finance,13
+2,T003614,Finance,9
+2,T003615,Customer Service,18
+2,T003616,Finance,8
+2,T003617,Logistics,10
+2,T003618,Finance,3
+2,T003619,HR,9
+2,T003620,Finance,14
+2,T003621,Sales,13
+2,T003622,Sales,17
+2,T003623,Marketing,14
+2,T003624,Operations,13
+2,T003625,Marketing,8
+2,T003626,Marketing,4
+2,T003627,Operations,18
+2,T003628,Engineering,12
+2,T003629,Operations,11
+2,T003630,Sales,13
+2,T003631,HR,17
+2,T003632,Logistics,15
+2,T003633,Operations,10
+2,T003634,Engineering,13
+2,T003635,Logistics,12
+2,T003636,Logistics,10
+2,T003637,Logistics,14
+2,T003638,Sales,10
+2,T003639,Customer Service,14
+2,T003640,Operations,4
+2,T003641,Customer Service,13
+2,T003642,Customer Service,11
+2,T003643,Engineering,9
+2,T003644,Customer Service,13
+2,T003645,Sales,13
+2,T003646,Marketing,12
+2,T003647,Marketing,11
+2,T003648,Customer Service,15
+2,T003649,Customer Service,13
+2,T003650,Engineering,12
+2,T003651,Marketing,12
+2,T003652,Operations,17
+2,T003653,Operations,8
+2,T003654,Marketing,4
+2,T003655,Sales,16
+2,T003656,Finance,12
+2,T003657,HR,9
+2,T003658,Logistics,14
+2,T003659,Operations,10
+2,T003660,Finance,13
+2,T003661,Engineering,12
+2,T003662,Operations,17
+2,T003663,Finance,14
+2,T003664,Marketing,16
+2,T003665,Engineering,16
+2,T003666,Finance,14
+2,T003667,Logistics,16
+2,T003668,Finance,11
+2,T003669,Engineering,3
+2,T003670,Customer Service,15
+2,T003671,HR,14
+2,T003672,Finance,17
+2,T003673,Logistics,4
+2,T003674,Logistics,14
+2,T003675,Marketing,14
+2,T003676,Marketing,13
+2,T003677,Finance,14
+2,T003678,Logistics,13
+2,T003679,Customer Service,10
+2,T003680,Operations,10
+2,T003681,Operations,13
+2,T003682,Finance,13
+2,T003683,Sales,15
+2,T003684,Marketing,15
+2,T003685,Sales,15
+2,T003686,Finance,14
+2,T003687,Marketing,12
+2,T003688,Marketing,7
+2,T003689,Marketing,16
+2,T003690,Sales,14
+2,T003691,Marketing,3
+2,T003692,Customer Service,17
+2,T003693,Marketing,14
+2,T003694,Logistics,8
+2,T003695,HR,10
+2,T003696,Customer Service,10
+2,T003697,Logistics,12
+2,T003698,Finance,13
+2,T003699,Finance,11
+2,T003700,HR,21
+2,T003701,Sales,8
+2,T003702,Customer Service,3
+2,T003703,Operations,12
+2,T003704,Engineering,12
+2,T003705,Finance,15
+2,T003706,Logistics,12
+2,T003707,HR,10
+2,T003708,Finance,12
+2,T003709,Engineering,14
+2,T003710,Finance,16
+2,T003711,Finance,16
+2,T003712,Operations,11
+2,T003713,Engineering,16
+2,T003714,HR,17
+2,T003715,Marketing,12
+2,T003716,HR,12
+2,T003717,Customer Service,12
+2,T003718,HR,14
+2,T003719,Engineering,19
+2,T003720,Operations,14
+2,T003721,Customer Service,13
+2,T003722,Customer Service,11
+2,T003723,Operations,17
+2,T003724,Marketing,13
+2,T003725,Logistics,16
+2,T003726,Operations,13
+2,T003727,Engineering,11
+2,T003728,Sales,15
+2,T003729,Marketing,18
+2,T003730,Engineering,12
+2,T003731,HR,15
+2,T003732,Logistics,12
+2,T003733,Sales,15
+2,T003734,Sales,11
+2,T003735,HR,3
+2,T003736,Sales,14
+2,T003737,Sales,17
+2,T003738,Sales,11
+2,T003739,Finance,9
+2,T003740,Finance,17
+2,T003741,HR,13
+2,T003742,Finance,11
+2,T003743,Logistics,9
+2,T003744,Logistics,12
+2,T003745,Operations,13
+2,T003746,Logistics,13
+2,T003747,Sales,11
+2,T003748,Finance,13
+2,T003749,Marketing,15
+2,T003750,Finance,12
+2,T003751,Engineering,14
+2,T003752,HR,17
+2,T003753,HR,10
+2,T003754,Sales,11
+2,T003755,Engineering,14
+2,T003756,Sales,14
+2,T003757,Marketing,16
+2,T003758,Finance,11
+2,T003759,Operations,15
+2,T003760,Customer Service,19
+2,T003761,HR,10
+2,T003762,Marketing,17
+2,T003763,Customer Service,16
+2,T003764,Engineering,11
+2,T003765,Logistics,13
+2,T003766,Sales,3
+2,T003767,Engineering,13
+2,T003768,Operations,10
+2,T003769,HR,12
+2,T003770,Operations,11
+2,T003771,Logistics,4
+2,T003772,Customer Service,15
+2,T003773,Operations,18
+2,T003774,Customer Service,9
+2,T003775,Customer Service,15
+2,T003776,Operations,13
+2,T003777,Marketing,14
+2,T003778,Sales,3
+2,T003779,Logistics,14
+2,T003780,Marketing,15
+2,T003781,Finance,14
+2,T003782,Sales,12
+2,T003783,Finance,16
+2,T003784,Finance,11
+2,T003785,HR,15
+2,T003786,Logistics,13
+2,T003787,Engineering,9
+2,T003788,Sales,13
+2,T003789,Sales,10
+2,T003790,Finance,15
+2,T003791,HR,14
+2,T003792,HR,14
+2,T003793,Finance,16
+2,T003794,Logistics,17
+2,T003795,HR,14
+2,T003796,Customer Service,4
+2,T003797,Marketing,16
+2,T003798,Operations,17
+2,T003799,Finance,15
+2,T003800,Sales,9
+2,T003801,Operations,11
+2,T003802,Engineering,15
+2,T003803,Customer Service,11
+2,T003804,Finance,14
+2,T003805,Logistics,12
+2,T003806,Finance,13
+2,T003807,Operations,20
+2,T003808,Marketing,15
+2,T003809,HR,12
+2,T003810,Finance,9
+2,T003811,Finance,14
+2,T003812,Operations,12
+2,T003813,Marketing,17
+2,T003814,Sales,14
+2,T003815,Sales,13
+2,T003816,Sales,13
+2,T003817,Logistics,14
+2,T003818,Marketing,13
+2,T003819,Customer Service,10
+2,T003820,Logistics,15
+2,T003821,Operations,11
+2,T003822,Marketing,10
+2,T003823,Marketing,11
+2,T003824,Customer Service,13
+2,T003825,Engineering,12
+2,T003826,Logistics,9
+2,T003827,Operations,13
+2,T003828,Customer Service,14
+2,T003829,Customer Service,16
+2,T003830,Finance,8
+2,T003831,Customer Service,11
+2,T003832,Customer Service,10
+2,T003833,HR,12
+2,T003834,Customer Service,10
+2,T003835,HR,12
+2,T003836,Finance,4
+2,T003837,Customer Service,4
+2,T003838,Marketing,13
+2,T003839,Engineering,10
+2,T003840,HR,14
+2,T003841,Finance,9
+2,T003842,Marketing,12
+2,T003843,Operations,13
+2,T003844,Engineering,16
+2,T003845,Finance,11
+2,T003846,Marketing,9
+2,T003847,Operations,15
+2,T003848,Logistics,16
+2,T003849,Engineering,12
+2,T003850,Customer Service,15
+2,T003851,Marketing,16
+2,T003852,Customer Service,10
+2,T003853,Engineering,16
+2,T003854,Engineering,4
+2,T003855,Marketing,7
+2,T003856,Engineering,12
+2,T003857,Customer Service,12
+2,T003858,Operations,14
+2,T003859,Marketing,3
+2,T003860,Finance,16
+2,T003861,Finance,17
+2,T003862,Marketing,13
+2,T003863,Finance,16
+2,T003864,Engineering,15
+2,T003865,Sales,9
+2,T003866,HR,15
+2,T003867,Customer Service,11
+2,T003868,Operations,12
+2,T003869,Logistics,9
+2,T003870,Marketing,14
+2,T003871,Operations,13
+2,T003872,Finance,13
+2,T003873,Marketing,13
+2,T003874,Operations,12
+2,T003875,HR,10
+2,T003876,Customer Service,11
+2,T003877,Customer Service,11
+2,T003878,Customer Service,10
+2,T003879,Marketing,10
+2,T003880,Engineering,11
+2,T003881,Operations,11
+2,T003882,Logistics,14
+2,T003883,Operations,16
+2,T003884,Finance,11
+2,T003885,Engineering,13
+2,T003886,Customer Service,14
+2,T003887,Operations,11
+2,T003888,Marketing,12
+2,T003889,HR,16
+2,T003890,Engineering,14
+2,T003891,Sales,12
+2,T003892,Sales,12
+2,T003893,Marketing,12
+2,T003894,Sales,12
+2,T003895,Customer Service,15
+2,T003896,Engineering,10
+2,T003897,Sales,13
+2,T003898,Operations,12
+2,T003899,Logistics,13
+2,T003900,Finance,13
+2,T003901,Customer Service,8
+2,T003902,Sales,15
+2,T003903,Sales,13
+2,T003904,Operations,12
+2,T003905,HR,9
+2,T003906,Operations,9
+2,T003907,Sales,15
+2,T003908,Sales,13
+2,T003909,Finance,12
+2,T003910,Customer Service,3
+2,T003911,Sales,16
+2,T003912,Operations,12
+2,T003913,HR,8
+2,T003914,Marketing,14
+2,T003915,Sales,13
+2,T003916,Logistics,13
+2,T003917,Sales,13
+2,T003918,Marketing,10
+2,T003919,Logistics,12
+2,T003920,Customer Service,14
+2,T003921,Customer Service,13
+2,T003922,Logistics,14
+2,T003923,Marketing,4
+2,T003924,Operations,15
+2,T003925,Customer Service,14
+2,T003926,Sales,11
+2,T003927,Operations,11
+2,T003928,Customer Service,11
+2,T003929,Sales,4
+2,T003930,Operations,12
+2,T003931,Engineering,14
+2,T003932,Marketing,4
+2,T003933,Customer Service,15
+2,T003934,HR,10
+2,T003935,Customer Service,11
+2,T003936,Engineering,14
+2,T003937,Marketing,13
+2,T003938,Operations,15
+2,T003939,Finance,13
+2,T003940,Sales,16
+2,T003941,HR,14
+2,T003942,Marketing,12
+2,T003943,Marketing,12
+2,T003944,Engineering,10
+2,T003945,HR,15
+2,T003946,Logistics,17
+2,T003947,Operations,16
+2,T003948,Engineering,13
+2,T003949,Finance,15
+2,T003950,Engineering,4
+2,T003951,Logistics,8
+2,T003952,Logistics,11
+2,T003953,Logistics,4
+2,T003954,Logistics,9
+2,T003955,Sales,12
+2,T003956,Finance,9
+2,T003957,Sales,13
+2,T003958,Engineering,10
+2,T003959,Sales,16
+2,T003960,Marketing,15
+2,T003961,HR,12
+2,T003962,Operations,13
+2,T003963,Logistics,13
+2,T003964,HR,13
+2,T003965,HR,15
+2,T003966,Engineering,13
+2,T003967,Engineering,12
+2,T003968,Engineering,11
+2,T003969,Logistics,10
+2,T003970,HR,8
+2,T003971,Operations,11
+2,T003972,Marketing,13
+2,T003973,HR,14
+2,T003974,Engineering,7
+2,T003975,Logistics,17
+2,T003976,Engineering,16
+2,T003977,Customer Service,13
+2,T003978,Engineering,17
+2,T003979,Operations,9
+2,T003980,Engineering,11
+2,T003981,Engineering,9
+2,T003982,Finance,14
+2,T003983,Finance,16
+2,T003984,Customer Service,17
+2,T003985,Customer Service,3
+2,T003986,Finance,13
+2,T003987,Marketing,11
+2,T003988,Finance,9
+2,T003989,HR,10
+2,T003990,Finance,11
+2,T003991,Finance,11
+2,T003992,Engineering,18
+2,T003993,Engineering,10
+2,T003994,HR,9
+2,T003995,HR,11
+2,T003996,Sales,9
+2,T003997,Customer Service,11
+2,T003998,Finance,20
+2,T003999,Engineering,14

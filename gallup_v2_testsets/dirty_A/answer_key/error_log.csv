@@ -1,0 +1,9 @@
+error_id,file,wave,key,column,original_value,injected_value,error_type,expected_check,expected_status,expected_effect
+E001,survey_responses.csv,1,E00004763,(whole row),,row repeated,duplicate employee in a wave,INT_DUPLICATE,FAIL,blocks all analysis
+E002,survey_responses.csv,1,E00002545,Q01,5,9,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E003,survey_responses.csv,1,E00003955,team_id,T000315,T999999,team not in team file,INT_ORPHAN_TEAM,FAIL,blocks all analysis
+E004,individual_outcomes.csv,1,E00000079,(whole row),present,row deleted,survey row without outcomes,INT_UNMATCHED_OUTCOME,FAIL,blocks all analysis
+E005,individual_outcomes.csv,1,E00000359,unplanned_absence_days_6m,1,-3,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E006,survey_responses.csv,1,E00004471,"Q04,Q08",answered,blank,respondent skipped items,INT_PARTIAL_RESPONSE,WARN,analysis continues with a caveat
+E007,individual_outcomes.csv,1,E00002261,turnover_window_end,2025-03-08,2024-02-07,outcome dated on or before the survey,LK_DATE_turnover,FAIL,blocks turnover analysis only
+E008,survey_responses.csv,,(column),performance_rating,absent,column added,outcome column inside the survey file,LK_SURVEY_COLUMNS,FAIL,blocks all analysis

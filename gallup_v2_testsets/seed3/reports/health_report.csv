@@ -1,0 +1,46 @@
+step,code,check,status,detail
+1 Integrity,INT_DUPLICATE,Duplicate employee per wave,PASS,0 duplicate rows
+1 Integrity,INT_SCORE_RANGE,Q12 scores within 1-5,PASS,0 out-of-range values
+1 Integrity,INT_ORPHAN_TEAM,Every employee maps to a team,PASS,0 orphan rows
+1 Integrity,INT_UNMATCHED_OUTCOME,Every survey row has outcomes,PASS,0 unmatched rows
+1 Integrity,INT_NEGATIVE_VALUES,No negative tenure or absence,PASS,0 negative values
+1 Integrity,INT_PARTIAL_RESPONSE,Respondents answered all 12 items,PASS,0 partial responses
+2 Coverage,COV_GROUP_SIZE_department,Group sizes: department,PASS,"smallest Customer Service 11.4%, largest Sales 13.3%"
+2 Coverage,COV_GROUP_SIZE_role_level,Group sizes: role_level,PASS,"smallest Manager 10.1%, largest Individual contributor 64.8%"
+2 Coverage,COV_GROUP_SIZE_pay_band,Group sizes: pay_band,PASS,"smallest B4 10.0%, largest B2 35.2%"
+2 Coverage,COV_GROUP_SIZE_shift_type,Group sizes: shift_type,PASS,"smallest Night 10.0%, largest Day 70.0%"
+2 Coverage,COV_SMALL_TEAMS,Teams below n=5 (must be suppressed),WARN,5.0% of teams (200)
+3 Nonresponse,NR_OVERALL,Overall response rate,PASS,81.0%
+3 Nonresponse,NR_GAP_department,Response rate gap by department,PASS,Sales 78.5% vs HR 82.2% (gap 3.7%)
+3 Nonresponse,NR_GAP_role_level,Response rate gap by role_level,PASS,Senior 80.3% vs Individual contributor 81.3% (gap 1.0%)
+3 Nonresponse,NR_GAP_pay_band,Response rate gap by pay_band,PASS,B2 80.8% vs B4 82.0% (gap 1.2%)
+3 Nonresponse,NR_GAP_shift_type,Response rate gap by shift_type,PASS,Evening 80.9% vs Night 81.9% (gap 1.0%)
+3 Nonresponse,NR_GAP_tenure_band,Response rate gap by tenure_band,PASS,<2y 80.2% vs 2-5y 81.5% (gap 1.3%)
+3 Nonresponse,NR_SMD_tenure_years,Respondents vs non-respondents: tenure_years,PASS,SMD +0.016
+3 Nonresponse,NR_SMD_unplanned_absence_days_6m,Respondents vs non-respondents: unplanned_absence_days_6m,WARN,SMD -0.187
+3 Nonresponse,NR_SMD_performance_rating,Respondents vs non-respondents: performance_rating,PASS,SMD +0.095
+3 Nonresponse,NR_SMD_prior_performance_rating,Respondents vs non-respondents: prior_performance_rating,PASS,SMD -0.025
+3 Nonresponse,NR_LEAVERS,Leavers vs stayers response rate,WARN,"Leavers 59.9% vs stayers 85.7%, and non-respondents have more absence or lower ratings. Turnover effects are likely understated; raise response rates in high-risk groups."
+4 Response style,RS_STRAIGHTLINE,Straight-lining (same answer to all 12),PASS,2.1% of respondents
+4 Response style,RS_EXTREME,Extreme responding (>80% of answers are 1 or 5),WARN,7.8% of respondents
+4 Response style,RS_CEILING,Ceiling effect (item with most 5s),PASS,Q09 39.5% answered 5
+4 Response style,RS_ACQUIESCENCE,Acquiescence (share agree/strongly agree),PASS,58.8%
+5 Measurement,MS_ALPHA,"Reliability (Cronbach's alpha), all",PASS,alpha 0.93
+5 Measurement,MS_ALPHA_department,Reliability consistent across department,PASS,alpha 0.92 (Sales) to 0.93 (Engineering)
+5 Measurement,MS_ALPHA_role_level,Reliability consistent across role_level,PASS,alpha 0.93 (Manager) to 0.93 (Senior)
+5 Measurement,MS_ALPHA_tenure_band,Reliability consistent across tenure_band,PASS,alpha 0.92 (10y+) to 0.93 (5-10y)
+5 Measurement,MS_DIF,Item bias by department (DIF screen),WARN,"Items behave differently by department: Q02, Q07"
+6 Outcome labels,OL_PERF_GAP_role_level,Performance rating gap by role_level,PASS,Individual contributor 3.53 vs Manager 3.54 (0.01 SD)
+6 Outcome labels,OL_TURNOVER_GAP_role_level,Turnover rate gap by role_level,PASS,Individual contributor 18.2% vs Senior 18.4%
+6 Outcome labels,OL_PERF_GAP_pay_band,Performance rating gap by pay_band,PASS,B4 3.50 vs B2 3.54 (0.03 SD)
+6 Outcome labels,OL_TURNOVER_GAP_pay_band,Turnover rate gap by pay_band,PASS,B2 18.1% vs B4 19.0%
+6 Outcome labels,OL_PERF_GAP_department,Performance rating gap by department,WARN,Logistics 2.24 vs Sales 4.58 (1.96 SD)
+6 Outcome labels,OL_TURNOVER_GAP_department,Turnover rate gap by department,WARN,HR 15.9% vs Sales 29.6%
+6 Outcome labels,OL_PRIOR_ANCHOR,Rating tracks prior rating,WARN,r = 0.36
+7 Survivorship,SV_STAYER_SHARE,Wave 2 made of wave 1 stayers,WARN,"81.7% stayers, 18.3% new hires"
+7 Survivorship,SV_LEAVER_ENGAGEMENT,Leavers were less engaged (wave 2 over-represents engaged staff),WARN,stayers vs leavers mean score SMD +0.57
+8 Aggregation,AG_SIMPSON,Pooled vs within-department direction flips,WARN,"Q07 x performance_rating (pooled -0.12, within-department +0.21)"
+9 Leakage,LK_DATE_turnover,Turnover measured after the survey,PASS,"all 100,000 rows: turnover_window_end is after the survey date"
+9 Leakage,LK_DATE_absence,Absence measured after the survey,PASS,"all 100,000 rows: absence_window_end is after the survey date"
+9 Leakage,LK_DATE_performance,Performance measured after the survey,PASS,"all 100,000 rows: performance_review_date is after the survey date"
+9 Leakage,LK_SURVEY_COLUMNS,No outcome columns inside the survey file,PASS,none found

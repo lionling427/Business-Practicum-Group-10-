@@ -1,0 +1,10 @@
+error_id,file,wave,key,column,original_value,injected_value,error_type,expected_check,expected_status,expected_effect
+E001,survey_responses.csv,1,E00004763,Q03,2,1,boundary score (valid),INT_SCORE_RANGE,PASS,no effect
+E002,survey_responses.csv,1,E00002545,Q09,3,5,boundary score (valid),INT_SCORE_RANGE,PASS,no effect
+E003,individual_outcomes.csv,1,E00003955,unplanned_absence_days_6m,2,0,zero absence (valid),INT_NEGATIVE_VALUES,PASS,no effect
+E004,survey_responses.csv,1,E00000079,tenure_years,1.7,0.0,zero tenure (valid),INT_NEGATIVE_VALUES,PASS,no effect
+E005,individual_outcomes.csv,1,E00000359,absence_window_end,2024-09-10,2024-03-13,boundary date (valid),LK_DATE_absence,PASS,no effect
+E006,survey_responses.csv,1,E00004471,Q01,5,0,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E007,survey_responses.csv,1,E00002261,Q02,5,6,score outside 1-5,INT_SCORE_RANGE,FAIL,blocks all analysis
+E008,survey_responses.csv,1,E00004817,tenure_years,1.7,-0.1,impossible negative value,INT_NEGATIVE_VALUES,FAIL,blocks all analysis
+E009,individual_outcomes.csv,1,E00004374,absence_window_end,2024-09-19,2024-03-21,outcome dated on or before the survey,LK_DATE_absence,FAIL,blocks absence analysis only

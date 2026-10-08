@@ -1,0 +1,6 @@
+area,check,result,expected,observed
+Health check,INT_SCORE_RANGE catches the planted errors,PASS,"FAIL, 2 violation(s) [E001, E002, E006 + 1 more]","FAIL, 2 violation(s)"
+Health check,INT_NEGATIVE_VALUES catches the planted errors,PASS,"FAIL, 1 violation(s) [E003, E004, E008]","FAIL, 1 violation(s)"
+Health check,LK_DATE_absence catches the planted errors,PASS,"FAIL, 1 violation(s) [E005, E009]","FAIL, 1 violation(s)"
+Health check,No FAIL on checks without planted errors,PASS,none,none
+Health check,Blocks exactly the affected outcomes,PASS,['all'],['all']
