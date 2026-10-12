@@ -174,9 +174,16 @@ else:
         key = next(k for k in REAL if k.startswith(tid + "_"))
         check("True effects", f"{tid} {item} -> {kind}", hi < 1, f"ratio < 1 (realized {REAL[key]:.2f})",
               fmt_ratio(model, item))
+        # v2.1: the answer key must not list a "true effect" that a correct agent would call trivial
+        check("True effects", f"{tid} realized value outside the no-effect band",
+              abs(np.log(REAL[key])) >= np.log(1 + MEANINGFUL_RATIO), "realized ratio < 0.91 or > 1.10",
+              f"{REAL[key]:.3f}")
     b = pm.params["Q01"]
     check("True effects", "T4 Q01 -> performance", b > 0 and pm.pvalues["Q01"] < 0.05,
           f"beta > 0 (realized {REAL['T4_Q01_performance_beta']:.2f})", f"beta {b:.2f} (p={pm.pvalues['Q01']:.3f})")
+    check("True effects", "T4 realized value outside the no-effect band",
+          abs(REAL["T4_Q01_performance_beta"]) >= MEANINGFUL_BETA, "|realized beta| >= 0.05",
+          f"{REAL['T4_Q01_performance_beta']:.3f}")
 
 # --- True nulls: associated alone, no independent effect in the full model -----
 raw = lambda f, x: f.pvalues[x] < 0.05

@@ -22,7 +22,7 @@ Examples
 Variants
   main     the standard test data
   null     every engagement item has zero effect on every outcome
-  weak     the five true effects (T1-T5) are half as strong on the log/beta scale
+  weak     T1-T3 half as strong on the log scale, T4 beta 0.10, T5 IRR 0.87 (kept outside the no-effect band)
   seed     same as main; use --seed 2 or 3 to check stability
   dirty_A  main data + one error of each type (tests each health-check rule)
   dirty_B  main data + many overlapping errors and a missing date column
@@ -41,7 +41,7 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # find stats_tools.py next to this file
 import stats_tools as st
 
-GENERATOR_VERSION = "2.0"
+GENERATOR_VERSION = "2.1"
 
 # ---------------------------------------------------------------------------
 # STEP 0. Configuration
@@ -107,6 +107,10 @@ if ARGS.variant == "weak":
               "T3_Q12_turnover_OR", "T5_Q05_absence_IRR"]:
         TRUTH[k] = round(float(np.sqrt(TRUTH[k])), 3)
     TRUTH["T4_Q01_performance_beta"] = 0.10
+    # v2.1 fix: half of T5 on the log scale (0.922) is realized near 0.94 among respondents,
+    # inside the 0.91-1.10 "no meaningful effect" band, so a correct agent would not report it.
+    # Every true effect must be realized outside the band; 0.87 keeps T5 weaker than main (0.85).
+    TRUTH["T5_Q05_absence_IRR"] = 0.87
 if ARGS.variant == "null":
     for k in ["T1_Q04_turnover_OR", "T1_X5_tenure_lt2_OR", "T2_Q05_turnover_OR",
               "T3_Q12_turnover_OR", "T5_Q05_absence_IRR"]:
@@ -500,7 +504,7 @@ def write_readme(out_dir, meta):
     purpose = {
         "main": "Standard test data with 5 true effects, 3 true nulls and 8 traps.",
         "null": "Every engagement item has zero effect on every outcome. A correct agent reports no item as a driver.",
-        "weak": "The five true effects are half as strong. Tests detection without exaggeration.",
+        "weak": "The true effects are weaker (T1-T3 half strength, T4 beta 0.10, T5 IRR 0.87) but still outside the no-effect band. Tests detection without exaggeration.",
         "seed": "Same design as the main data with a different random seed. Results should match the main data.",
         "dirty_A": "Main data plus one error of each type. Each health-check rule should fire once.",
         "dirty_B": "Main data plus many overlapping errors and a missing date column.",

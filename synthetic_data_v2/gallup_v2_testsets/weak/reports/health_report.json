@@ -1,6 +1,6 @@
 {
   "summary": {
-    "checker_version": "2.0",
+    "checker_version": "3.0",
     "dataset": "weak",
     "checks_run": 45,
     "pass": 34,
@@ -202,7 +202,7 @@
       "status": "PASS",
       "detail": "81.5%",
       "metrics": {
-        "rate": 0.8154
+        "rate": 0.8147
       },
       "evidence_strength": "none",
       "affects": [
@@ -215,9 +215,9 @@
       "code": "NR_GAP_department",
       "check": "Response rate gap by department",
       "status": "PASS",
-      "detail": "Sales 79.7% vs Finance 82.3% (gap 2.6%)",
+      "detail": "Sales 78.7% vs HR 82.4% (gap 3.7%)",
       "metrics": {
-        "gap": 0.0255
+        "gap": 0.0372
       },
       "evidence_strength": "none",
       "affects": [
@@ -230,9 +230,9 @@
       "code": "NR_GAP_role_level",
       "check": "Response rate gap by role_level",
       "status": "PASS",
-      "detail": "Senior 81.4% vs Individual contributor 81.6% (gap 0.2%)",
+      "detail": "Manager 81.4% vs Senior 81.5% (gap 0.1%)",
       "metrics": {
-        "gap": 0.0017
+        "gap": 0.0013
       },
       "evidence_strength": "none",
       "affects": [
@@ -245,9 +245,9 @@
       "code": "NR_GAP_pay_band",
       "check": "Response rate gap by pay_band",
       "status": "PASS",
-      "detail": "B1 81.4% vs B3 81.8% (gap 0.5%)",
+      "detail": "B4 81.4% vs B2 81.5% (gap 0.1%)",
       "metrics": {
-        "gap": 0.0047
+        "gap": 0.001
       },
       "evidence_strength": "none",
       "affects": [
@@ -260,9 +260,9 @@
       "code": "NR_GAP_shift_type",
       "check": "Response rate gap by shift_type",
       "status": "PASS",
-      "detail": "Night 80.8% vs Day 81.7% (gap 0.9%)",
+      "detail": "Evening 81.2% vs Day 81.5% (gap 0.4%)",
       "metrics": {
-        "gap": 0.009
+        "gap": 0.0038
       },
       "evidence_strength": "none",
       "affects": [
@@ -275,9 +275,9 @@
       "code": "NR_GAP_tenure_band",
       "check": "Response rate gap by tenure_band",
       "status": "PASS",
-      "detail": "<2y 80.8% vs 2-5y 82.0% (gap 1.2%)",
+      "detail": "<2y 80.7% vs 10y+ 82.5% (gap 1.9%)",
       "metrics": {
-        "gap": 0.012
+        "gap": 0.0185
       },
       "evidence_strength": "none",
       "affects": [
@@ -290,9 +290,9 @@
       "code": "NR_SMD_tenure_years",
       "check": "Respondents vs non-respondents: tenure_years",
       "status": "PASS",
-      "detail": "SMD +0.021",
+      "detail": "SMD +0.033",
       "metrics": {
-        "smd": 0.021
+        "smd": 0.033
       },
       "evidence_strength": "none",
       "affects": [
@@ -305,9 +305,9 @@
       "code": "NR_SMD_unplanned_absence_days_6m",
       "check": "Respondents vs non-respondents: unplanned_absence_days_6m",
       "status": "WARN",
-      "detail": "SMD -0.135",
+      "detail": "SMD -0.144",
       "metrics": {
-        "smd": -0.135
+        "smd": -0.144
       },
       "evidence_strength": "weak",
       "affects": [
@@ -322,9 +322,9 @@
       "code": "NR_SMD_performance_rating",
       "check": "Respondents vs non-respondents: performance_rating",
       "status": "PASS",
-      "detail": "SMD +0.048",
+      "detail": "SMD +0.053",
       "metrics": {
-        "smd": 0.048
+        "smd": 0.053
       },
       "evidence_strength": "none",
       "affects": [
@@ -337,9 +337,9 @@
       "code": "NR_SMD_prior_performance_rating",
       "check": "Respondents vs non-respondents: prior_performance_rating",
       "status": "PASS",
-      "detail": "SMD +0.002",
+      "detail": "SMD -0.000",
       "metrics": {
-        "smd": 0.002
+        "smd": -0.0
       },
       "evidence_strength": "none",
       "affects": [
@@ -352,11 +352,11 @@
       "code": "NR_LEAVERS",
       "check": "Leavers vs stayers response rate",
       "status": "WARN",
-      "detail": "Leavers 59.8% vs stayers 86.4%, and non-respondents have more absence or lower ratings. Turnover effects are likely understated; raise response rates in high-risk groups.",
+      "detail": "Leavers 60.0% vs stayers 86.3%, and non-respondents have more absence or lower ratings. Turnover effects are likely understated; raise response rates in high-risk groups.",
       "metrics": {
-        "leaver_rate": 0.5981,
-        "stayer_rate": 0.864,
-        "gap": 0.266
+        "leaver_rate": 0.5998,
+        "stayer_rate": 0.8627,
+        "gap": 0.2629
       },
       "evidence_strength": "strong",
       "affects": [
@@ -403,9 +403,9 @@
       "code": "RS_CEILING",
       "check": "Ceiling effect (item with most 5s)",
       "status": "PASS",
-      "detail": "Q09 39.0% answered 5",
+      "detail": "Q09 38.7% answered 5",
       "metrics": {
-        "max_share": 0.39
+        "max_share": 0.3872
       },
       "evidence_strength": "none",
       "affects": [
@@ -418,9 +418,9 @@
       "code": "RS_ACQUIESCENCE",
       "check": "Acquiescence (share agree/strongly agree)",
       "status": "PASS",
-      "detail": "58.6%",
+      "detail": "58.5%",
       "metrics": {
-        "share": 0.5857
+        "share": 0.5845
       },
       "evidence_strength": "none",
       "affects": [
@@ -448,9 +448,9 @@
       "code": "MS_ALPHA_department",
       "check": "Reliability consistent across department",
       "status": "PASS",
-      "detail": "alpha 0.93 (Sales) to 0.93 (Operations)",
+      "detail": "alpha 0.93 (Sales) to 0.93 (Logistics)",
       "metrics": {
-        "range": 0.005
+        "range": 0.006
       },
       "evidence_strength": "none",
       "affects": [
@@ -478,9 +478,9 @@
       "code": "MS_ALPHA_tenure_band",
       "check": "Reliability consistent across tenure_band",
       "status": "PASS",
-      "detail": "alpha 0.93 (<2y) to 0.93 (10y+)",
+      "detail": "alpha 0.93 (5-10y) to 0.93 (10y+)",
       "metrics": {
-        "range": 0.006
+        "range": 0.004
       },
       "evidence_strength": "none",
       "affects": [
@@ -514,9 +514,9 @@
       "code": "OL_PERF_GAP_role_level",
       "check": "Performance rating gap by role_level",
       "status": "PASS",
-      "detail": "Manager 3.51 vs Senior 3.54 (0.02 SD)",
+      "detail": "Manager 3.50 vs Senior 3.54 (0.03 SD)",
       "metrics": {
-        "gap_sd": 0.023
+        "gap_sd": 0.033
       },
       "evidence_strength": "none",
       "affects": [
@@ -546,7 +546,7 @@
       "status": "PASS",
       "detail": "B2 3.52 vs B4 3.55 (0.02 SD)",
       "metrics": {
-        "gap_sd": 0.023
+        "gap_sd": 0.024
       },
       "evidence_strength": "none",
       "affects": [
@@ -574,9 +574,9 @@
       "code": "OL_PERF_GAP_department",
       "check": "Performance rating gap by department",
       "status": "WARN",
-      "detail": "Logistics 2.27 vs Sales 4.61 (1.96 SD)",
+      "detail": "Logistics 2.27 vs Sales 4.61 (1.95 SD)",
       "metrics": {
-        "gap_sd": 1.962
+        "gap_sd": 1.953
       },
       "evidence_strength": "strong",
       "affects": [
@@ -608,9 +608,9 @@
       "code": "OL_PRIOR_ANCHOR",
       "check": "Rating tracks prior rating",
       "status": "WARN",
-      "detail": "r = 0.35",
+      "detail": "r = 0.36",
       "metrics": {
-        "r": 0.351
+        "r": 0.359
       },
       "evidence_strength": "weak",
       "affects": [
@@ -660,20 +660,20 @@
       "code": "AG_SIMPSON",
       "check": "Pooled vs within-department direction flips",
       "status": "WARN",
-      "detail": "Q02 x performance_rating (pooled -0.01, within-department +0.11); Q07 x performance_rating (pooled -0.16, within-department +0.16)",
+      "detail": "Q02 x performance_rating (pooled -0.01, within-department +0.11); Q07 x performance_rating (pooled -0.15, within-department +0.17)",
       "metrics": {
         "pairs": [
           {
             "item": "Q02",
             "outcome": "performance",
-            "pooled_r": -0.015,
-            "within_r": 0.109
+            "pooled_r": -0.006,
+            "within_r": 0.113
           },
           {
             "item": "Q07",
             "outcome": "performance",
-            "pooled_r": -0.163,
-            "within_r": 0.159
+            "pooled_r": -0.149,
+            "within_r": 0.17
           }
         ]
       },
