@@ -1,0 +1,48 @@
+{
+  "_about": "External Gallup resources linked from recommendations. Every URL was checked on 2026-10-14 (the Gallup Access help article blocks scripts, so check it in a browser). Organizations with a Gallup Access licence can put their own sign-in link in gallup_access_url. This app is independent and not endorsed by Gallup.",
+  "gallup_access_url": "",
+  "action_planning": [
+    {
+      "title": "Action Planning in Gallup Access (help article)",
+      "url": "https://support.gallup.com/hc/en-us/articles/48556179640851-Action-Planning",
+      "why": "How to create an action plan linked to a Q12 item for a team, and add tasks.",
+      "script_check": false
+    },
+    {
+      "title": "What to Do With Employee Survey Results",
+      "url": "https://www.gallup.com/workplace/238001/employee-survey-results.aspx",
+      "why": "Gallup's guidance on discussing results with the team and acting on them."
+    }
+  ],
+  "manager_learning": [
+    {
+      "title": "The Gallup Manager Program",
+      "url": "https://www.gallup.com/learning/346556/manager-development-course.aspx",
+      "why": "Gallup's course on coaching conversations and engagement for people managers."
+    },
+    {
+      "title": "Manager Development Strategy: A Practical Guide",
+      "url": "https://www.gallup.com/workplace/702065/manager-development.aspx",
+      "why": "How organizations build manager capability."
+    },
+    {
+      "title": "How to Measure Employee Engagement With the Q12",
+      "url": "https://www.gallup.com/workplace/356045/q12-question-summary.aspx",
+      "why": "What each of the 12 elements measures and why it matters."
+    }
+  ],
+  "elements": {
+    "Q01": {"title": "The First Element of Great Managing", "url": "https://news.gallup.com/businessjournal/26281/first-element-great-managing.aspx"},
+    "Q02": {"title": "The Second Element of Great Managing", "url": "https://news.gallup.com/businessjournal/27115/second-element-great-managing.aspx"},
+    "Q03": {"title": "The Third Element of Great Managing", "url": "https://news.gallup.com/businessjournal/27805/third-element-great-managing.aspx"},
+    "Q04": {"title": "The Fourth Element of Great Managing", "url": "https://news.gallup.com/businessjournal/28270/fourth-element-great-managing.aspx"},
+    "Q05": {"title": "The Fifth Element of Great Managing", "url": "https://news.gallup.com/businessjournal/28561/fifth-element-great-managing.aspx"},
+    "Q06": {"title": "The Sixth Element of Great Managing", "url": "https://news.gallup.com/businessjournal/28624/sixth-element-great-managing.aspx"},
+    "Q07": {"title": "The Seventh Element of Great Managing", "url": "https://news.gallup.com/businessjournal/102490/seventh-element-great-managing.aspx"},
+    "Q08": {"title": "The Eighth Element of Great Managing", "url": "https://news.gallup.com/businessjournal/103084/eighth-element-great-managing.aspx"},
+    "Q09": {"title": "The Ninth Element of Great Managing", "url": "https://news.gallup.com/businessjournal/103540/ninth-element-great-managing.aspx"},
+    "Q10": {"title": "The Tenth Element of Great Managing", "url": "https://news.gallup.com/businessjournal/104197/tenth-element-great-managing.aspx"},
+    "Q11": {"title": "The Eleventh Element of Great Managing", "url": "https://news.gallup.com/businessjournal/104644/eleventh-element-great-managing.aspx"},
+    "Q12": {"title": "The Twelfth Element of Great Managing", "url": "https://news.gallup.com/businessjournal/105838/twelfth-element-great-managing.aspx"}
+  }
+}
