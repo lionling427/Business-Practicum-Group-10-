@@ -1,0 +1,69 @@
+# Gallup-style report theme: white report pages, a near-black sidebar
+# (like Gallup's dark header band), green accents, and dark table headers.
+# Chart palettes were checked with the dataviz palette validator
+# (lightness, chroma, color-blind separation, contrast) in both modes.
+
+[theme]
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+baseFontSize = 15
+headingFontSizes = ["2.1rem", "1.5rem", "1.2rem", "1.05rem", "0.95rem", "0.85rem"]
+headingFontWeights = [700, 600, 600, 600, 600, 600]
+metricValueFontWeight = 600
+baseRadius = "6px"
+buttonRadius = "6px"
+showWidgetBorder = true
+showSidebarBorder = false
+linkUnderline = false
+
+[theme.light]
+primaryColor = "#1E7B34"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F3F4F2"
+textColor = "#1A1A1A"
+borderColor = "#E2E4E0"
+linkColor = "#1E7B34"
+greenColor = "#1E7B34"
+redColor = "#B5473F"
+orangeColor = "#C27C1E"
+blueColor = "#1F6FC5"
+grayColor = "#6B7069"
+dataframeHeaderBackgroundColor = "#1A1A1A"
+dataframeHeaderTextColor = "#FFFFFF"
+dataframeBorderColor = "#E2E4E0"
+chartCategoricalColors = ["#1E7B34", "#1F6FC5", "#B5473F", "#8C5BC4", "#C27C1E"]
+
+[theme.light.sidebar]
+backgroundColor = "#1A1A1A"
+secondaryBackgroundColor = "#2A2B2A"
+textColor = "#F4F5F3"
+borderColor = "#3A3B3A"
+primaryColor = "#5CC26E"
+linkColor = "#8FD69C"
+codeBackgroundColor = "#2A2B2A"
+
+[theme.dark]
+primaryColor = "#2E8B44"
+backgroundColor = "#141615"
+secondaryBackgroundColor = "#1E211F"
+textColor = "#E8EAE7"
+borderColor = "#2F332F"
+linkColor = "#5CC26E"
+greenColor = "#3A9E50"
+redColor = "#D9584C"
+orangeColor = "#B87D24"
+blueColor = "#3F86D6"
+grayColor = "#9AA09A"
+dataframeHeaderBackgroundColor = "#0B0C0B"
+dataframeHeaderTextColor = "#F4F5F3"
+dataframeBorderColor = "#2F332F"
+chartCategoricalColors = ["#3A9E50", "#3F86D6", "#D9584C", "#9B6FD6", "#B87D24"]
+
+[theme.dark.sidebar]
+backgroundColor = "#0B0C0B"
+secondaryBackgroundColor = "#1E211F"
+textColor = "#F4F5F3"
+borderColor = "#2A2D2A"
+primaryColor = "#5CC26E"
+linkColor = "#8FD69C"
+codeBackgroundColor = "#1E211F"
