@@ -136,7 +136,7 @@ def build_ceo_brief(df: pd.DataFrame, analysis: dict | None = None,
                                 f"lifting it is worth about {money(top['yearly_value'], c)} a year.")
     else:
         brief["bottom_line"] = engagement + "." + (
-            "" if analysis is not None else " Run the statistical analysis to see what drives "
+            "" if analysis is not None else " Add turnover, absence or performance data to see what drives "
             "results and what it is worth.")
 
     # Decisions for the CEO.

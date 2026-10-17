@@ -22,6 +22,7 @@ PAGES = [
     "app_pages/predictions.py",
     "app_pages/recommendations.py",
     "app_pages/financials.py",
+    "app_pages/scenarios.py",
     "app_pages/agent.py",
     "app_pages/data_quality.py",
     "app_pages/audit.py",
@@ -91,7 +92,6 @@ def test_analysis_runs_and_unlocks_findings(csv_bytes):
     at = _app_with_upload(csv_bytes)
     at.switch_page("app_pages/outcomes.py").run()
 
-    at.button(key="run_analysis_outcomes").click().run()
 
     _assert_clean(at, "outcomes after analysis")
     assert at.session_state["uploaded_analysis"] is not None
@@ -120,7 +120,6 @@ def test_change_analysis_runs(csv_bytes):
     at = _app_with_upload(csv_bytes)
     at.switch_page("app_pages/change.py").run()
 
-    at.button(key="run_change_analysis").click().run()
 
     _assert_clean(at, "change after analysis")
     assert at.session_state["change_analysis"]["results"].shape[0] > 0
@@ -167,7 +166,6 @@ def test_recommendations_page_builds_plans(csv_bytes):
     at = _app_with_upload(csv_bytes)
     at.switch_page("app_pages/recommendations.py").run()
 
-    at.button(key="build_recommendations").click().run()
 
     _assert_clean(at, "recommendations")
     assert any("Plan for each team" in h.value for h in at.subheader)
@@ -181,7 +179,6 @@ def test_financials_page_values_engagement(csv_bytes):
     at = _app_with_upload(csv_bytes)
     at.switch_page("app_pages/financials.py").run()
 
-    at.button(key="run_analysis_financials").click().run()
 
     _assert_clean(at, "financials")
     assert any("could be worth" in h.value for h in at.subheader)
@@ -211,9 +208,58 @@ def test_audit_page_runs_the_audit(csv_bytes):
     at = _app_with_upload(csv_bytes)
     at.switch_page("app_pages/audit.py").run()
 
-    at.button(key="run_analysis_audit").click().run()
     at.button(key="run_audit").click().run()
 
     _assert_clean(at, "audit")
     assert at.session_state["audit_result"]["audit"]["checks"]
     assert any("Is the math right?" in h.value for h in at.subheader)
+
+
+def test_scenarios_page_simulates(csv_bytes):
+
+    at = _app_with_upload(csv_bytes)
+    at.switch_page("app_pages/scenarios.py").run()
+
+
+    _assert_clean(at, "scenarios")
+    assert any("What the models expect" in h.value for h in at.subheader)
+    assert any(m.label == "Yearly value" for m in at.metric)
+
+
+def test_analysis_runs_automatically_without_a_button(csv_bytes):
+
+    at = _app_with_upload(csv_bytes)
+    at.switch_page("app_pages/outcomes.py").run()
+
+    _assert_clean(at, "outcomes, automatic analysis")
+    assert at.session_state["uploaded_analysis"] is not None
+    assert not [b for b in at.button if b.label == "Run statistical analysis"]
+
+
+def test_sidebar_guide_links_every_page():
+
+    from src.ui import GLOSSARY, PAGE_GUIDE
+
+    pages = {path for _, path, _ in PAGE_GUIDE}
+    assert pages == set(PAGES)
+    assert all(meaning.endswith(".") for _, meaning in GLOSSARY)
+
+
+def test_predictions_monthly_risk_with_demo_data(csv_bytes):
+
+    at = _app_with_upload(csv_bytes)
+    at.session_state["survival_source"] = "demo"
+    at.switch_page("app_pages/predictions.py").run()
+
+    _assert_clean(at, "predictions monthly risk")
+    assert any("Monthly leaving risk" in h.value for h in at.subheader)
+    assert any(m.label.startswith("Likely leavers, next") for m in at.metric)
+
+
+def test_data_page_shows_time_series_readiness(csv_bytes):
+
+    at = _app_with_upload(csv_bytes)
+    at.switch_page("app_pages/data_quality.py").run()
+
+    _assert_clean(at, "data readiness")
+    assert any("Ready for time-series prediction?" in h.value for h in at.subheader)

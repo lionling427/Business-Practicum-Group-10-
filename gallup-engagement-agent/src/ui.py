@@ -128,8 +128,8 @@ def empty_state():
             "with one row per employee and the 12 Q12 answers (1–5).\n"
             "2. Add business outcomes (turnover, absence, performance) to unlock "
             "the **Outcomes** page.\n"
-            "3. Run the statistical analysis to see which questions are linked "
-            "to results."
+            "3. The analysis runs automatically: start with **Overview** or the "
+            "**CEO brief**."
         )
 
         st.caption(
@@ -217,8 +217,9 @@ def outcome_tiles(df):
 
 def analysis_runner(df, key):
     """
-    Return the stored analysis. If outcome data exists but the analysis
-    has not run yet, show a call-to-action card with a run button.
+    Return the statistical analysis, running it automatically the first time a
+    page needs it (it takes well under a second). If it fails, show why with a
+    retry button instead of retrying on every rerun.
     """
 
     analysis = st.session_state.get("uploaded_analysis")
@@ -231,43 +232,115 @@ def analysis_runner(df, key):
     if validation["capabilities"]["level"] != OUTCOME_LEVEL:
         return None
 
+    error = st.session_state.get("analysis_error")
+
+    if error is None:
+
+        with st.spinner("Finding what drives your results..."):
+
+            try:
+                return run_statistical_analysis()
+            except Exception as exc:
+                st.session_state["analysis_error"] = str(exc)
+                error = str(exc)
+
     with st.container(border=True):
 
-        st.markdown(
-            "**:material/query_stats: Find what drives your results**"
-        )
+        st.error("The statistical analysis could not be completed.",
+                 icon=":material/error:")
+        st.caption(f"Technical detail: {error}")
 
-        st.caption(
-            "Runs the statistical models and robustness checks that link "
-            "each Q12 question to turnover, absence and performance. "
-            "It takes a few seconds."
-        )
-
-        if st.button(
-            "Run statistical analysis",
-            type="primary",
-            icon=":material/play_arrow:",
-            key=key,
-        ):
-
-            with st.spinner(
-                "Running statistical models and robustness checks..."
-            ):
-
-                try:
-
-                    run_statistical_analysis()
-
-                except Exception as exc:
-
-                    st.error("Statistical analysis could not be completed.")
-                    st.caption(f"Technical detail: {exc}")
-                    return None
-
-            st.toast(
-                "Statistical analysis complete.",
-                icon=":material/check_circle:",
-            )
+        if st.button("Try again", icon=":material/refresh:", key=key):
+            st.session_state.pop("analysis_error", None)
             st.rerun()
 
     return None
+
+
+# PROCESS – GUIDE AND GLOSSARY (SIDEBAR)
+
+PAGE_GUIDE = [
+    ("How are we doing overall?", "app_pages/overview.py", ":material/dashboard:"),
+    ("I need a one-page summary for leadership", "app_pages/ceo_brief.py", ":material/summarize:"),
+    ("Which questions score high or low?", "app_pages/engagement.py", ":material/favorite:"),
+    ("Is engagement getting better or worse?", "app_pages/change.py", ":material/timeline:"),
+    ("What drives turnover, absence and performance?", "app_pages/outcomes.py", ":material/query_stats:"),
+    ("Which teams need help first?", "app_pages/teams.py", ":material/groups:"),
+    ("What should we do, and where do we start?", "app_pages/action_story.py", ":material/auto_stories:"),
+    ("Who is likely to leave next year?", "app_pages/predictions.py", ":material/online_prediction:"),
+    ("What should each team's manager do?", "app_pages/recommendations.py", ":material/tips_and_updates:"),
+    ("What does it cost, and what is it worth?", "app_pages/financials.py", ":material/payments:"),
+    ("What if we improve something?", "app_pages/scenarios.py", ":material/tune:"),
+    ("I have my own question", "app_pages/agent.py", ":material/chat:"),
+    ("Is my data OK?", "app_pages/data_quality.py", ":material/fact_check:"),
+    ("Can we trust these numbers?", "app_pages/audit.py", ":material/verified:"),
+]
+
+GLOSSARY = [
+    ("Q12", "Gallup's 12 engagement questions, each answered from 1 (strongly disagree) "
+            "to 5 (strongly agree)."),
+    ("Engaged", "An employee whose average answer is 4.0 or higher."),
+    ("Agree", "Answering 4 or 5 on a question."),
+    ("Wave", "One round of the survey (wave 1 = the first survey, wave 2 = the next)."),
+    ("Linked to", "People who score higher on a question also tend to have better results, "
+                  "with other factors held equal. A link, not proof of cause."),
+    ("Passed all checks", "The link is strong enough, unlikely to be chance, and survives "
+                          "the robustness checks. Only these drive advice and money figures."),
+    ("Lower odds of leaving", "How much less likely someone is to leave for each 1-point "
+                              "higher score. 34% lower odds means clearly less likely."),
+    ("Likely range", "Where the true number probably lies (95% confidence)."),
+    ("High / Elevated risk", "The riskiest 20% of teams / the next 20%, from a model tested "
+                             "on data it never saw."),
+    ("Priority team", "Low on its focus question and worse than the company on turnover "
+                      "or absence."),
+    ("Privacy", "Only groups of 5 or more people are ever shown; never individual scores."),
+]
+
+
+def sidebar_help():
+    """Two small popovers: which page answers my question, and what the words mean."""
+
+    with st.sidebar:
+
+        with st.popover("Which page do I need?", icon=":material/explore:",
+                        width="stretch"):
+            st.markdown("**Pick your question**")
+            for question, page, icon in PAGE_GUIDE:
+                st.page_link(page, label=question, icon=icon)
+
+        if st.button("What do the words mean?", icon=":material/menu_book:",
+                     width="stretch", key="open_glossary"):
+            glossary_dialog()
+
+
+@st.dialog("What the words mean", width="large")
+def glossary_dialog():
+    """Shown in the main (light) area so it stays readable."""
+    for term, meaning in GLOSSARY:
+        st.markdown(f"**{term}**: {meaning}")
+
+
+# PROCESS – TIME-SERIES READINESS (DATA AND PREDICTIONS PAGES)
+
+READY_BADGES = {"pass": ":green-badge[:material/check: Ready]",
+                "warn": ":orange-badge[:material/warning: Improve]",
+                "fail": ":red-badge[:material/close: Missing]"}
+
+
+def readiness_panel(ready, show_checks=True):
+    """Verdict, what can run, and every check with how to fix it."""
+
+    show = st.success if ready["ready_for_survival"] and not ready["counts"]["fail"] else \
+        st.error if ready["counts"]["fail"] else st.warning
+    show(ready["verdict"], icon=":material/schedule:")
+
+    st.markdown("  ".join(
+        f":{'green' if ok else 'gray'}-badge[:material/{'check' if ok else 'block'}: {name}]"
+        for name, (ok, _) in ready["can_run"].items()))
+    st.caption(" · ".join(f"{name}: {need}" for name, (ok, need) in ready["can_run"].items()
+                          if not ok))
+
+    if show_checks:
+        for check in ready["checks"]:
+            st.markdown(f"{READY_BADGES[check['status']]} **{check['check']}:** {check['result']}"
+                        + (f"  \n:material/build: *How to fix:* {check['fix']}" if check["fix"] else ""))

@@ -31,6 +31,9 @@ from src.ui import (
 )
 
 
+RISK_MARKS = {"High": "🔴 High", "Elevated": "🟠 Elevated", "Typical": "⚪ Typical"}
+
+
 # PROCESS 2 – HEADER AND DATA
 
 page_header(
@@ -84,7 +87,7 @@ for (label, value, help_text), column in zip(tiles, st.columns(len(tiles))):
 
 if analysis is None:
     st.caption(
-        ":material/info: Run the statistical analysis on **Outcomes** to flag priority "
+        ":material/info: Add turnover, absence or performance data to flag priority "
         "teams and link focus questions to business results."
     )
 
@@ -129,7 +132,8 @@ with watch_tab:
 
         event = st.dataframe(
             shown[["team_id", "department", "employees", "q12_average", "turnover_risk",
-                   "absence_risk", "focus_label", "priority"]],
+                   "absence_risk", "focus_label", "priority"]].replace(
+                {"turnover_risk": RISK_MARKS, "absence_risk": RISK_MARKS}),
             hide_index=True,
             width="stretch",
             on_select="rerun",

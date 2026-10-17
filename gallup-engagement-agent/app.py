@@ -12,6 +12,7 @@ from src.tools.data_ingestion import (
 )
 from src.tools.health_check import OUTCOMES, check_upload
 from src.tools.longitudinal import derive_wave
+from src.ui import OUTCOME_LEVEL, run_statistical_analysis, sidebar_help
 
 
 # PROCESS 2 – PAGE CONFIGURATION
@@ -34,7 +35,10 @@ SESSION_DATA_KEYS = [
     "change_analysis",
     "trap_checks",
     "audit_result",
+    "analysis_error",
     "audit_sign_off",
+    "saved_scenarios",
+    "survival_results",
     "agent_context_cache",
     "uploaded_name",
     "upload_signature",
@@ -104,6 +108,16 @@ with st.sidebar:
                 )
                 st.session_state["uploaded_name"] = uploaded_file.name
                 st.session_state["upload_signature"] = upload_signature
+
+                # Run the analysis once now (well under a second), so every
+                # page opens with results instead of a "run" step.
+                if (st.session_state["uploaded_validation"]["capabilities"]["level"]
+                        == OUTCOME_LEVEL and "all" not in blocked):
+                    with st.spinner("Finding what drives your results..."):
+                        try:
+                            run_statistical_analysis()
+                        except Exception as exc:          # shown on the pages
+                            st.session_state["analysis_error"] = str(exc)
 
             validation = st.session_state["uploaded_validation"]
             health = st.session_state["health_report"]["summary"]
@@ -183,6 +197,7 @@ pages = {
         st.Page("app_pages/predictions.py", title="Predictions", icon=":material/online_prediction:"),
         st.Page("app_pages/recommendations.py", title="Recommendations", icon=":material/tips_and_updates:"),
         st.Page("app_pages/financials.py", title="Financials", icon=":material/payments:"),
+        st.Page("app_pages/scenarios.py", title="Scenarios", icon=":material/tune:"),
     ],
     "Tools": [
         st.Page("app_pages/agent.py", title="Ask AI", icon=":material/chat:"),
@@ -192,8 +207,11 @@ pages = {
 }
 
 # Sidebar navigation, grouped: ten report pages do not fit in a top bar.
-st.navigation(
+navigation = st.navigation(
     pages,
     position="sidebar",
     expanded=True,
-).run()
+)
+
+sidebar_help()          # needs the pages registered above
+navigation.run()
