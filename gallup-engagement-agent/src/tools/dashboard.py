@@ -192,8 +192,11 @@ def driver_chart(rows: pd.DataFrame, outcome: str):
     bars = alt.Chart(data).mark_bar(cornerRadiusEnd=3, height=18).encode(
         y=y,
         x=alt.X("size:Q", title=DRIVER_AXIS[outcome],
-                # Headroom so the value label at the end of the longest bar fits.
-                scale=alt.Scale(domain=[0, max(0.01, float(data["size"].max()) * 1.8)]),
+                # Headroom for the value labels; room on the left for links that
+                # go the other way (negative bars) so they never cover the names.
+                scale=alt.Scale(domain=[min(0.0, float(data["size"].min()) * 1.3),
+                                        max(0.01, float(data["size"].max())
+                                            * (2.4 if (data["size"] < 0).any() else 1.8))]),
                 axis=alt.Axis(tickCount=4)),
         color=alt.Color("reliability:N", title=None,
                         scale=alt.Scale(domain=["Passed all checks", "Use with caution"],
@@ -203,9 +206,11 @@ def driver_chart(rows: pd.DataFrame, outcome: str):
                  alt.Tooltip("headline:N", title="What it means"),
                  alt.Tooltip("reliability:N", title="Reliability"),
                  alt.Tooltip("caution:N", title="Why caution")])
-    labels = alt.Chart(data).mark_text(align="left", dx=5, fontSize=12).encode(
-        y=y, x="size:Q", text="size_text:N")
-    return (bars + labels).properties(height=alt.Step(30), width="container")
+    # Labels sit just right of the bar end (or of zero for bars going left).
+    labels = alt.Chart(data).transform_calculate(label_x="max(datum.size, 0)").mark_text(
+        align="left", dx=5, fontSize=12).encode(y=y, x="label_x:Q", text="size_text:N")
+    zero = alt.Chart(pd.DataFrame({"x": [0]})).mark_rule(color="#999").encode(x="x:Q")
+    return (bars + zero + labels).properties(height=alt.Step(30), width="container")
 
 
 

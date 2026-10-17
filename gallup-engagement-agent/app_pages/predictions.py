@@ -12,9 +12,18 @@ from src.tools.prediction import (
     forecast_engagement,
     group_risk_chart,
 )
+from src.tools.survival import (
+    HORIZON,
+    demo_person_month,
+    explain_monthly_risk,
+    monthly_chart,
+    monthly_risk,
+)
+from src.tools.ts_readiness import readiness
 from src.tools.visualization import SCOPE_COLUMNS
 from src.ui import (
     how_to_read,
+    readiness_panel,
     page_header,
     require_data,
     story_box,
@@ -222,4 +231,121 @@ with st.container(border=True):
             "were tested on your past surveys (extending the trend, or assuming the latest "
             "score holds) and the more accurate one is used. It assumes surveys are evenly "
             "spaced and nothing major changes."
+        )
+
+
+# PROCESS 5 – MONTHLY LEAVING RISK (TIME SERIES)
+
+raw = st.session_state.get("uploaded_raw", df)
+upload_ready = readiness(raw)["ready_for_survival"]
+
+with st.container(border=True):
+
+    title_col, source_col = st.columns([1.3, 2], vertical_alignment="bottom")
+    title_col.subheader("Monthly leaving risk", anchor=False)
+
+    sources = (["upload"] if upload_ready else []) + ["file", "demo"]
+    source = source_col.segmented_control(
+        "Data", options=sources, default=sources[0], key="survival_source",
+        format_func={"upload": "My upload", "file": "Person-month file",
+                     "demo": "Demo data"}.get,
+        label_visibility="collapsed") or sources[0]
+
+    st.caption(f"Who is likely to leave in each of the next {HORIZON} months, from monthly "
+               "history (one row per employee per month). Tested by rolling backtests on "
+               "months the model never saw.")
+
+    monthly = None
+    if source == "upload":
+        monthly, key = raw, ("upload", st.session_state.get("upload_signature"))
+    elif source == "demo":
+        monthly, key = demo_person_month(), ("demo",)
+        st.caption(":material/science: Demo data: 1,500 synthetic employees over 24 months.")
+    else:
+        file = st.file_uploader("Person-month file (CSV)", type=["csv"], key="person_month_file",
+                                help="One row per employee per month: employee_id, period "
+                                "(e.g. 2026-03), exited (1 in the month they leave) or "
+                                "exit_date, plus team_id, department, tenure_years, "
+                                "absence_days and pulse answers Q01–Q12 if you have them. "
+                                "An example file is on the Data page.")
+        if file is not None:
+            import pandas as pd
+            monthly, key = pd.read_csv(file), ("file", file.name, file.size)
+        else:
+            st.info("Upload a person-month file, or choose **Demo data** to see how it works.",
+                    icon=":material/upload_file:")
+
+    if monthly is not None:
+
+        cache = st.session_state.setdefault("survival_results", {})
+        if key not in cache:
+            with st.spinner("Testing the model on past months and looking ahead..."):
+                try:
+                    cache[key] = monthly_risk(monthly)
+                except (ValueError, KeyError) as exc:
+                    cache[key] = {"status": "error", "status_text": str(exc)}
+        result = cache[key]
+
+        if result["status"] == "not_ready":
+            readiness_panel(result["readiness"])
+        elif result["status"] != "useful":
+            st.warning(result["status_text"], icon=":material/warning:")
+            if "tests" in result:
+                st.dataframe(result["tests"], hide_index=True, width="stretch")
+        else:
+            tiles = [
+                (f"Likely leavers, next {HORIZON} months", f"~{result['expected_leavers']:,.0f}",
+                 f"Of {result['people_at_risk']:,} people employed in the latest month."),
+                ("Model accuracy", f"{result['auc']:.0%}",
+                 "How often it ranks a leaver above a stayer, in backtests (chance = 50%)."),
+                ("Simple baseline", f"{result['baseline_auc']:.0%}",
+                 "The same test using each team's recent exit rate."),
+                ("Predicted vs actual leavers", f"{result['calibration']:.0%}",
+                 "In backtests, predicted leavers as a share of those who actually left "
+                 "(100% = exactly right)."),
+            ]
+            for (label, value, help_text), column in zip(tiles, st.columns(len(tiles))):
+                column.metric(label, value, help=help_text, border=True)
+
+            chart_col, story_col = st.columns([3, 2], gap="large")
+            with chart_col:
+                st.altair_chart(monthly_chart(result), width="stretch",
+                                alt="Expected leavers in each of the next months")
+                st.caption("Bars = expected leavers each month; dashed line = running total.")
+            with story_col:
+                story_box(explain_monthly_risk(result))
+
+            with st.expander("By department and team", icon=":material/table_chart:"):
+                count_columns = {
+                    "people": st.column_config.NumberColumn("People", format="%d"),
+                    "average_chance": st.column_config.NumberColumn(
+                        f"Chance of leaving in {HORIZON} months", format="percent"),
+                    "expected_leavers": st.column_config.NumberColumn(
+                        "Expected leavers", format="%.1f")}
+                if not result["by_department"].empty:
+                    st.dataframe(result["by_department"], hide_index=True, width="stretch",
+                                 column_config={"department": "Department", **count_columns})
+                if not result["by_team"].empty:
+                    st.dataframe(result["by_team"].head(20), hide_index=True, width="stretch",
+                                 column_config={"team_id": "Team", **count_columns})
+                st.caption("Groups of 5 or more people only; no individual scores are shown.")
+
+            with st.expander("How the model was tested", icon=":material/verified:"):
+                st.dataframe(result["tests"].rename(columns={
+                    "cutoff_month": "Cut-off month", "people": "People", "left": "Left",
+                    "expected": "Predicted", "model_auc": "Model accuracy",
+                    "baseline_auc": "Baseline accuracy"}), hide_index=True, width="stretch")
+                st.dataframe(result["drivers"].rename(columns={
+                    "feature": "Signal", "odds_change_per_sd": "Change in monthly odds of leaving"}),
+                    hide_index=True, width="stretch",
+                    column_config={"Change in monthly odds of leaving":
+                                   st.column_config.NumberColumn(format="percent")})
+
+        how_to_read(
+            "Each month, the model estimates each employee's chance of leaving that month from "
+            "their engagement, its recent change, tenure, absence, recent exits in their team "
+            "and manager changes. It only uses what was known before that month. Chances are "
+            f"added up into expected leavers per month and per group for the next {HORIZON} "
+            "months, assuming conditions stay as they are now. Likelihoods, not certainties.",
+            "How monthly leaving risk works",
         )

@@ -100,5 +100,5 @@ def test_brief_without_analysis_still_works(data):
 
     brief = build_ceo_brief(data)
 
-    assert "Run the statistical analysis" in brief["bottom_line"]
+    assert "Add turnover, absence or performance data" in brief["bottom_line"]
     assert brief["scorecard"] and brief["what_matters"] == []

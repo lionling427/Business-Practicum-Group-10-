@@ -8,9 +8,12 @@ from src.tools.data_health import (
     wave_coverage,
 )
 from src.tools.health_check import required_adjustments
+from src.tools.survival import demo_person_month
+from src.tools.ts_readiness import readiness
 from src.ui import (
     OUTCOME_LEVEL,
     page_header,
+    readiness_panel,
     require_data,
 )
 
@@ -151,7 +154,28 @@ with st.container(border=True):
             for o in capabilities["outcomes"]))
 
 
-# PROCESS 7 – COVERAGE BY SURVEY
+# PROCESS 7 – READY FOR TIME-SERIES PREDICTION?
+
+with st.container(border=True):
+
+    st.subheader("Ready for time-series prediction?", anchor=False)
+    st.caption("Time-series models need dated history: who was where each month, and when "
+               "people left. This checks your upload against what they need.")
+
+    readiness_panel(readiness(raw))
+
+    st.download_button(
+        "Download an example person-month file (CSV)",
+        data=demo_person_month(employees=300, months=12).to_csv(index=False).encode(),
+        file_name="example_person_month.csv",
+        mime="text/csv",
+        icon=":material/download:",
+        help="The format monthly leaving risk needs: one row per employee per month, with "
+        "period, exited, team, manager, tenure, absence and quarterly pulse answers.",
+    )
+
+
+# PROCESS 8 – COVERAGE BY SURVEY
 
 coverage = wave_coverage(raw)
 
@@ -184,7 +208,7 @@ if not coverage.empty:
         )
 
 
-# PROCESS 8 – COLUMNS THE APP RECOGNIZED
+# PROCESS 9 – COLUMNS THE APP RECOGNIZED
 
 with st.container(border=True):
 

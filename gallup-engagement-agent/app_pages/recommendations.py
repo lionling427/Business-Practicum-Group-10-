@@ -25,7 +25,7 @@ from src.tools.recommendations import (
 from src.tools.waves import model_sample
 from src.ui import (
     OUTCOME_LEVEL,
-    run_statistical_analysis,
+    analysis_runner,
     how_to_read,
     page_header,
     require_data,
@@ -54,38 +54,18 @@ if PERFORMANCE not in df.columns or validation["capabilities"]["level"] != OUTCO
 
 # PROCESS 3 – EVIDENCE (RUN ANY MISSING ANALYSIS)
 
-analysis = st.session_state.get("uploaded_analysis")
-change_analysis = st.session_state.get("change_analysis")
-can_track_change = len(survey_waves(df)) >= 2
-
-if analysis is None or (can_track_change and change_analysis is None):
-
-    with st.container(border=True):
-
-        st.markdown("**:material/query_stats: Build the evidence first**")
-        st.caption(
-            "Recommendations use the statistical analysis"
-            + (" and the change-over-time analysis" if can_track_change else "")
-            + ". They take a few seconds."
-        )
-
-        if st.button("Build recommendations", type="primary",
-                     icon=":material/play_arrow:", key="build_recommendations"):
-
-            with st.spinner("Running the analyses..."):
-                try:
-                    if analysis is None:
-                        run_statistical_analysis()
-                    if can_track_change and change_analysis is None:
-                        st.session_state["change_analysis"] = analyze_change(df)
-                except (ValueError, KeyError) as exc:
-                    st.error("The analysis could not be completed.")
-                    st.caption(f"Technical detail: {exc}")
-                    st.stop()
-
-            st.rerun()
-
+analysis = analysis_runner(df, key="run_analysis_recommendations")
+if analysis is None:
     st.stop()
+
+change_analysis = st.session_state.get("change_analysis")
+if change_analysis is None and len(survey_waves(df)) >= 2:
+    with st.spinner("Comparing people with themselves over time..."):
+        try:
+            change_analysis = analyze_change(df)
+            st.session_state["change_analysis"] = change_analysis
+        except ValueError:
+            change_analysis = None          # single-survey evidence only
 
 levers = productivity_levers(df, analysis, change_analysis)
 
@@ -118,10 +98,11 @@ tiles = [
     ("Biggest opportunity", f"{int((plans['tier'] == TIER_ORDER[0]).sum())} teams", None,
      "Top 20% of teams by expected performance gain from their first step."),
     ("Most common first step", top_start["item"] if top_start is not None else "—",
-     f"{int(top_start['teams'])} teams" if top_start is not None else None,
+     f"{top_start['label']} · {int(top_start['teams'])} teams" if top_start is not None else None,
      f"{top_start['label']}: the question most teams should start with."
      if top_start is not None else None),
-    ("Strongest lever", strongest["item"], f"{strongest['points_per_point']:+.2f} pts per point",
+    ("Strongest lever", strongest["item"],
+     f"{strongest['label']} · {strongest['points_per_point']:+.2f} pts per point",
      f"{strongest['label']}: rating points per 1-point higher score "
      f"({strongest['evidence'].lower()} evidence)."),
     ("Already strong", f"{int((plans['tier'] == TIER_ORDER[2]).sum())} teams", None,

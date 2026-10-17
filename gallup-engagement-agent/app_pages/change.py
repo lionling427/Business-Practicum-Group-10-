@@ -193,20 +193,14 @@ with st.container(border=True):
 
     if change_analysis is None:
 
-        if st.button(
-            "Run change-over-time analysis",
-            type="primary",
-            icon=":material/play_arrow:",
-            key="run_change_analysis",
-        ):
+        with st.spinner("Comparing people and teams with themselves over time..."):
 
-            with st.spinner("Fitting panel models..."):
-
-                try:
-                    st.session_state["change_analysis"] = analyze_change(df)
-                except ValueError as exc:
-                    st.error(str(exc))
-                    st.stop()
+            try:
+                change_analysis = analyze_change(df)
+                st.session_state["change_analysis"] = change_analysis
+            except ValueError as exc:
+                st.info(str(exc), icon=":material/info:")
+                st.stop()
 
             st.toast("Change-over-time analysis complete.", icon=":material/check_circle:")
             st.rerun()

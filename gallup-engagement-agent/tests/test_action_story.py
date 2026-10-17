@@ -113,5 +113,5 @@ def test_story_without_analysis_still_tells_predictions(data):
     story = build_action_story(data)
 
     assert story["chapters"]["predict"]["available"]
-    assert "Run the statistical analysis" in story["chapters"]["act"]["lead"] or \
+    assert "Add turnover, absence or performance data" in story["chapters"]["act"]["lead"] or \
         story["chapters"]["act"]["points"]

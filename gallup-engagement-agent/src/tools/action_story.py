@@ -157,7 +157,7 @@ def _act(df, analysis, change, facts, factors, risks) -> tuple[dict[str, Any], p
                               "the biggest opportunity; each has a ready plan on Recommendations.")
 
     if not points:
-        return _chapter("Run the statistical analysis to see what to do.", [], False), plans
+        return _chapter("Add turnover, absence or performance data to see what to do.", [], False), plans
     lead = (f"Focus on {factors.iloc[0]['label']} first: it is the lever with the biggest verified "
             "payoff." if not factors.empty else
             "Use each team's plan on the Recommendations page.")

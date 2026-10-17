@@ -30,7 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 PAGES = ["Overview", "CEO brief", "Engagement", "Trends", "Outcomes", "Teams", "Action story", "Predictions",
-         "Recommendations", "Financials", "Ask AI", "Data", "Audit"]
+         "Recommendations", "Financials", "Scenarios", "Ask AI", "Data", "Audit"]
 RUN_BUTTONS = ["Run statistical analysis", "Run change-over-time analysis",
                "Build recommendations", "Run statistical audit"]
 IDLE_TIMEOUT_MS = 240_000
@@ -130,7 +130,14 @@ def check_app(url: str, data_file: Path, pages: list[str], out: Path,
             if errors:
                 problems[name] = errors
             shot = out / f"{name.lower().replace(' ', '_')}.png"
-            page.screenshot(path=str(shot), full_page=True)
+            # Streamlit scrolls inside its main panel: grow the window to fit it.
+            height = page.evaluate(
+                "() => (document.querySelector('[data-testid=\"stMain\"]')"
+                " || document.scrollingElement).scrollHeight")
+            page.set_viewport_size({"width": width, "height": min(int(height) + 40, 12_000)})
+            page.wait_for_timeout(800)
+            page.screenshot(path=str(shot))
+            page.set_viewport_size({"width": width, "height": 1000})
             print(f"{'ERROR' if errors else 'ok':5}  {name:16} {shot}")
         browser.close()
     return problems

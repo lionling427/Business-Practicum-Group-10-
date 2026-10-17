@@ -610,9 +610,9 @@ def manager_brief(df: pd.DataFrame, team_id: str, analysis: dict | None = None,
                                           for o in focus_outcomes]},
             "outcomes": outcomes, "priority": bool(t["priority"]),
             "strengths_heading": ("What is going well"
-                                  if strengths and strengths[0]["team"] >= strengths[0]["company"]
-                                  else "Relative strengths (the team's best questions, "
-                                       "still below the company average)"),
+                                  if strengths and all(x["team"] >= x["company"] for x in strengths)
+                                  else "Relative strengths (the team's best questions; "
+                                       "some are still below the company average)"),
             "risk": risk_outlook(team_id, risk_results, focus),
             "actions": ACTION_LIBRARY[focus]["actions"],
             "questions": ACTION_LIBRARY[focus]["questions"]}

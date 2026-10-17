@@ -2,6 +2,8 @@
 
 import streamlit as st
 
+from src.tools.ceo_brief import SMALL_POINTS, SMALL_SCORE
+
 from src.tools.dashboard import (
     kpi_tiles,
     latest_responses,
@@ -56,14 +58,19 @@ tiles = kpi_tiles(df)
 # Fixed grid so every tile has the same width.
 for tile, column in zip(tiles, st.columns(len(tiles))):
 
+    # Changes too small to matter read "About the same", not a red or green arrow.
+    small = tile["delta"] is not None and abs(tile["delta"]) < (
+        SMALL_POINTS if "%" in tile["value"] else SMALL_SCORE)
+
     with column:
 
         st.metric(
             tile["label"],
             tile["value"],
-            delta=tile["delta"],
-            delta_color="inverse" if tile["inverse"] else "normal",
-            delta_description="vs. last survey" if tile["delta"] is not None else None,
+            delta="About the same" if small else tile["delta"],
+            delta_color="off" if small else "inverse" if tile["inverse"] else "normal",
+            delta_arrow="off" if small else "auto",
+            delta_description="vs. last survey" if tile["delta"] is not None and not small else None,
             chart_data=tile["trend"],
             chart_type="line",
             help=tile["help"],
@@ -135,7 +142,8 @@ with st.container(border=True):
             if card["delta"] is not None:
                 st.metric(
                     f"Change since {card['period_name']} {card['previous_period']}",
-                    f"{card['delta']:+.2f} points",
+                    "About the same" if abs(card["delta"]) < SMALL_SCORE
+                    else f"{card['delta']:+.2f} points",
                 )
             else:
                 st.metric("Average Q12 score", f"{card['current']:.2f}")
@@ -216,7 +224,7 @@ with st.container(border=True):
 
         else:
 
-            st.caption("Run the statistical analysis below to see what drives results.")
+            st.caption("Add turnover, absence or performance data to see what drives results.")
 
     if drivers:
         st.info(

@@ -220,7 +220,7 @@ def explain_value(costs: dict[str, Any], value: dict[str, Any], teams: pd.DataFr
     headline = (f"Engagement improvements backed by your data could be worth about "
                 f"{money(value['total'], c)} a year."
                 if value["total"] > 0 else
-                "Run the statistical analysis to see what engagement could be worth.")
+                "Add turnover, absence or performance data to see what engagement could be worth.")
     return {"headline": headline, "points": points}
 
 
