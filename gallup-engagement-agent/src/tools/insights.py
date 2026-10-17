@@ -632,8 +632,7 @@ def brief_markdown(brief: dict[str, Any]) -> str:
         lines += [f"{i}. {step}" for i, step in enumerate(risk["steps"], 1)]
         lines += ["", f"_{risk['caution']}_", ""]
     lines += [
-             "**What is going well**" if brief["strengths"][0]["team"] >= brief["strengths"][0]["company"]
-             else "**Relative strengths** (the team's best items, still below the company average)"]
+             f"**{brief['strengths_heading']}**"]
     lines += [f"- {s['label']} ({s['item']}): {s['team']:.2f} vs company {s['company']:.2f}" for s in brief["strengths"]]
     linked = f", which is linked to {' and '.join(f['linked_outcomes'])} in your data" if f["linked_outcomes"] else ""
     lines += ["", f"**This month's focus: {f['label']} ({f['item']})**",

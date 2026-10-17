@@ -269,8 +269,10 @@ PAGE_GUIDE = [
     ("What should we do, and where do we start?", "app_pages/action_story.py", ":material/auto_stories:"),
     ("Who is likely to leave next year?", "app_pages/predictions.py", ":material/online_prediction:"),
     ("What should each team's manager do?", "app_pages/recommendations.py", ":material/tips_and_updates:"),
+    ("How can each team use its strengths?", "app_pages/strengths.py", ":material/workspace_premium:"),
     ("What does it cost, and what is it worth?", "app_pages/financials.py", ":material/payments:"),
     ("What if we improve something?", "app_pages/scenarios.py", ":material/tune:"),
+    ("I need slides or a PDF to share", "app_pages/report_pack.py", ":material/slideshow:"),
     ("I have my own question", "app_pages/agent.py", ":material/chat:"),
     ("Is my data OK?", "app_pages/data_quality.py", ":material/fact_check:"),
     ("Can we trust these numbers?", "app_pages/audit.py", ":material/verified:"),
@@ -318,6 +320,15 @@ def glossary_dialog():
     """Shown in the main (light) area so it stays readable."""
     for term, meaning in GLOSSARY:
         st.markdown(f"**{term}**: {meaning}")
+
+    from src.tools.strengths import DOMAIN_MEANING, DOMAINS, THEME_MEANING, THEMES
+
+    st.markdown("#### CliftonStrengths themes")
+    st.caption("The 34 themes in four domains, in plain words (this app's wording).")
+    for domain in DOMAINS:
+        with st.expander(f"{domain}: {DOMAIN_MEANING[domain]}"):
+            st.markdown("\n".join(f"- **{t}:** {THEME_MEANING[t]}"
+                                   for t in THEMES if THEMES[t] == domain))
 
 
 # PROCESS – TIME-SERIES READINESS (DATA AND PREDICTIONS PAGES)
