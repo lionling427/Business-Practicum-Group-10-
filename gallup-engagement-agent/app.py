@@ -39,6 +39,8 @@ SESSION_DATA_KEYS = [
     "audit_sign_off",
     "saved_scenarios",
     "survival_results",
+    "strengths_cache",
+    "active_strengths",
     "agent_context_cache",
     "uploaded_name",
     "upload_signature",
@@ -196,6 +198,7 @@ pages = {
         st.Page("app_pages/action_story.py", title="Action story", icon=":material/auto_stories:"),
         st.Page("app_pages/predictions.py", title="Predictions", icon=":material/online_prediction:"),
         st.Page("app_pages/recommendations.py", title="Recommendations", icon=":material/tips_and_updates:"),
+        st.Page("app_pages/strengths.py", title="Strengths", icon=":material/workspace_premium:"),
         st.Page("app_pages/financials.py", title="Financials", icon=":material/payments:"),
         st.Page("app_pages/scenarios.py", title="Scenarios", icon=":material/tune:"),
     ],
@@ -203,6 +206,7 @@ pages = {
         st.Page("app_pages/agent.py", title="Ask AI", icon=":material/chat:"),
         st.Page("app_pages/data_quality.py", title="Data", icon=":material/fact_check:"),
         st.Page("app_pages/audit.py", title="Audit", icon=":material/verified:"),
+        st.Page("app_pages/report_pack.py", title="Report pack", icon=":material/slideshow:"),
     ],
 }
 

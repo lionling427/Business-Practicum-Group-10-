@@ -21,11 +21,13 @@ PAGES = [
     "app_pages/action_story.py",
     "app_pages/predictions.py",
     "app_pages/recommendations.py",
+    "app_pages/strengths.py",
     "app_pages/financials.py",
     "app_pages/scenarios.py",
     "app_pages/agent.py",
     "app_pages/data_quality.py",
     "app_pages/audit.py",
+    "app_pages/report_pack.py",
 ]
 
 
@@ -263,3 +265,18 @@ def test_data_page_shows_time_series_readiness(csv_bytes):
 
     _assert_clean(at, "data readiness")
     assert any("Ready for time-series prediction?" in h.value for h in at.subheader)
+
+
+def test_strengths_page_with_demo_data(csv_bytes):
+
+    at = _app_with_upload(csv_bytes)
+    at.session_state["strengths_source"] = "demo"
+    at.switch_page("app_pages/strengths.py").run()
+
+    _assert_clean(at, "strengths demo")
+    assert any("Use each team's strengths" in h.value for h in at.subheader)
+    assert any("Did strengths coaching work?" in h.value for h in at.subheader)
+
+    at.switch_page("app_pages/teams.py").run()           # the coach now uses strengths
+    _assert_clean(at, "teams with strengths")
+    assert any("Use the team's strengths" in m.value for m in at.markdown)

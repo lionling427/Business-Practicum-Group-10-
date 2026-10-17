@@ -30,7 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 PAGES = ["Overview", "CEO brief", "Engagement", "Trends", "Outcomes", "Teams", "Action story", "Predictions",
-         "Recommendations", "Financials", "Scenarios", "Ask AI", "Data", "Audit"]
+         "Recommendations", "Strengths", "Financials", "Scenarios", "Ask AI", "Data", "Audit", "Report pack"]
 RUN_BUTTONS = ["Run statistical analysis", "Run change-over-time analysis",
                "Build recommendations", "Run statistical audit"]
 IDLE_TIMEOUT_MS = 240_000

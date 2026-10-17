@@ -7,3 +7,5 @@ openai==1.109.1
 statsmodels==0.15.0
 pytest==9.1.1
 playwright==1.64.0
+python-pptx==1.0.2
+matplotlib==3.11.2

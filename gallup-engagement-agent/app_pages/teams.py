@@ -13,6 +13,7 @@ from src.tools.insights import (
     team_scorecard,
 )
 from src.tools.manager_coach import coach_brief
+from src.tools.strengths import strength_play, team_profiles
 from src.tools.prediction import (
     TARGETS,
     explain_team_risk,
@@ -239,6 +240,21 @@ with st.container(border=True):
 
         if note is not None:
             st.caption(f"Showing the verified brief instead. {note['reason']}")
+
+    strengths = st.session_state.get("active_strengths")
+    if strengths is not None:
+        profile = team_profiles(strengths, df, scorecard)
+        row = profile[profile["team_id"] == selected_team] if not profile.empty else profile
+        if not row.empty:
+            r = row.iloc[0]
+            st.markdown(f"**Use the team's strengths.** This team leans towards "
+                        f"**{r['lead_domain']}** ({r['top_themes']}).")
+            st.success(f"**Try this for {brief['focus']['label']}:** "
+                       f"{strength_play(brief['focus']['item'], r['lead_domain'])}",
+                       icon=":material/workspace_premium:")
+    else:
+        st.caption(":material/workspace_premium: Load strengths data on the **Strengths** page "
+                   "to tailor this plan to what the team does best.")
 
     with st.expander(f"Manager learning: {brief['focus']['label']}",
                      icon=":material/school:"):
