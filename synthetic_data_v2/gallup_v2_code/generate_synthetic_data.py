@@ -27,6 +27,16 @@ Variants
   dirty_A  main data + one error of each type (tests each health-check rule)
   dirty_B  main data + many overlapping errors and a missing date column
   dirty_C  main data + boundary values (some valid, some just invalid)
+
+Multi-year variants (v3.0, 5 waves by default, last year's outcomes hidden)
+  long_main      main truths over N yearly waves, with manager changes and three planted events
+  long_null      null truths (no item affects any outcome); X7 nonresponse still on
+  long_purenull  null truths AND no nonresponse bias (X7 off): nothing in the survey predicts turnover
+  long_seed      long_main with another seed (use --seed 2)
+  Events: E1 better manager (wave 3), E2 worse manager (wave 4), E3 inflated scores without
+  better outcomes (wave 4). answer_key/ adds hidden_outcomes.csv, manager_changes.csv,
+  team_true_risk.csv and events.csv.
+  python generate_synthetic_data.py --employees 50000 --variant long_main --out testsets/long_main
 """
 
 import argparse
@@ -41,20 +51,33 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # find stats_tools.py next to this file
 import stats_tools as st
 
-GENERATOR_VERSION = "2.1"
+GENERATOR_VERSION = "3.0"
 
 # ---------------------------------------------------------------------------
 # STEP 0. Configuration
 # ---------------------------------------------------------------------------
 ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-ap.add_argument("--employees", type=int, default=5000, help="employees per wave (2 waves are generated)")
+ap.add_argument("--employees", type=int, default=5000, help="employees per wave")
 ap.add_argument("--out", default="output", help="output folder")
 ap.add_argument("--seed", type=int, default=1)
 ap.add_argument("--variant", default="main",
-                choices=["main", "null", "weak", "seed", "dirty_A", "dirty_B", "dirty_C"])
+                choices=["main", "null", "weak", "seed", "dirty_A", "dirty_B", "dirty_C",
+                         "long_main", "long_null", "long_purenull", "long_seed"])
+ap.add_argument("--waves", type=int, default=None,
+                help="yearly survey waves (default 2; 5 for long_* variants)")
+ap.add_argument("--hide-last-outcome", choices=["auto", "yes", "no"], default="auto",
+                help="blank the newest wave's outcomes and move them to answer_key/ (auto: long_* only)")
 ap.add_argument("--full-data", choices=["auto", "yes", "no"], default="auto",
-                help="write answer_key/full_data_with_latents.csv (auto: only up to 50,000 employees)")
+                help="write answer_key/full_data_with_latents.csv (auto: 2-wave sets up to 50,000 employees)")
 ARGS = ap.parse_args()
+
+LONG = ARGS.variant.startswith("long_")
+BASE_VARIANT = {"long_main": "main", "long_null": "null", "long_purenull": "null",
+                "long_seed": "seed"}.get(ARGS.variant, ARGS.variant)
+N_WAVES = ARGS.waves or (5 if LONG else 2)
+if N_WAVES < 2:
+    sys.exit("--waves must be 2 or more")
+HIDE_LAST = ARGS.hide_last_outcome == "yes" or (ARGS.hide_last_outcome == "auto" and LONG)
 
 N_EMPLOYEES = ARGS.employees
 N_TEAMS = max(40, round(N_EMPLOYEES / 12.5))      # average team ~12.5 people
@@ -75,6 +98,19 @@ LIKERT_CUTS = [0.07, 0.20, 0.45, 0.75]   # one shared set of cut points for all 
 # Survey and outcome dates (fix #13: the health check can verify the time order)
 WAVE_SURVEY_START = {1: date(2024, 3, 4), 2: date(2025, 3, 3)}
 WAVE_REVIEW_DATE = {1: date(2025, 1, 31), 2: date(2026, 1, 30)}
+for _w in range(3, N_WAVES + 1):                 # later yearly waves: first Monday of March
+    _d = date(2023 + _w, 3, 1)
+    WAVE_SURVEY_START[_w] = date(_d.year, 3, 1 + (7 - _d.weekday()) % 7)
+    WAVE_REVIEW_DATE[_w] = date(2024 + _w, 1, 30)
+
+# Multi-year settings (long_* only): managers move, and engagement follows the manager
+MGR_TO_ENGAGEMENT = 0.4        # a 1-SD better manager lifts the team's engagement by 0.4 SD
+MGR_NATURAL_CHANGE = 0.08      # share of teams that get a new manager each year (random quality)
+EVENTS = {                     # planted events for the prediction tests (graders only)
+    "E1": {"wave": 3, "share": 0.05, "name": "better manager", "quality_change": +1.5},
+    "E2": {"wave": 4, "share": 0.05, "name": "worse manager", "quality_change": -1.5},
+    "E3": {"wave": 4, "share": 0.03, "name": "inflated scores", "score_shift": 1.0},
+}
 
 TRUTH = {
     # --- True relationships (T) ---------------------------------------------
@@ -102,7 +138,7 @@ TRUTH = {
     "X8_min_group_size": 5,
 }
 
-if ARGS.variant == "weak":
+if BASE_VARIANT == "weak":
     for k in ["T1_Q04_turnover_OR", "T1_X5_tenure_lt2_OR", "T2_Q05_turnover_OR",
               "T3_Q12_turnover_OR", "T5_Q05_absence_IRR"]:
         TRUTH[k] = round(float(np.sqrt(TRUTH[k])), 3)
@@ -111,7 +147,7 @@ if ARGS.variant == "weak":
     # inside the 0.91-1.10 "no meaningful effect" band, so a correct agent would not report it.
     # Every true effect must be realized outside the band; 0.87 keeps T5 weaker than main (0.85).
     TRUTH["T5_Q05_absence_IRR"] = 0.87
-if ARGS.variant == "null":
+if BASE_VARIANT == "null":
     for k in ["T1_Q04_turnover_OR", "T1_X5_tenure_lt2_OR", "T2_Q05_turnover_OR",
               "T3_Q12_turnover_OR", "T5_Q05_absence_IRR"]:
         TRUTH[k] = 1.0
@@ -119,6 +155,11 @@ if ARGS.variant == "null":
     TRUTH["X3_manager_to_absence"] = 0.0      # no hidden path from Q07 to absence
     TRUTH["X4_Q01_low_absence_logrr"] = 0.0   # no threshold effect
     TRUTH["X6_Q07_within_dept_beta"] = 0.0    # no within-department effect
+
+if ARGS.variant == "long_purenull":
+    # X7 off: answering does not depend on leaving or on engagement
+    TRUTH["X7_leaver_response_rate"] = TRUTH["X7_stayer_response_rate"] = 0.80
+    TRUTH["X7_leaver_engagement_slope"] = TRUTH["X7_stayer_engagement_slope"] = 0.0
 
 rng = np.random.default_rng(ARGS.seed)
 
@@ -145,7 +186,7 @@ def build_org():
         "department": [DEPARTMENTS[d] for d in team_dept],
         "team_size": sizes,
         "manager_quality": rng.normal(0, 1, N_TEAMS),     # X3: hidden, never shown to the agent
-    })
+    }).assign(**({"manager_id": [f"M{t:06d}" for t in range(N_TEAMS)]} if LONG else {}))
 
 
 # ---------------------------------------------------------------------------
@@ -170,7 +211,7 @@ def build_employees(teams, start_id=0):
 # ---------------------------------------------------------------------------
 # STEP 3. Survey answers: 12 correlated items, item offsets, trap shifts
 # ---------------------------------------------------------------------------
-def simulate_survey(emp, teams, wave):
+def simulate_survey(emp, teams, wave, inflated_teams=()):
     t = teams.set_index("team_id")
     mgr = emp["team_id"].map(t["manager_quality"]).to_numpy()
     dept_idx = emp["department"].map({d: i for i, d in enumerate(DEPARTMENTS)}).to_numpy()
@@ -178,6 +219,8 @@ def simulate_survey(emp, teams, wave):
     dept_q07_shift = np.linspace(-1, 1, len(DEPARTMENTS)) * TRUTH["X6_dept_Q07_spread"]
 
     eng = emp["engagement_latent"].to_numpy()
+    if LONG:
+        eng = eng + MGR_TO_ENGAGEMENT * mgr          # engagement follows the current manager
     cont = {q: ITEM_LOADING * eng + ITEM_NOISE * rng.normal(0, 1, n) + ITEM_OFFSET[q] for q in ITEMS}
     cont["Q02"] += np.where(emp["department"] == "Sales", TRUTH["X1_sales_Q02_shift"], 0)   # X1
     cont["Q11"] += TRUTH["X2_prior_perf_to_Q11"] * emp["prior_perf_latent"].to_numpy()        # X2
@@ -185,13 +228,30 @@ def simulate_survey(emp, teams, wave):
     cont["Q07"] += dept_q07_shift[dept_idx]                                                   # X6
 
     pooled = np.concatenate([cont[q] for q in ITEMS])
-    cuts = np.quantile(pooled, LIKERT_CUTS)
+    if LONG:
+        cuts = LONG_CUTS.setdefault("cuts", np.quantile(pooled, LIKERT_CUTS))   # fixed from wave 1
+    else:
+        cuts = np.quantile(pooled, LIKERT_CUTS)
     survey = emp.copy()
     for q in ITEMS:
         survey[q] = (np.searchsorted(cuts, cont[q]) + 1).astype(int)
+    if LONG:
+        survey["manager_id"] = emp["team_id"].map(t["manager_id"]).to_numpy()
+    reported = None
+    if len(inflated_teams):
+        # E3: these teams answer higher than they feel; outcomes follow the true answers
+        mask = emp["team_id"].isin(inflated_teams).to_numpy()
+        reported = survey[ITEMS].copy()
+        for q in ITEMS:
+            reported.loc[mask, q] = (np.searchsorted(cuts, cont[q][mask] + EVENTS["E3"]["score_shift"]) + 1)
     start = np.datetime64(WAVE_SURVEY_START[wave])
     survey["survey_date"] = start + rng.integers(0, 21, n).astype("timedelta64[D]")
+    if LONG:
+        return survey, dept_q07_shift, reported
     return survey, dept_q07_shift
+
+
+LONG_CUTS = {}
 
 
 # ---------------------------------------------------------------------------
@@ -212,7 +272,8 @@ def simulate_individual_outcomes(s, teams, dept_q07_shift, wave):
              + np.log(TRUTH["T3_Q12_turnover_OR"]) * (s["Q12"] - 3)
              + np.where(s["department"] == "Sales", TRUTH["X1_sales_turnover_logit"], 0)
              + 0.35 * new_hire)
-    turnover = rng.binomial(1, 1 / (1 + np.exp(-logit)))
+    p_leave = 1 / (1 + np.exp(-logit))
+    turnover = rng.binomial(1, p_leave)
 
     # Absenteeism: T5, X3, X4 (N1: Q06 has no effect)
     log_mu = (np.log(3.0)
@@ -242,6 +303,8 @@ def simulate_individual_outcomes(s, teams, dept_q07_shift, wave):
     out["prior_performance_rating"] = prior_rating
     out["performance_rating"] = performance_rating
     out["performance_review_date"] = np.datetime64(WAVE_REVIEW_DATE[wave])
+    if LONG:
+        return out, np.asarray(p_leave, dtype=float)
     return out
 
 
@@ -286,6 +349,9 @@ def apply_nonresponse(survey, outcomes):
 # ---------------------------------------------------------------------------
 # STEP 7. Second wave: stayers carry over, leavers are replaced by new hires
 # ---------------------------------------------------------------------------
+NEXT_ID = [N_EMPLOYEES]       # first id for the next wave's new hires
+
+
 def next_wave(emp_w1, outcomes_w1, teams):
     stay = outcomes_w1["left_voluntarily_12m"].to_numpy() == 0
     stayers = emp_w1.loc[stay].copy()
@@ -298,9 +364,87 @@ def next_wave(emp_w1, outcomes_w1, teams):
     counts = leavers["team_id"].value_counts()
     repl = teams.set_index("team_id").loc[counts.index].reset_index()
     repl["team_size"] = counts.to_numpy()
-    hires = build_employees(repl, start_id=N_EMPLOYEES)
+    hires = build_employees(repl, start_id=NEXT_ID[0])
+    NEXT_ID[0] += len(hires)
     hires["tenure_years"] = np.round(rng.uniform(0, 1, len(hires)), 1)
     return pd.concat([stayers, hires], ignore_index=True)
+
+
+# ---------------------------------------------------------------------------
+# STEP 7A. Multi-year data: manager changes and planted events (long_* only)
+# ---------------------------------------------------------------------------
+def change_managers(teams, wave, used):
+    """New managers before this wave's survey: random changes plus E1/E2.
+    Returns (teams, change rows, event rows, E3 teams)."""
+    teams = teams.copy()
+    changes, events = [], []
+    n = len(teams)
+    natural = rng.random(n) < MGR_NATURAL_CHANGE
+    new_quality = rng.normal(0, 1, n)
+    eligible = np.setdiff1d(np.arange(n), list(used))
+
+    def pick(share, condition):
+        pool = eligible[condition[eligible]]
+        k = min(len(pool), max(1, round(share * n)))
+        return rng.choice(pool, k, replace=False) if k else np.array([], dtype=int)
+
+    q = teams["manager_quality"].to_numpy()
+    e1 = pick(EVENTS["E1"]["share"], q < -0.5) if wave == EVENTS["E1"]["wave"] else np.array([], dtype=int)
+    e2 = pick(EVENTS["E2"]["share"], q > 0.5) if wave == EVENTS["E2"]["wave"] else np.array([], dtype=int)
+    used.update(e1.tolist()); used.update(e2.tolist())
+    eligible = np.setdiff1d(eligible, np.concatenate([e1, e2]))
+    e3 = (pick(EVENTS["E3"]["share"], np.ones(n, bool)) if wave == EVENTS["E3"]["wave"]
+          else np.array([], dtype=int))
+    used.update(e3.tolist())
+
+    for i in range(n):
+        reason = "E1" if i in e1 else "E2" if i in e2 else "natural" if natural[i] else None
+        if reason is None:
+            continue
+        before_q, before_id = float(q[i]), teams.at[i, "manager_id"]
+        after_q = (before_q + EVENTS[reason]["quality_change"]) if reason in ("E1", "E2") else float(new_quality[i])
+        after_id = f"M{wave:02d}{i:06d}"
+        teams.at[i, "manager_quality"] = after_q
+        teams.at[i, "manager_id"] = after_id
+        changes.append({"wave": wave, "team_id": teams.at[i, "team_id"], "reason": reason,
+                        "manager_id_before": before_id, "manager_id_after": after_id,
+                        "quality_before": round(before_q, 4), "quality_after": round(after_q, 4)})
+        if reason != "natural":
+            events.append({"wave": wave, "event": reason, "name": EVENTS[reason]["name"],
+                           "team_id": teams.at[i, "team_id"],
+                           "quality_before": round(before_q, 4), "quality_after": round(after_q, 4)})
+    e3_teams = teams.loc[e3, "team_id"].tolist()
+    for tid in e3_teams:
+        events.append({"wave": wave, "event": "E3", "name": EVENTS["E3"]["name"], "team_id": tid,
+                       "quality_before": None, "quality_after": None})
+    return teams, changes, events, e3_teams
+
+
+def team_risk_table(full_all):
+    """True expected turnover per team per wave (all employees, true answers)."""
+    company = full_all.groupby("wave")["turnover_prob_true"].mean().rename("company_true_rate")
+    g = full_all.groupby(["wave", "team_id"])
+    out = pd.DataFrame({
+        "department": g["department"].first(),
+        "manager_id": g["manager_id"].first(),
+        "team_size": g.size(),
+        "respondents": g["responded"].sum(),
+        "true_turnover_rate": g["turnover_prob_true"].mean().round(4),
+        "realized_turnover_rate": g["left_voluntarily_12m"].mean().round(4),
+        "mean_true_score": g["true_index"].mean().round(4),
+    }).reset_index().merge(company.reset_index(), on="wave")
+    out["company_true_rate"] = out["company_true_rate"].round(4)
+    out["true_above_company"] = (out["true_turnover_rate"] > out["company_true_rate"]).astype(int)
+    return out
+
+
+def auc(score, label):
+    score, label = np.asarray(score, float), np.asarray(label, int)
+    pos, neg = score[label == 1], score[label == 0]
+    if not len(pos) or not len(neg):
+        return None
+    ranks = pd.Series(np.concatenate([pos, neg])).rank().to_numpy()
+    return float((ranks[:len(pos)].sum() - len(pos) * (len(pos) + 1) / 2) / (len(pos) * len(neg)))
 
 
 # ---------------------------------------------------------------------------
@@ -509,6 +653,13 @@ def write_readme(out_dir, meta):
         "dirty_A": "Main data plus one error of each type. Each health-check rule should fire once.",
         "dirty_B": "Main data plus many overlapping errors and a missing date column.",
         "dirty_C": "Main data plus boundary values. Valid edges must pass; just-invalid values must fail.",
+        "long_main": f"Main truths over {N_WAVES} yearly waves, with manager changes and three planted events "
+                     "(E1 better manager, E2 worse manager, E3 inflated scores). Tests trends and team predictions.",
+        "long_null": f"Null truths over {N_WAVES} waves: no item affects any outcome, but nonresponse (X7) is on. "
+                     "Team predictions from Q12 must not pass the attribution test.",
+        "long_purenull": f"Null truths over {N_WAVES} waves with no nonresponse bias: nothing in the survey "
+                         "predicts turnover. Every Q12-based prediction gate should fail.",
+        "long_seed": f"long_main design with another seed. Results should match long_main.",
     }[v]
     lines = [
         f"# Synthetic test data: {os.path.basename(os.path.normpath(out_dir))}",
@@ -522,7 +673,7 @@ def write_readme(out_dir, meta):
         "| Item | Value |",
         "|---|---|",
         f"| Employees per wave | {meta['employees_per_wave']:,} |",
-        f"| Survey waves | 2 |",
+        f"| Survey waves | {N_WAVES} |",
         f"| Survey rows | {meta['survey_rows']:,} |",
         f"| Teams | {meta['teams']:,} |",
         f"| Teams with fewer than 5 people | {meta['small_teams']:,} ({meta['small_team_share']:.1%}) |",
@@ -534,8 +685,10 @@ def write_readme(out_dir, meta):
         "",
         "| File | Who may read it | Contents |",
         "|---|---|---|",
-        "| `agent_data/survey_responses.csv` | Agent | One row per employee per wave: Q01-Q12 (blank for non-respondents), department, tenure, role, pay band, shift, survey date |",
-        "| `agent_data/individual_outcomes.csv` | Agent | Turnover (12 months), unplanned absence days (6 months), prior and current performance rating, and the date each outcome window ends |",
+        "| `agent_data/survey_responses.csv` | Agent | One row per employee per wave: Q01-Q12 (blank for non-respondents), department, tenure, role, pay band, shift, survey date"
+        + (", manager_id (changes when a team gets a new manager)" if LONG else "") + " |",
+        "| `agent_data/individual_outcomes.csv` | Agent | Turnover (12 months), unplanned absence days (6 months), prior and current performance rating, and the date each outcome window ends"
+        + (f". Wave {N_WAVES} outcomes are blank: that year has not finished" if HIDE_LAST else "") + " |",
         "| `agent_data/team_outcomes.csv` | Agent | Team id, department and team size per wave |",
         "| `answer_key/ground_truth.json` | Graders only | Planted settings, realized values, true nulls, traps, seed |",
         "| `answer_key/teams_with_manager_quality.csv` | Graders only | Hidden manager quality per team (trap X3) |",
@@ -544,6 +697,14 @@ def write_readme(out_dir, meta):
         lines.append("| `answer_key/full_data_with_latents.csv` | Graders only | Every employee's true answers and hidden engagement |")
     if v.startswith("dirty"):
         lines.append("| `answer_key/error_log.csv` | Graders only | Every injected error and the health-check result it should produce |")
+    if LONG:
+        lines += [
+            "| `answer_key/hidden_outcomes.csv` | Graders only | The newest wave's real outcomes (blank in agent_data), for grading forecasts |" if HIDE_LAST else "",
+            "| `answer_key/manager_changes.csv` | Graders only | Every manager change: wave, team, reason, hidden quality before and after |",
+            "| `answer_key/team_true_risk.csv` | Graders only | True expected turnover per team per wave |",
+            "| `answer_key/events.csv` | Graders only | Teams hit by the planted events E1, E2, E3 |",
+        ]
+        lines = [x for x in lines if x != ""]
     lines += ["", "Never give the agent anything in `answer_key/`.", "",
               "## Rebuild", "", "```bash",
               f"python generate_synthetic_data.py --employees {meta['employees_per_wave']} --seed {meta['seed']} "
@@ -554,6 +715,103 @@ def write_readme(out_dir, meta):
 
 
 # ---------------------------------------------------------------------------
+# Answer key sections for multi-year data (long_* only)
+# ---------------------------------------------------------------------------
+def long_answer_key(full_all, survey_all, risk, events, manager_changes):
+    by_wave = full_all.groupby("wave")
+    vis = survey_all[survey_all["responded"] == 1]
+    trends = []
+    for w, g in by_wave:
+        trends.append({
+            "wave": int(w),
+            "employees": int(len(g)),
+            "true_mean_score_all_employees": round(float(g["true_index"].mean()), 3),
+            "visible_mean_score_respondents": round(float(vis.loc[vis["wave"] == w, ITEMS].astype(float).mean(axis=1).mean()), 3),
+            "turnover_rate": round(float(g["left_voluntarily_12m"].mean()), 4),
+            "true_turnover_rate": round(float(g["turnover_prob_true"].mean()), 4),
+            "response_rate": round(float(g["responded"].mean()), 4),
+            "outcomes_hidden": bool(HIDE_LAST and w == N_WAVES),
+        })
+    ev = pd.DataFrame(events)
+    rk = risk.set_index(["wave", "team_id"])
+    true_events = []
+    for code, spec in EVENTS.items():
+        teams_hit = ev.loc[ev["event"] == code, "team_id"].tolist() if len(ev) else []
+        w = spec["wave"]
+        if not teams_hit or w > N_WAVES:
+            continue
+        hit = rk.index.get_level_values("team_id").isin(teams_hit)
+        def delta(col, mask):
+            cur = rk.loc[w][col][mask[rk.index.get_level_values("wave") == w]]
+            prev = rk.loc[w - 1][col].reindex(cur.index)
+            return float((cur - prev).mean())
+        wave_mask = rk.index.get_level_values("wave")
+        hit_w = hit[wave_mask == w]
+        others_w = ~hit_w
+        visible_w = vis[vis["wave"] == w].assign(idx=lambda d: d[ITEMS].astype(float).mean(axis=1))
+        visible_p = vis[vis["wave"] == w - 1].assign(idx=lambda d: d[ITEMS].astype(float).mean(axis=1))
+        vt = visible_w.groupby("team_id")["idx"].mean() - visible_p.groupby("team_id")["idx"].mean()
+        true_events.append({
+            "id": code, "name": spec["name"], "wave": w, "teams": len(teams_hit),
+            "visible_score_change_event_teams": round(float(vt.reindex(teams_hit).mean()), 3),
+            "visible_score_change_other_teams": round(float(vt.drop(teams_hit, errors="ignore").mean()), 3),
+            "true_turnover_change_event_teams": round(delta("true_turnover_rate", hit), 4),
+            "true_turnover_change_other_teams": round(delta("true_turnover_rate", ~hit), 4),
+            "expected": {
+                "E1": "Scores rise; true turnover falls only if items affect turnover (main), not in the null variants.",
+                "E2": "Scores fall; true turnover rises only if items affect turnover (main).",
+                "E3": "Scores rise but true turnover does not change: a false turnaround. A good change gate does "
+                      "not count these teams as improved, and the health check flags the jump.",
+            }[code],
+        })
+    last = risk[risk["wave"] == N_WAVES]
+    prev = risk[risk["wave"] == N_WAVES - 1].set_index("team_id")
+    big = last[last["team_size"] >= 5]
+    prev_rate = big["team_id"].map(prev["realized_turnover_rate"])
+    realized_above = (big["realized_turnover_rate"] > big["realized_turnover_rate"].mean()).astype(int)
+    summary = {
+        "wave": N_WAVES,
+        "teams_5_plus": int(len(big)),
+        "company_true_rate": round(float(last["company_true_rate"].iloc[0]), 4),
+        "auc_true_rate_vs_realized_above_company": round(auc(big["true_turnover_rate"], realized_above), 3),
+        "auc_previous_rate_vs_realized_above_company": round(auc(prev_rate.fillna(prev_rate.mean()), realized_above), 3),
+        "note": ("auc_true_rate is the best any model could do (it knows each team's true risk); the gap to 1.0 is "
+                 "pure chance in who leaves. auc_previous_rate is the 'same as last year' baseline. A team model "
+                 "should land between the two."),
+    }
+    out = {
+        "true_trends": trends,
+        "true_events": true_events,
+        "manager_changes": {
+            "per_wave": pd.DataFrame(manager_changes).groupby("wave").size().astype(int).to_dict() if manager_changes else {},
+            "natural_change_rate": MGR_NATURAL_CHANGE,
+            "manager_to_engagement": MGR_TO_ENGAGEMENT,
+            "note": "manager_id in survey_responses.csv changes when a team gets a new manager. Hidden quality is in answer_key/manager_changes.csv.",
+        },
+        "team_true_risk_summary": summary,
+        "x7_prediction_note": (
+            "With X7 on, people who are about to leave answer less often, and disengaged leavers least. So a team "
+            "that will lose many people looks better on the survey than it is, and the respondents' team score is "
+            "weakly POSITIVELY related to team turnover within a department. A team model using Q12 means can then "
+            "beat a department-only model by a few AUC points even when no item has any effect (long_null). "
+            "long_purenull removes X7; there the gap should vanish. A correct agent runs a within-department "
+            "permutation test and shows a survey-response warning instead of claiming Q12 drives team risk."
+            if ARGS.variant != "long_purenull" else
+            "X7 is off in this variant: the survey response does not depend on leaving. No Q12-based team model "
+            "should beat the department-and-size model."),
+    }
+    if HIDE_LAST:
+        out["hidden_outcomes"] = {
+            "wave": N_WAVES,
+            "file": "answer_key/hidden_outcomes.csv",
+            "grading": (f"Wave {N_WAVES} outcomes are blank in agent_data, as if the year has not finished. The app "
+                        f"trains on waves 1-{N_WAVES - 1} and predicts wave {N_WAVES} team risk; grade the ranking with "
+                        "team_true_risk.csv (true_above_company) and hidden_outcomes.csv (realized)."),
+        }
+    return out
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 def main(out_dir):
@@ -561,32 +819,65 @@ def main(out_dir):
     os.makedirs(f"{out_dir}/answer_key", exist_ok=True)
 
     teams = build_org()
+    teams_wave1 = teams.copy()        # answer key: wave-1 managers (changes are in manager_changes.csv)
     emp = build_employees(teams)
     surveys, indiv, team_out, full = [], [], [], []
-    for wave in (1, 2):
-        survey, dept_shift = simulate_survey(emp, teams, wave)
-        outcomes = simulate_individual_outcomes(survey, teams, dept_shift, wave)
+    manager_changes, events, used = [], [], set()
+    for wave in range(1, N_WAVES + 1):
+        e3_teams = []
+        if LONG and wave >= 2:
+            teams, ch, ev, e3_teams = change_managers(teams, wave, used)
+            manager_changes += ch
+            events += ev
+        if LONG:
+            survey, dept_shift, reported = simulate_survey(emp, teams, wave, e3_teams)
+            outcomes, p_leave = simulate_individual_outcomes(survey, teams, dept_shift, wave)
+        else:
+            survey, dept_shift = simulate_survey(emp, teams, wave)
+            outcomes = simulate_individual_outcomes(survey, teams, dept_shift, wave)
+            reported = None
         visible, resp_prob = apply_nonresponse(survey, outcomes)
+        if reported is not None:          # E3: the file shows the inflated answers
+            answered = visible["responded"].to_numpy() == 1
+            shown = reported.astype("Int64")
+            shown.loc[~answered, :] = pd.NA
+            visible[ITEMS] = shown
         t_out = team_table(survey, teams)
         for df in (visible, outcomes, t_out):
             df.insert(0, "wave", wave)
+        extra = {}
+        if LONG:
+            extra = {"turnover_prob_true": np.round(p_leave, 5),
+                     "true_index": survey[ITEMS].mean(axis=1).round(4).to_numpy(),
+                     "manager_quality": survey["team_id"].map(teams.set_index("team_id")["manager_quality"]).to_numpy()}
         full.append(survey.assign(wave=wave, responded=visible["responded"].to_numpy(),
-                                  response_prob=np.round(resp_prob, 4))
+                                  response_prob=np.round(resp_prob, 4), **extra)
                     .merge(outcomes, on=["wave", "employee_id"]))
         surveys.append(visible)
         indiv.append(outcomes)
         team_out.append(t_out)
-        if wave == 1:
+        if wave < N_WAVES:
             emp = next_wave(emp, outcomes.drop(columns="wave"), teams)
 
     hidden = ["engagement_latent", "prior_perf_latent"]
     survey_all = pd.concat(surveys, ignore_index=True).drop(columns=hidden)
-    cols = ["wave", "employee_id", "team_id", "department", "tenure_years", "role_level", "pay_band",
+    cols = ["wave", "employee_id", "team_id"] + (["manager_id"] if LONG else []) + [
+            "department", "tenure_years", "role_level", "pay_band",
             "shift_type", "survey_date"] + ITEMS + ["responded"]
     survey_all = survey_all[cols]
     indiv_all = pd.concat(indiv, ignore_index=True)
     team_all = pd.concat(team_out, ignore_index=True)
     full_all = pd.concat(full, ignore_index=True)
+
+    hidden_outcomes = None
+    if HIDE_LAST:
+        # The newest year's outcomes are not known yet: blank them for the agent, keep them for graders.
+        last = indiv_all["wave"] == N_WAVES
+        hide = ["left_voluntarily_12m", "turnover_window_end", "unplanned_absence_days_6m",
+                "absence_window_end", "performance_rating", "performance_review_date"]
+        hidden_outcomes = indiv_all.loc[last].copy()
+        indiv_all[hide] = indiv_all[hide].astype(object)
+        indiv_all.loc[last, hide] = None
 
     error_log = None
     if ARGS.variant.startswith("dirty"):
@@ -598,13 +889,23 @@ def main(out_dir):
         with open(f"{out_dir}/agent_data/{name}.csv", "w") as f:
             f.write(fmt(df))
 
-    write_full = ARGS.full_data == "yes" or (ARGS.full_data == "auto" and N_EMPLOYEES <= 50000)
+    # auto: small 2-wave sets only (a 5-wave file would be too large to share)
+    write_full = ARGS.full_data == "yes" or (ARGS.full_data == "auto" and N_EMPLOYEES <= 50000 and not LONG)
     if write_full:
         with open(f"{out_dir}/answer_key/full_data_with_latents.csv", "w") as f:
             f.write(fmt(full_all))
-    teams.to_csv(f"{out_dir}/answer_key/teams_with_manager_quality.csv", index=False)
+    teams_wave1.to_csv(f"{out_dir}/answer_key/teams_with_manager_quality.csv", index=False)
     if error_log is not None:
         error_log.to_csv(f"{out_dir}/answer_key/error_log.csv", index=False)
+    risk = None
+    if LONG:
+        if hidden_outcomes is not None:
+            with open(f"{out_dir}/answer_key/hidden_outcomes.csv", "w") as f:
+                f.write(fmt(hidden_outcomes))
+        pd.DataFrame(manager_changes).to_csv(f"{out_dir}/answer_key/manager_changes.csv", index=False)
+        pd.DataFrame(events).to_csv(f"{out_dir}/answer_key/events.csv", index=False)
+        risk = team_risk_table(full_all)
+        risk.to_csv(f"{out_dir}/answer_key/team_true_risk.csv", index=False)
 
     w1 = full_all[full_all["wave"] == 1]
     realized = realized_values(w1)
@@ -619,10 +920,12 @@ def main(out_dir):
         "full_data": write_full,
     }
     rr = w1.groupby("left_voluntarily_12m")["responded"].mean()
-    is_null = ARGS.variant == "null"
+    is_null = BASE_VARIANT == "null"
     gt = {
         "generator_version": GENERATOR_VERSION,
         "variant": ARGS.variant,
+        "base_variant": BASE_VARIANT,
+        "waves": N_WAVES,
         "seed": ARGS.seed,
         "dataset": {k: meta[k] for k in ["employees_per_wave", "survey_rows", "teams", "small_teams",
                                          "small_team_share", "response_rate_w1", "turnover_w1"]},
@@ -693,10 +996,15 @@ def main(out_dir):
         gt["null_design"] = ("No engagement item affects any outcome. X1, X2 and X6 still create misleading raw "
                              "associations through department and prior performance; a correct agent controls for "
                              "them and reports no item as a driver.")
+    if ARGS.variant == "long_purenull":
+        gt["null_design"] += (" X7 is also off: leavers and stayers answer equally often and answering does not "
+                              "depend on engagement, so nothing in the survey predicts turnover.")
+    if LONG:
+        gt.update(long_answer_key(full_all, survey_all, risk, events, manager_changes))
     with open(f"{out_dir}/answer_key/ground_truth.json", "w") as f:
-        json.dump(gt, f, indent=2)
+        json.dump(gt, f, indent=2, default=float)
     write_readme(out_dir, meta)
-    print(f"[{ARGS.variant}] {len(survey_all):,} survey rows ({N_EMPLOYEES:,} employees x 2 waves, "
+    print(f"[{ARGS.variant}] {len(survey_all):,} survey rows ({N_EMPLOYEES:,} employees x {N_WAVES} waves, "
           f"{N_TEAMS:,} teams) -> {out_dir}/")
 
 

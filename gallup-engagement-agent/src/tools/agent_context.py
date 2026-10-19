@@ -149,22 +149,50 @@ def _trends(df, analysis, change, a) -> dict:
     return section
 
 
-def _risk_results(df) -> dict:
+def _health(analysis) -> dict | None:
+    return (analysis or {}).get("health_report") if isinstance(analysis, dict) else None
+
+
+def _risk_results(df, analysis=None) -> dict:
     results = {}
     for outcome, (column, _) in TARGETS.items():
         if column in df.columns:
             try:
-                results[outcome] = team_risk(df, outcome)
-            except ValueError:
+                results[outcome] = team_risk(df, outcome, health_report=_health(analysis))
+            except ValueError:            # includes PredictionBlocked (health gate)
                 results[outcome] = None
     return results
+
+
+def _risk_checks(risk_results: dict) -> dict:
+    """What the agent must know about each team risk model (Prediction Review fixes)."""
+    out = {}
+    for outcome, r in (risk_results or {}).items():
+        if r is None:
+            out[outcome] = "unavailable or blocked by the data health checks"
+            continue
+        out[outcome] = {
+            "model_test": r["status"],
+            "survey_answers_add_warning_signs": r["survey_signal"]["text"],
+            "teams_that_changed": r["change_check"]["text"],
+            "percentages": ("shown" if r["show_percentages"] else
+                            "hidden; quote only the risk band (High, Elevated, Typical)"),
+            "calibration": r["calibration"]["text"],
+            "what_above_normal_means": r["target_definition"]["text"],
+        }
+        if r.get("survey_response_warning"):
+            out[outcome]["survey_response_warning"] = r["survey_response_warning"]["text"]
+    if out:
+        out["interpretation"] = ("Predicted risk is a warning sign, not a cause. The Outcomes "
+                                 "findings decide what to improve.")
+    return out
 
 
 def _teams(df, analysis, change, a, risk_results=None) -> dict:
     scorecard = team_scorecard(df, analysis)
     if scorecard.empty:
         return {"note": "No teams with 5+ people."}
-    risk_results = risk_results if risk_results is not None else _risk_results(df)
+    risk_results = risk_results if risk_results is not None else _risk_results(df, analysis)
     watch = team_watchlist(scorecard, risk_results)
     plain = {"useful": "passed its test on unseen data",
              "weak": "did not pass its test, so its risk bands are not used",
@@ -190,22 +218,33 @@ def _teams(df, analysis, change, a, risk_results=None) -> dict:
         "risk_model_test_result": models,
         "most_urgent_teams": [describe(r) for _, r in top.iterrows()],
         "how_urgency_is_ranked": "Priority flag first, then high or elevated predicted risk.",
+        "risk_model_checks": "see predictions.team_risk_model_checks",
     }
 
 
-def _predictions(df, analysis, change, a) -> dict:
+def _predictions(df, analysis, change, a, risk_results=None) -> dict:
     section: dict[str, Any] = {}
+    health = _health(analysis)
+    blocked = (health or {}).get("summary", {}).get("blocked_outcomes", [])
+    if "all" in blocked:
+        return {"status": "Predictions are blocked by the data health checks; do not name at-risk "
+                          "teams or groups until the data is fixed."}
     if "department" in df.columns:
         try:
-            risk = employee_risk_by_group(df, "department")
+            risk = employee_risk_by_group(df, "department", health_report=health)
             if risk["status"] == "useful":
                 t = risk["table"]
+                show = risk["show_percentages"]
                 section["turnover_risk_by_department"] = [
                     {"department": r["department"],
                      "percent_in_riskiest_fifth": _pct(r["high_risk_share"]),
-                     "expected_leavers_next_12_months": int(r["expected_leavers"])}
+                     **({"expected_leavers_next_12_months": int(r["expected_leavers"])} if show else {})}
                     for _, r in t.iterrows()]
-                section["expected_leavers_total"] = int(t["expected_leavers"].sum())
+                if show:
+                    section["expected_leavers_total"] = int(t["expected_leavers"].sum())
+                section["calibration"] = risk["calibration"]["text"]
+                if risk.get("survey_response_warning"):
+                    section["survey_response_warning"] = risk["survey_response_warning"]["text"]
                 section["model_accuracy_percent"] = _pct(risk["auc"])
                 section["fairness_check"] = ("pending" if t["actual_rate"].isna().all()
                                              else "passed" if not t["fairness_flag"].any()
@@ -220,6 +259,9 @@ def _predictions(df, analysis, change, a) -> dict:
                 section["turnover_risk_by_department"] = f"Model did not pass its test: {risk['status_text']}"
         except ValueError as exc:
             section["turnover_risk_by_department"] = str(exc)
+    if "team_id" in df.columns:
+        section["team_risk_model_checks"] = _risk_checks(
+            risk_results if risk_results is not None else _risk_results(df, analysis))
     forecast = forecast_engagement(df)
     section["engagement_forecast"] = explain_forecast(forecast).replace("**", "")
     if forecast["available"]:
@@ -375,13 +417,13 @@ def build_context(df: pd.DataFrame, analysis: dict | None = None,
     be built is replaced by a short note instead of failing the whole answer."""
     a = assumptions or Assumptions(headcount=len(analysis_frame(df)))
     wanted = sections or list(BUILDERS)
-    needs_risk = {"teams", "recommendations"} & set(wanted)
-    risk_results = _risk_results(df) if needs_risk else None
+    needs_risk = {"teams", "recommendations", "predictions"} & set(wanted)
+    risk_results = _risk_results(df, analysis) if needs_risk else None
     context: dict[str, Any] = {"model_survey": wave_label(model_wave(df))}
     for name in wanted:
         builder = BUILDERS[name]
         try:
-            if name in ("teams", "recommendations"):
+            if name in ("teams", "recommendations", "predictions"):
                 context[name] = builder(df, analysis, change_analysis, a, risk_results)
             else:
                 context[name] = builder(df, analysis, change_analysis, a)

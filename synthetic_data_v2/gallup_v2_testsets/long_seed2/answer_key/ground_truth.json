@@ -1,0 +1,330 @@
+{
+  "generator_version": "3.0",
+  "variant": "long_seed",
+  "base_variant": "seed",
+  "waves": 5,
+  "seed": 2,
+  "dataset": {
+    "employees_per_wave": 50000,
+    "survey_rows": 250000,
+    "teams": 4000,
+    "small_teams": 200,
+    "small_team_share": 0.05,
+    "response_rate_w1": 0.81262,
+    "turnover_w1": 0.18468
+  },
+  "how_to_grade": "Grade effect sizes against realized_values.respondents_only: that is what the agent can estimate from agent_data. realized_values.all_employees is the population truth used to show the X7 understatement. Planted parameters are the generator settings.",
+  "parameters": {
+    "T1_Q04_turnover_OR": 0.7,
+    "T1_X5_tenure_lt2_OR": 0.49,
+    "T2_Q05_turnover_OR": 0.78,
+    "T3_Q12_turnover_OR": 0.75,
+    "T4_Q01_performance_beta": 0.2,
+    "T5_Q05_absence_IRR": 0.85,
+    "X1_sales_Q02_shift": -0.9,
+    "X1_sales_turnover_logit": 0.9,
+    "X2_prior_perf_to_Q11": 0.5,
+    "X3_manager_to_Q07": 0.5,
+    "X3_manager_to_absence": -0.35,
+    "X4_Q01_threshold": 3,
+    "X4_Q01_low_absence_logrr": 0.6,
+    "X6_Q07_within_dept_beta": 0.15,
+    "X6_dept_Q07_spread": 0.8,
+    "X6_dept_perf_reversal": -1.8,
+    "X7_leaver_response_rate": 0.6,
+    "X7_stayer_response_rate": 0.86,
+    "X7_leaver_engagement_slope": 1.5,
+    "X7_stayer_engagement_slope": 0.3,
+    "X8_min_group_size": 5
+  },
+  "true_effects": [
+    {
+      "id": "T1",
+      "item": "Q04",
+      "outcome": "turnover",
+      "measure": "OR per point",
+      "direction": "negative",
+      "planted": 0.7,
+      "note": "Twice as strong (log-odds) for tenure under 2 years (X5); the pooled OR is therefore below 0.70."
+    },
+    {
+      "id": "T2",
+      "item": "Q05",
+      "outcome": "turnover",
+      "measure": "OR per point",
+      "direction": "negative",
+      "planted": 0.78
+    },
+    {
+      "id": "T3",
+      "item": "Q12",
+      "outcome": "turnover",
+      "measure": "OR per point",
+      "direction": "negative",
+      "planted": 0.75
+    },
+    {
+      "id": "T4",
+      "item": "Q01",
+      "outcome": "performance",
+      "measure": "standardized beta",
+      "direction": "positive",
+      "planted": 0.2
+    },
+    {
+      "id": "T5",
+      "item": "Q05",
+      "outcome": "absence",
+      "measure": "IRR per point",
+      "direction": "negative",
+      "planted": 0.85
+    }
+  ],
+  "true_nulls": [
+    {
+      "id": "N1",
+      "item": "Q06",
+      "outcomes": [
+        "absence"
+      ],
+      "truth": "Q06 is associated with absence, but once the other items are included it has no independent effect."
+    },
+    {
+      "id": "N2",
+      "item": "Q10",
+      "outcomes": [
+        "turnover",
+        "absence",
+        "performance"
+      ],
+      "truth": "Q10 is associated with the outcomes, but has no independent effect on any of them."
+    },
+    {
+      "id": "N3",
+      "item": "Q08",
+      "outcomes": [
+        "turnover",
+        "absence",
+        "performance"
+      ],
+      "truth": "Q08 is associated with the outcomes, but has no independent effect on any of them."
+    }
+  ],
+  "items_without_planted_effects": "Q02, Q03, Q06, Q07, Q08, Q09, Q10, Q11 have no independent effect on any outcome (Q07 has a small within-department effect on performance, X6).",
+  "traps": [
+    {
+      "id": "X1",
+      "name": "Confounding",
+      "built": "Sales scores low on Q02 and has high turnover; Q02 has no effect.",
+      "correct": "Control for department; the Q02 link disappears."
+    },
+    {
+      "id": "X2",
+      "name": "Reverse causality",
+      "built": "Prior performance raises Q11.",
+      "correct": "Control for prior rating; do not claim Q11 drives performance."
+    },
+    {
+      "id": "X3",
+      "name": "Hidden confounder",
+      "built": "Hidden manager quality raises Q07 and lowers absence.",
+      "correct": "Flag a likely manager effect; recommend team-level review."
+    },
+    {
+      "id": "X4",
+      "name": "Threshold",
+      "built": "Absence rises only when Q01 is below 3.",
+      "correct": "Test the threshold, not only a straight line."
+    },
+    {
+      "id": "X5",
+      "name": "Subgroup",
+      "built": "Q04 matters twice as much for tenure under 2 years.",
+      "correct": "Report the subgroup difference."
+    },
+    {
+      "id": "X6",
+      "name": "Simpson's paradox",
+      "built": "Departments rate performance with different leniency, opposite to their mean Q07.",
+      "correct": "Report the within-department (positive) result."
+    },
+    {
+      "id": "X7",
+      "name": "Nonresponse",
+      "built": "Leavers answer less often, and among leavers the disengaged answer least.",
+      "correct": "Warn that turnover effects are likely understated."
+    },
+    {
+      "id": "X8",
+      "name": "Small groups",
+      "built": "About 5% of teams have fewer than 5 people.",
+      "correct": "Suppress results for those teams."
+    }
+  ],
+  "x7_design": {
+    "description": "Response depends on both later leaving and hidden engagement. Disengaged leavers answer least. Group response rates are calibrated to the targets, so respondents look more engaged than the workforce and engagement-turnover links look weaker than they are. A side effect: among respondents, items with no real effect can show small positive turnover odds ratios (about 1.02-1.07), because answering depends on both engagement and leaving. These stay inside the no-effect band (0.91-1.10).",
+    "response_rate_leavers": 0.6,
+    "response_rate_stayers": 0.861,
+    "mean_score_turnover_OR_all_employees": 0.369,
+    "mean_score_turnover_OR_respondents": 0.501,
+    "grading": "The agent cannot compute the all-employee value. It passes if it warns that the effect it reports is likely understated."
+  },
+  "realized_values": {
+    "all_employees": {
+      "n": 50000,
+      "T1_Q04_turnover_OR": 0.621,
+      "T1_X5_Q04_x_new_hire_logOR": -0.353,
+      "T2_Q05_turnover_OR": 0.789,
+      "T3_Q12_turnover_OR": 0.77,
+      "T4_Q01_performance_beta": 0.146,
+      "T5_Q05_absence_IRR": 0.86,
+      "N1_Q06_absence_IRR": 1.0,
+      "N2_Q10_turnover_OR": 0.961,
+      "N2_Q10_absence_IRR": 1.004,
+      "N2_Q10_performance_beta": -0.006,
+      "N3_Q08_turnover_OR": 0.982,
+      "N3_Q08_absence_IRR": 1.01,
+      "N3_Q08_performance_beta": -0.002,
+      "X1_Q02_turnover_OR_raw": 0.541,
+      "X1_Q02_turnover_OR_controlled": 0.994,
+      "X4_Q01_below3_absence_RR": 1.883,
+      "X6_Q07_performance_beta_pooled": -0.053,
+      "X6_Q07_performance_beta_within_dept": 0.195,
+      "X7_mean_score_turnover_OR": 0.369
+    },
+    "respondents_only": {
+      "n": 40631,
+      "T1_Q04_turnover_OR": 0.64,
+      "T1_X5_Q04_x_new_hire_logOR": -0.335,
+      "T2_Q05_turnover_OR": 0.825,
+      "T3_Q12_turnover_OR": 0.797,
+      "T4_Q01_performance_beta": 0.138,
+      "T5_Q05_absence_IRR": 0.864,
+      "N1_Q06_absence_IRR": 0.999,
+      "N2_Q10_turnover_OR": 0.984,
+      "N2_Q10_absence_IRR": 0.998,
+      "N2_Q10_performance_beta": -0.007,
+      "N3_Q08_turnover_OR": 1.031,
+      "N3_Q08_absence_IRR": 1.01,
+      "N3_Q08_performance_beta": -0.0,
+      "X1_Q02_turnover_OR_raw": 0.647,
+      "X1_Q02_turnover_OR_controlled": 1.025,
+      "X4_Q01_below3_absence_RR": 1.888,
+      "X6_Q07_performance_beta_pooled": -0.065,
+      "X6_Q07_performance_beta_within_dept": 0.183,
+      "X7_mean_score_turnover_OR": 0.501
+    }
+  },
+  "true_trends": [
+    {
+      "wave": 1,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.53,
+      "visible_mean_score_respondents": 3.638,
+      "turnover_rate": 0.1847,
+      "true_turnover_rate": 0.1838,
+      "response_rate": 0.8126,
+      "outcomes_hidden": false
+    },
+    {
+      "wave": 2,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.591,
+      "visible_mean_score_respondents": 3.694,
+      "turnover_rate": 0.1736,
+      "true_turnover_rate": 0.1731,
+      "response_rate": 0.8144,
+      "outcomes_hidden": false
+    },
+    {
+      "wave": 3,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.645,
+      "visible_mean_score_respondents": 3.75,
+      "turnover_rate": 0.1678,
+      "true_turnover_rate": 0.1673,
+      "response_rate": 0.8165,
+      "outcomes_hidden": false
+    },
+    {
+      "wave": 4,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.634,
+      "visible_mean_score_respondents": 3.759,
+      "turnover_rate": 0.166,
+      "true_turnover_rate": 0.1668,
+      "response_rate": 0.8158,
+      "outcomes_hidden": false
+    },
+    {
+      "wave": 5,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.637,
+      "visible_mean_score_respondents": 3.735,
+      "turnover_rate": 0.1657,
+      "true_turnover_rate": 0.1672,
+      "response_rate": 0.8165,
+      "outcomes_hidden": true
+    }
+  ],
+  "true_events": [
+    {
+      "id": "E1",
+      "name": "better manager",
+      "wave": 3,
+      "teams": 200,
+      "visible_score_change_event_teams": 0.584,
+      "visible_score_change_other_teams": 0.028,
+      "true_turnover_change_event_teams": -0.0774,
+      "true_turnover_change_other_teams": -0.0029,
+      "expected": "Scores rise; true turnover falls only if items affect turnover (main), not in the null variants."
+    },
+    {
+      "id": "E2",
+      "name": "worse manager",
+      "wave": 4,
+      "teams": 200,
+      "visible_score_change_event_teams": -0.476,
+      "visible_score_change_other_teams": 0.035,
+      "true_turnover_change_event_teams": 0.054,
+      "true_turnover_change_other_teams": -0.0029,
+      "expected": "Scores fall; true turnover rises only if items affect turnover (main)."
+    },
+    {
+      "id": "E3",
+      "name": "inflated scores",
+      "wave": 4,
+      "teams": 120,
+      "visible_score_change_event_teams": 0.741,
+      "visible_score_change_other_teams": -0.013,
+      "true_turnover_change_event_teams": -0.0069,
+      "true_turnover_change_other_teams": 0.0002,
+      "expected": "Scores rise but true turnover does not change: a false turnaround. A good change gate does not count these teams as improved, and the health check flags the jump."
+    }
+  ],
+  "manager_changes": {
+    "per_wave": {
+      "2": 310,
+      "3": 502,
+      "4": 526,
+      "5": 316
+    },
+    "natural_change_rate": 0.08,
+    "manager_to_engagement": 0.4,
+    "note": "manager_id in survey_responses.csv changes when a team gets a new manager. Hidden quality is in answer_key/manager_changes.csv."
+  },
+  "team_true_risk_summary": {
+    "wave": 5,
+    "teams_5_plus": 3800,
+    "company_true_rate": 0.1672,
+    "auc_true_rate_vs_realized_above_company": 0.774,
+    "auc_previous_rate_vs_realized_above_company": 0.623,
+    "note": "auc_true_rate is the best any model could do (it knows each team's true risk); the gap to 1.0 is pure chance in who leaves. auc_previous_rate is the 'same as last year' baseline. A team model should land between the two."
+  },
+  "x7_prediction_note": "With X7 on, people who are about to leave answer less often, and disengaged leavers least. So a team that will lose many people looks better on the survey than it is, and the respondents' team score is weakly POSITIVELY related to team turnover within a department. A team model using Q12 means can then beat a department-only model by a few AUC points even when no item has any effect (long_null). long_purenull removes X7; there the gap should vanish. A correct agent runs a within-department permutation test and shows a survey-response warning instead of claiming Q12 drives team risk.",
+  "hidden_outcomes": {
+    "wave": 5,
+    "file": "answer_key/hidden_outcomes.csv",
+    "grading": "Wave 5 outcomes are blank in agent_data, as if the year has not finished. The app trains on waves 1-4 and predicts wave 5 team risk; grade the ranking with team_true_risk.csv (true_above_company) and hidden_outcomes.csv (realized)."
+  }
+}

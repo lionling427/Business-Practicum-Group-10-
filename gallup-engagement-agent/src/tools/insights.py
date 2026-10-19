@@ -522,7 +522,9 @@ def risk_outlook(team_id: str, risk_results: dict[str, dict] | None,
         row = row.iloc[0]
         what, when = RISK_WHAT[outcome]
         drivers = [d.split(" ", 1)[0] for d in str(row["risk_drivers"]).split(", ") if d]
+        show = result.get("show_percentages", True)
         outcomes.append({
+            "show_percentages": show,
             "outcome": outcome, "what": what, "when": when, "band": row["risk_band"],
             "risk_pct": int(round(float(row["risk"]) * 100)),
             "typical_pct": int(round(float(teams["risk"].median()) * 100)),
@@ -537,13 +539,18 @@ def risk_outlook(team_id: str, risk_results: dict[str, dict] | None,
     worst = outcomes[0]
     urgency, color = RISK_URGENCY[worst["band"]]
 
-    headline = (f"This team has about a {worst['chance']} chance of {worst['what']} "
-                f"{worst['when']}, compared with about {worst['typical_chance']} for a "
-                "typical team.")
+    if worst["show_percentages"]:
+        headline = (f"This team has about a {worst['chance']} chance of {worst['what']} "
+                    f"{worst['when']}, compared with about {worst['typical_chance']} for a "
+                    "typical team.")
+    else:   # percentages not calibrated yet (v4): bands only
+        headline = (f"This team is in the {worst['band'].lower()} risk group for {worst['what']} "
+                    f"{worst['when']}.")
     for other in outcomes[1:]:
         if other["band"] != "Typical":
             headline += (f" It also has about a {other['chance']} chance of {other['what']} "
-                         f"(typical: about {other['typical_chance']}).")
+                         f"(typical: about {other['typical_chance']})." if other["show_percentages"]
+                         else f" It is also in the {other['band'].lower()} risk group for {other['what']}.")
 
     steps: list[str] = []
     for o in outcomes:
@@ -555,11 +562,12 @@ def risk_outlook(team_id: str, risk_results: dict[str, dict] | None,
     if worst["drivers"]:
         top = worst["drivers"][0]
         if top["item"] == focus_item:
-            driver_note = (f"Your focus question, {top['label']} ({top['item']}), is also what "
-                           "pushes this risk up most, so working on it covers both.")
+            driver_note = (f"Your focus question, {top['label']} ({top['item']}), is also the "
+                           "strongest warning sign in this team's answers, so working on it "
+                           "covers both.")
         else:
-            driver_note = (f"The answers pushing this risk up most are on {top['label']} "
-                           f"({top['item']}). Also try: "
+            driver_note = (f"The strongest warning sign in this team's answers is {top['label']} "
+                           f"({top['item']}), a signal to listen to, not a proven cause. Also try: "
                            f"{ACTION_LIBRARY[top['item']]['actions'][0]}")
     if worst["band"] == "Typical":
         steps = ["Keep doing what works and look at this again after the next survey."]

@@ -1,0 +1,53 @@
+step,code,check,status,detail
+1 Integrity,INT_DUPLICATE,Duplicate employee per wave,PASS,0 duplicate rows
+1 Integrity,INT_SCORE_RANGE,Q12 scores within 1-5,PASS,0 out-of-range values
+1 Integrity,INT_ORPHAN_TEAM,Every employee maps to a team,PASS,0 orphan rows
+1 Integrity,INT_UNMATCHED_OUTCOME,Every survey row has outcomes,PASS,0 unmatched rows
+1 Integrity,INT_NEGATIVE_VALUES,No negative tenure or absence,PASS,0 negative values
+1 Integrity,INT_PARTIAL_RESPONSE,Respondents answered all 12 items,PASS,0 partial responses
+2 Coverage,COV_GROUP_SIZE_department,Group sizes: department,PASS,"smallest Sales 11.6%, largest Logistics 13.2%"
+2 Coverage,COV_GROUP_SIZE_role_level,Group sizes: role_level,PASS,"smallest Manager 9.8%, largest Individual contributor 65.2%"
+2 Coverage,COV_GROUP_SIZE_pay_band,Group sizes: pay_band,PASS,"smallest B4 9.9%, largest B2 34.8%"
+2 Coverage,COV_GROUP_SIZE_shift_type,Group sizes: shift_type,PASS,"smallest Night 10.1%, largest Day 69.9%"
+2 Coverage,COV_SMALL_TEAMS,Teams below n=5 (must be suppressed),WARN,5.0% of teams (200)
+3 Nonresponse,NR_OVERALL,Overall response rate,PASS,80.8%
+3 Nonresponse,NR_GAP_department,Response rate gap by department,WARN,Sales 76.8% vs Engineering 82.0% (gap 5.2%)
+3 Nonresponse,NR_GAP_role_level,Response rate gap by role_level,PASS,Manager 80.4% vs Senior 81.0% (gap 0.6%)
+3 Nonresponse,NR_GAP_pay_band,Response rate gap by pay_band,PASS,B4 80.0% vs B1 80.9% (gap 1.0%)
+3 Nonresponse,NR_GAP_shift_type,Response rate gap by shift_type,PASS,Day 80.7% vs Night 81.5% (gap 0.8%)
+3 Nonresponse,NR_GAP_tenure_band,Response rate gap by tenure_band,PASS,<2y 80.1% vs 2-5y 81.3% (gap 1.2%)
+3 Nonresponse,NR_SMD_tenure_years,Respondents vs non-respondents: tenure_years,PASS,SMD +0.012
+3 Nonresponse,NR_SMD_unplanned_absence_days_6m,Respondents vs non-respondents: unplanned_absence_days_6m,PASS,SMD -0.004
+3 Nonresponse,NR_SMD_performance_rating,Respondents vs non-respondents: performance_rating,PASS,SMD -0.026
+3 Nonresponse,NR_SMD_prior_performance_rating,Respondents vs non-respondents: prior_performance_rating,PASS,SMD -0.002
+3 Nonresponse,NR_LEAVERS,Leavers vs stayers response rate,WARN,Leavers 60.1% vs stayers 86.1%. Respondents may look more positive than the workforce; turnover effects may be understated.
+4 Response style,RS_STRAIGHTLINE,Straight-lining (same answer to all 12),PASS,2.9% of respondents
+4 Response style,RS_EXTREME,Extreme responding (>80% of answers are 1 or 5),WARN,9.2% of respondents
+4 Response style,RS_CEILING,Ceiling effect (item with most 5s),PASS,Q09 38.1% answered 5
+4 Response style,RS_ACQUIESCENCE,Acquiescence (share agree/strongly agree),PASS,58.1%
+5 Measurement,MS_ALPHA,"Reliability (Cronbach's alpha), all",PASS,alpha 0.94
+5 Measurement,MS_ALPHA_department,Reliability consistent across department,PASS,alpha 0.94 (Sales) to 0.95 (Operations)
+5 Measurement,MS_ALPHA_role_level,Reliability consistent across role_level,PASS,alpha 0.94 (Manager) to 0.94 (Senior)
+5 Measurement,MS_ALPHA_tenure_band,Reliability consistent across tenure_band,PASS,alpha 0.94 (10y+) to 0.94 (5-10y)
+5 Measurement,MS_DIF,Item bias by department (DIF screen),WARN,"Items behave differently by department: Q02, Q07"
+6 Outcome labels,OL_PERF_GAP_role_level,Performance rating gap by role_level,PASS,Manager 3.51 vs Senior 3.54 (0.02 SD)
+6 Outcome labels,OL_TURNOVER_GAP_role_level,Turnover rate gap by role_level,PASS,Senior 20.0% vs Individual contributor 20.8%
+6 Outcome labels,OL_PERF_GAP_pay_band,Performance rating gap by pay_band,PASS,B1 3.52 vs B4 3.56 (0.03 SD)
+6 Outcome labels,OL_TURNOVER_GAP_pay_band,Turnover rate gap by pay_band,PASS,B4 20.4% vs B3 20.7%
+6 Outcome labels,OL_PERF_GAP_department,Performance rating gap by department,WARN,Logistics 2.20 vs Sales 4.66 (2.06 SD)
+6 Outcome labels,OL_TURNOVER_GAP_department,Turnover rate gap by department,WARN,Customer Service 17.8% vs Sales 35.1%
+6 Outcome labels,OL_PRIOR_ANCHOR,Rating tracks prior rating,WARN,r = 0.35
+7 Survivorship,SV_STAYER_SHARE,Wave 5 made of wave 4 stayers,WARN,"79.2% stayers, 20.8% new hires"
+7 Survivorship,SV_LEAVER_ENGAGEMENT,Leavers were less engaged (later waves over-represent engaged staff),WARN,stayers vs leavers mean score SMD -0.39
+7 Survivorship,SV_STAYER_SHARE_w1_w2,Wave 2 made of wave 1 stayers,WARN,"79.5% stayers, 20.5% new hires"
+7 Survivorship,SV_STAYER_SHARE_w2_w3,Wave 3 made of wave 2 stayers,WARN,"79.4% stayers, 20.6% new hires"
+7 Survivorship,SV_STAYER_SHARE_w3_w4,Wave 4 made of wave 3 stayers,WARN,"79.1% stayers, 20.9% new hires"
+3 Nonresponse,NR_LEAVERS_BY_WAVE,"Leavers vs stayers response rate, every wave",WARN,"wave 1: leavers 60% vs stayers 86%; wave 2: leavers 60% vs stayers 86%; wave 3: leavers 60% vs stayers 86%; wave 4: leavers 60% vs stayers 86%. Team scores of teams that will lose people look better than they are, so survey-based team predictions can be misleading."
+4 Response style,RS_TEAM_JUMP,Team scores jump and pile up at 5 (possible inflated answers),WARN,wave 2: 19 teams; wave 3: 25 teams; wave 4: 83 teams; wave 5: 19 teams. Treat their improvement as unconfirmed until outcomes follow.
+7 Survivorship,MG_MANAGER_CHANGE,Teams with a new manager between waves,WARN,"wave 2: 341 of 4,000 teams (9%); wave 3: 517 of 4,000 teams (13%); wave 4: 519 of 4,000 teams (13%); wave 5: 315 of 4,000 teams (8%). Changes over time for these teams compare different leaders; their past turnover says less about the future."
+8 Aggregation,AG_SIMPSON,Pooled vs within-department direction flips,WARN,"Q02 x performance_rating (pooled -0.08, within-department +0.00); Q07 x performance_rating (pooled -0.24, within-department +0.00)"
+9 Leakage,LK_DATE_turnover,Turnover measured after the survey,PASS,"all 200,000 rows: turnover_window_end is after the survey date"
+9 Leakage,LK_DATE_absence,Absence measured after the survey,PASS,"all 200,000 rows: absence_window_end is after the survey date"
+9 Leakage,LK_DATE_performance,Performance measured after the survey,PASS,"all 200,000 rows: performance_review_date is after the survey date"
+9 Leakage,OUT_PENDING,Newest wave's outcomes not observed yet,PASS,wave 5: outcomes are blank (the year has not finished). Models use the newest wave with outcomes; team risk for the pending wave is a forecast.
+9 Leakage,LK_SURVEY_COLUMNS,No outcome columns inside the survey file,PASS,none found

@@ -165,29 +165,37 @@ def demean(df, cols, group):
 ITEMS = [f"Q{i:02d}" for i in range(1, 13)]
 
 
-def turnover_model(d, cluster=True, extra_numeric=(), interactions=()):
+def _with(base, extra):
+    """Base categorical controls plus any extra ones (no duplicates, order kept)."""
+    return list(dict.fromkeys(list(base) + list(extra)))
+
+
+def turnover_model(d, cluster=True, extra_numeric=(), interactions=(), extra_categorical=()):
     """Logistic regression: 12 items + tenure, department, role level, pay band."""
     X = design(d, list(ITEMS) + list(extra_numeric) + ["tenure_years"],
-               ["department", "role_level", "pay_band"], interactions)
+               _with(["department", "role_level", "pay_band"], extra_categorical), interactions)
     return logit(d["left_voluntarily_12m"], X, d["team_id"] if cluster else None)
 
 
-def absence_model(d, cluster=True, extra_numeric=()):
+def absence_model(d, cluster=True, extra_numeric=(), extra_categorical=()):
     """Negative binomial: 12 items + Q01-below-3 threshold + tenure, department, shift."""
     d = d.assign(q01_low=(d["Q01"] < 3).astype(float))
     X = design(d, list(ITEMS) + ["q01_low", "tenure_years"] + list(extra_numeric),
-               ["department", "shift_type"])
+               _with(["department", "shift_type"], extra_categorical))
     return negbin(d["unplanned_absence_days_6m"], X, d["team_id"] if cluster else None)
 
 
-def performance_model(d, cluster=True):
+def performance_model(d, cluster=True, extra_categorical=()):
     """Linear model on z-scores (approximates the ordinal model): 12 items +
     tenure, department, prior rating. Coefficients are standardized betas."""
     z = pd.DataFrame({c: zscore(d[c]) for c in list(ITEMS) + ["performance_rating", "prior_performance_rating"]},
                      index=d.index)
     z["tenure_years"] = d["tenure_years"]
-    z["department"] = d["department"]
-    X = design(z, list(ITEMS) + ["prior_performance_rating", "tenure_years"], ["department"])
+    extra = [c for c in extra_categorical if c != "department"]
+    for c in ["department"] + extra:
+        z[c] = d[c]
+    X = design(z, list(ITEMS) + ["prior_performance_rating", "tenure_years"],
+               _with(["department"], extra))
     return ols(z["performance_rating"], X, d["team_id"] if cluster else None)
 
 

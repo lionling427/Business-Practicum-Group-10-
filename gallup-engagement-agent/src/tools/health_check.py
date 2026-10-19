@@ -1,5 +1,15 @@
 """
-Data health check (v2) for the Gallup Decision Intelligence Agent.
+Data health check (v3.1) for the Gallup Decision Intelligence Agent.
+
+One file for the app (src/tools/health_check.py) and the data tools
+(gallup_v2_code/health_check.py). v3.1 adds multi-year checks, run only when the
+data has 3 or more waves or a manager_id column (2-wave results are unchanged):
+  OUT_PENDING           newest wave has no outcomes yet (allowed: models use the
+                        newest wave WITH outcomes, predictions forecast the rest)
+  SV_STAYER_SHARE_wA_wB survivorship for every earlier pair of waves
+  NR_LEAVERS_BY_WAVE    leavers vs stayers response rate in every labeled wave
+  RS_TEAM_JUMP          teams whose scores jump and pile up at 5 (possible inflation)
+  MG_MANAGER_CHANGE     teams that got a new manager between waves
 
 Part of the product: it runs automatically every time the agent loads a dataset,
 before any analysis, on synthetic or real data.
@@ -47,7 +57,7 @@ GROUPS = ["department", "role_level", "pay_band", "shift_type", "tenure_band"]
 MIN_GROUP_N = 5
 SMD_WARN = 0.10
 RATE_GAP_WARN = 0.05
-CHECKER_VERSION = "2.1"
+CHECKER_VERSION = "3.1"
 
 OUTCOME_SOURCE_COLUMNS = (
     [c for pair in OUTCOMES.values() for c in pair] + ["prior_performance_rating"]
@@ -115,6 +125,14 @@ def build_report(survey, indiv, team=None, dataset_name="dataset", base_wave=Non
     outcomes = {o: cols for o, cols in OUTCOMES.items() if cols[0] in indiv.columns}
     waves = sorted(survey["wave"].dropna().unique())
     base = base_wave if base_wave is not None else waves[0]
+    # Waves whose outcomes are not observed yet (every outcome value blank)
+    value_cols = [cols[0] for cols in outcomes.values()]
+    pending = []
+    if value_cols and "wave" in indiv.columns:
+        observed = indiv[value_cols].apply(pd.to_numeric, errors="coerce").notna().any(axis=1)
+        seen = observed.groupby(indiv["wave"]).any()
+        pending = [w for w in waves if w in seen.index and not seen[w]]
+    multi = len(waves) >= 3 or "manager_id" in survey.columns
 
     # -----------------------------------------------------------------------
     # STEP 1. Integrity (any FAIL blocks every analysis)
@@ -357,6 +375,82 @@ def build_report(survey, indiv, team=None, dataset_name="dataset", base_wave=Non
                 actions=["same_employees_only", "add_caveat:SV_LEAVER_ENGAGEMENT"] if st_ == "WARN" else [])
 
     # -----------------------------------------------------------------------
+    # STEP 7B. Multi-year data (3+ waves or manager_id; v3.1)
+    # -----------------------------------------------------------------------
+    s = "7 Survivorship"
+    if multi and len(waves) >= 3:
+        for a, b in zip(waves[:-2], waves[1:-1]):
+            ids = set(df.loc[df.wave == a, "employee_id"])
+            share = float(df.loc[df.wave == b, "employee_id"].isin(ids).mean())
+            st_ = "WARN" if share < 0.9 else "PASS"
+            add(s, f"SV_STAYER_SHARE_w{int(a)}_w{int(b)}", f"Wave {int(b)} made of wave {int(a)} stayers", st_,
+                f"{share:.1%} stayers, {1 - share:.1%} new hires", {"stayer_share": round(share, 4)},
+                "moderate" if st_ == "WARN" else "none", affects=["trend"],
+                actions=["same_employees_only"] if st_ == "WARN" else [])
+
+    s = "3 Nonresponse"
+    if multi and "turnover" in outcomes and df["responded"].nunique() > 1:
+        rows, worst = [], 0.0
+        for w in [w for w in waves if w not in pending]:
+            ww = df[df.wave == w]
+            rr = ww.groupby("left_voluntarily_12m")["responded"].mean()
+            if 0 in rr.index and 1 in rr.index:
+                gap = float(rr[0] - rr[1])
+                worst = max(worst, abs(gap))
+                rows.append({"wave": int(w), "leaver_rate": round(float(rr[1]), 4),
+                             "stayer_rate": round(float(rr[0]), 4), "gap": round(gap, 4)})
+        if rows:
+            st_ = "WARN" if worst > RATE_GAP_WARN else "PASS"
+            add(s, "NR_LEAVERS_BY_WAVE", "Leavers vs stayers response rate, every wave", st_,
+                "; ".join(f"wave {r['wave']}: leavers {r['leaver_rate']:.0%} vs stayers {r['stayer_rate']:.0%}"
+                          for r in rows)
+                + (". Team scores of teams that will lose people look better than they are, so survey-based "
+                   "team predictions can be misleading." if st_ == "WARN" else ""),
+                {"waves": rows}, "strong" if worst > 0.15 else "moderate" if st_ == "WARN" else "none",
+                affects=["turnover", "prediction"], actions=["add_caveat:NR_LEAVERS_BY_WAVE"] if st_ == "WARN" else [])
+
+    s = "4 Response style"
+    if multi and len(waves) >= 2 and "team_id" in resp.columns:
+        r = resp.dropna(subset=items).assign(idx=lambda d: d[items].astype(float).mean(axis=1),
+                                             fives=lambda d: (d[items] == 5).mean(axis=1))
+        g = r.groupby(["wave", "team_id"]).agg(idx=("idx", "mean"), fives=("fives", "mean"), n=("idx", "size"))
+        flagged = {}
+        for a, b in zip(waves[:-1], waves[1:]):
+            if a not in g.index.get_level_values(0) or b not in g.index.get_level_values(0):
+                continue
+            ga, gb = g.loc[a], g.loc[b]
+            both = gb.index.intersection(ga.index)
+            jump = gb.loc[both, "idx"] - ga.loc[both, "idx"]
+            hit = jump[(jump >= 0.6) & (gb.loc[both, "fives"] >= 0.5) & (gb.loc[both, "n"] >= MIN_GROUP_N)]
+            if len(hit):
+                flagged[int(b)] = sorted(hit.index.astype(str).tolist())
+        n_flag = sum(len(v) for v in flagged.values())
+        add(s, "RS_TEAM_JUMP", "Team scores jump and pile up at 5 (possible inflated answers)",
+            "WARN" if n_flag else "PASS",
+            ("; ".join(f"wave {w}: {len(t):,} teams" for w, t in flagged.items())
+             + ". Treat their improvement as unconfirmed until outcomes follow.") if n_flag
+            else "no team shows a sudden jump to mostly 5s",
+            {"teams": n_flag, "by_wave": flagged}, "moderate" if n_flag else "none",
+            affects=["trend", "prediction"], actions=["add_caveat:RS_TEAM_JUMP"] if n_flag else [])
+
+    s = "7 Survivorship"
+    if "manager_id" in df.columns and "team_id" in df.columns and len(waves) >= 2:
+        mgr = df.groupby(["wave", "team_id"])["manager_id"].agg(lambda x: x.mode().iat[0] if len(x.mode()) else None)
+        changed, parts = {}, []
+        for a, b in zip(waves[:-1], waves[1:]):
+            ma, mb = mgr.loc[a], mgr.loc[b]
+            both = mb.index.intersection(ma.index)
+            ch = both[(ma.loc[both] != mb.loc[both]).to_numpy()]
+            changed[int(b)] = sorted(ch.astype(str).tolist())
+            parts.append(f"wave {int(b)}: {len(ch):,} of {len(both):,} teams ({len(ch) / max(len(both), 1):.0%})")
+        n_ch = sum(len(v) for v in changed.values())
+        add(s, "MG_MANAGER_CHANGE", "Teams with a new manager between waves", "WARN" if n_ch else "PASS",
+            "; ".join(parts) + (". Changes over time for these teams compare different leaders; their past "
+                                "turnover says less about the future." if n_ch else ""),
+            {"teams": n_ch, "by_wave": changed}, "moderate" if n_ch else "none",
+            affects=["trend", "prediction"], actions=["add_caveat:MG_MANAGER_CHANGE"] if n_ch else [])
+
+    # -----------------------------------------------------------------------
     # STEP 8. Aggregation (Simpson's paradox screen, every item x outcome)
     # -----------------------------------------------------------------------
     s = "8 Aggregation"
@@ -399,8 +493,9 @@ def build_report(survey, indiv, team=None, dataset_name="dataset", base_wave=Non
                 {"violations": None, "missing_column": missing}, "moderate", affects=[name],
                 actions=[f"add_caveat:{code}"])
             continue
-        sd = pd.to_datetime(merged[SURVEY_DATE], errors="coerce")
-        od = pd.to_datetime(merged[date_col], errors="coerce")
+        m = merged[~merged["wave"].isin(pending)] if pending else merged
+        sd = pd.to_datetime(m[SURVEY_DATE], errors="coerce")
+        od = pd.to_datetime(m[date_col], errors="coerce")
         bad = int((od <= sd).sum())
         unreadable = int((sd.isna() | od.isna()).sum())
         if bad:
@@ -414,8 +509,13 @@ def build_report(survey, indiv, team=None, dataset_name="dataset", base_wave=Non
                 "weak", affects=[name], actions=[f"add_caveat:{code}"])
         else:
             add(s, code, f"{name.capitalize()} measured after the survey", "PASS",
-                f"all {len(merged):,} rows: {date_col} is after the survey date", {"violations": 0},
+                f"all {len(m):,} rows: {date_col} is after the survey date", {"violations": 0},
                 affects=[name])
+    if pending:
+        add(s, "OUT_PENDING", "Newest wave's outcomes not observed yet",
+            "PASS", f"wave {', '.join(str(int(w)) for w in pending)}: outcomes are blank (the year has not "
+            "finished). Models use the newest wave with outcomes; team risk for the pending wave is a forecast.",
+            {"pending_waves": [int(w) for w in pending]}, affects=["prediction"])
     add(s, "LK_SURVEY_COLUMNS", "No outcome columns inside the survey file", "FAIL" if leak_cols else "PASS",
         ", ".join(leak_cols) if leak_cols else "none found", {"violations": len(leak_cols), "columns": leak_cols},
         "strong" if leak_cols else "none", actions=["block:all"] if leak_cols else [])
@@ -433,6 +533,8 @@ def build_report(survey, indiv, team=None, dataset_name="dataset", base_wave=Non
         "checker_version": CHECKER_VERSION,
         "dataset": dataset_name,
         "base_wave": int(base) if float(base).is_integer() else base,
+        "waves": [int(w) if float(w).is_integer() else w for w in waves],
+        "pending_outcome_waves": [int(w) for w in pending],
         "checks_run": int(len(rep)),
         "pass": int(counts.get("PASS", 0)), "warn": int(counts.get("WARN", 0)), "fail": int(counts.get("FAIL", 0)),
         "blocked_outcomes": blocked,
@@ -527,23 +629,52 @@ def model_controls(report, outcome):
 
 
 # ---------------------------------------------------------------------------
-# COMMAND LINE: the development dataset folder
+# FUNCTION API shared with the data tools (generator / validator) – v3 names
 # ---------------------------------------------------------------------------
 
-def main(folder):
+def run_checks(survey, indiv, team=None, dataset_name="dataset", base_wave=None):
+    """Same as build_report, the name used by the data tools."""
+    return build_report(survey, indiv, team, dataset_name, base_wave=base_wave,
+                        survey_raw_columns=list(survey.columns))
+
+
+def check_dataframe(df, dataset_name="uploaded_dataset"):
+    """Same as check_upload, the name used by the data tools and v3 tests."""
+    return check_upload(df, dataset_name)
+
+
+def load_folder(folder):
     d = f"{folder}/agent_data"
     survey = pd.read_csv(f"{d}/survey_responses.csv", dtype={"employee_id": str, "team_id": str})
     indiv = pd.read_csv(f"{d}/individual_outcomes.csv", dtype={"employee_id": str})
     team = pd.read_csv(f"{d}/team_outcomes.csv", dtype={"team_id": str})
-    report = build_report(survey, indiv, team, os.path.basename(os.path.normpath(folder)),
-                          survey_raw_columns=list(survey.columns))
+    return survey, indiv, team
 
+
+def write_report(folder, report):
     os.makedirs(f"{folder}/reports", exist_ok=True)
     rep = pd.DataFrame(report["checks"])
     rep[["step", "code", "check", "status", "detail"]].to_csv(f"{folder}/reports/health_report.csv", index=False)
     with open(f"{folder}/reports/health_report.json", "w") as f:
         json.dump(report, f, indent=2, default=str)
+    return rep
 
+
+def check_folder(folder, write=True):
+    survey, indiv, team = load_folder(folder)
+    report = run_checks(survey, indiv, team, os.path.basename(os.path.normpath(folder)))
+    if write:
+        write_report(folder, report)
+    return report
+
+
+# ---------------------------------------------------------------------------
+# COMMAND LINE: the development dataset folder
+# ---------------------------------------------------------------------------
+
+def main(folder):
+    report = check_folder(folder)
+    rep = pd.DataFrame(report["checks"])
     summary = report["summary"]
     pd.set_option("display.width", 250, "display.max_colwidth", 110, "display.max_rows", 200)
     print(rep[["step", "code", "status", "detail"]].to_string(index=False))

@@ -4,7 +4,7 @@ Four short chapters, each built from results the other pages already verify:
 
   1. What is likely to happen   risk models that passed their test, expected
                                 leavers, engagement forecast
-  2. What we can do about it    the questions pushing risk up, matched with the
+  2. What we can do about it    the warning signs in high-risk teams, matched with the
                                 verified levers and each team's first step
   3. What it is worth           what the expected leavers cost, what acting on
                                 the top lever is worth, where costs sit today
@@ -64,12 +64,12 @@ def _purpose(outcomes: str) -> str:
     return "for " + " and ".join(named) if named else ""
 
 
-def _risks(df: pd.DataFrame) -> dict[str, dict | None]:
+def _risks(df: pd.DataFrame, health_report: dict | None = None) -> dict[str, dict | None]:
     out = {}
     for outcome, (column, _) in TARGETS.items():
         if column in df.columns:
             try:
-                out[outcome] = team_risk(df, outcome)
+                out[outcome] = team_risk(df, outcome, health_report=health_report)
             except ValueError:
                 out[outcome] = None
     return out
@@ -97,6 +97,11 @@ def _predict(df, risks, a) -> tuple[dict[str, Any], dict[str, Any]]:
         points.append(f"**{len(high)} teams** are at high risk of {result['label']}{where}. "
                       f"The model picks the riskier of two teams correctly "
                       f"{result['auc']:.0%} of the time.")
+
+    x7 = next((r["survey_response_warning"] for r in risks.values()
+               if r is not None and r.get("survey_response_warning")), None)
+    if x7 is not None:
+        points.append(x7["text"])
 
     if "department" in df.columns and TARGETS["turnover"][0] in df.columns:
         try:
@@ -128,9 +133,11 @@ def _act(df, analysis, change, facts, factors, risks) -> tuple[dict[str, Any], p
     risk_items = facts["risk_items"]
     if risk_items:
         named = [f"{ITEM_LABELS[i]} ({i})" for i, _ in risk_items.most_common(3)]
-        points.append("The questions pushing risk up most often in high-risk teams: "
-                      + ", ".join(named[:-1]) + " and " + named[-1] + "."
-                      if len(named) > 1 else f"The question pushing risk up most: {named[0]}.")
+        points.append("Warning signs seen most often in high-risk teams (signals to listen to, "
+                      "not proven causes): " + ", ".join(named[:-1]) + " and " + named[-1] + "."
+                      if len(named) > 1 else
+                      f"The warning sign seen most often in high-risk teams: {named[0]} "
+                      "(a signal to listen to, not a proven cause).")
 
     if not factors.empty:
         top = factors.iloc[0]
@@ -235,7 +242,7 @@ def build_action_story(df: pd.DataFrame, analysis: dict | None = None,
                        assumptions: Assumptions | None = None,
                        traps: dict | None = None) -> dict[str, Any]:
     a = assumptions or Assumptions(headcount=len(analysis_frame(df)))
-    risks = _risks(df)
+    risks = _risks(df, (analysis or {}).get("health_report"))
     factors = factor_value(df, analysis, a, traps)
     excess = team_excess_cost(df, a)
 

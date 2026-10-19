@@ -232,7 +232,8 @@ def team_watchlist(scorecard: pd.DataFrame, risk_results: dict | None) -> pd.Dat
         if result is not None and result.get("status") == "useful":
             bands = result["teams"].set_index("team_id")
             teams[column] = teams["team_id"].map(bands["risk_band"]).fillna("—")
-            teams[f"{outcome}_risk_pct"] = teams["team_id"].map(bands["risk"]) * 100
+            if result.get("show_percentages", True):        # only when calibrated (v4)
+                teams[f"{outcome}_risk_pct"] = teams["team_id"].map(bands["risk"]) * 100
         else:
             teams[column] = "—"
     teams["urgency"] = (teams["priority"].astype(int) * 3

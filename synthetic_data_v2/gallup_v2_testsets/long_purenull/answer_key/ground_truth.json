@@ -1,0 +1,289 @@
+{
+  "generator_version": "3.0",
+  "variant": "long_purenull",
+  "base_variant": "null",
+  "waves": 5,
+  "seed": 1,
+  "dataset": {
+    "employees_per_wave": 50000,
+    "survey_rows": 250000,
+    "teams": 4000,
+    "small_teams": 200,
+    "small_team_share": 0.05,
+    "response_rate_w1": 0.80194,
+    "turnover_w1": 0.20548
+  },
+  "how_to_grade": "Grade effect sizes against realized_values.respondents_only: that is what the agent can estimate from agent_data. realized_values.all_employees is the population truth used to show the X7 understatement. Planted parameters are the generator settings.",
+  "parameters": {
+    "T1_Q04_turnover_OR": 1.0,
+    "T1_X5_tenure_lt2_OR": 1.0,
+    "T2_Q05_turnover_OR": 1.0,
+    "T3_Q12_turnover_OR": 1.0,
+    "T4_Q01_performance_beta": 0.0,
+    "T5_Q05_absence_IRR": 1.0,
+    "X1_sales_Q02_shift": -0.9,
+    "X1_sales_turnover_logit": 0.9,
+    "X2_prior_perf_to_Q11": 0.5,
+    "X3_manager_to_Q07": 0.5,
+    "X3_manager_to_absence": 0.0,
+    "X4_Q01_threshold": 3,
+    "X4_Q01_low_absence_logrr": 0.0,
+    "X6_Q07_within_dept_beta": 0.0,
+    "X6_dept_Q07_spread": 0.8,
+    "X6_dept_perf_reversal": -1.8,
+    "X7_leaver_response_rate": 0.8,
+    "X7_stayer_response_rate": 0.8,
+    "X7_leaver_engagement_slope": 0.0,
+    "X7_stayer_engagement_slope": 0.0,
+    "X8_min_group_size": 5
+  },
+  "true_effects": [],
+  "true_nulls": [
+    {
+      "id": "N1",
+      "item": "Q06",
+      "outcomes": [
+        "absence"
+      ],
+      "truth": "Q06 is associated with absence, but once the other items are included it has no independent effect."
+    },
+    {
+      "id": "N2",
+      "item": "Q10",
+      "outcomes": [
+        "turnover",
+        "absence",
+        "performance"
+      ],
+      "truth": "Q10 is associated with the outcomes, but has no independent effect on any of them."
+    },
+    {
+      "id": "N3",
+      "item": "Q08",
+      "outcomes": [
+        "turnover",
+        "absence",
+        "performance"
+      ],
+      "truth": "Q08 is associated with the outcomes, but has no independent effect on any of them."
+    }
+  ],
+  "items_without_planted_effects": "Q02, Q03, Q06, Q07, Q08, Q09, Q10, Q11 have no independent effect on any outcome (Q07 has a small within-department effect on performance, X6).",
+  "traps": [
+    {
+      "id": "X1",
+      "name": "Confounding",
+      "built": "Sales scores low on Q02 and has high turnover; Q02 has no effect.",
+      "correct": "Control for department; the Q02 link disappears."
+    },
+    {
+      "id": "X2",
+      "name": "Reverse causality",
+      "built": "Prior performance raises Q11.",
+      "correct": "Control for prior rating; do not claim Q11 drives performance."
+    },
+    {
+      "id": "X3",
+      "name": "Hidden confounder",
+      "built": "Hidden manager quality raises Q07 and lowers absence.",
+      "correct": "Flag a likely manager effect; recommend team-level review."
+    },
+    {
+      "id": "X4",
+      "name": "Threshold",
+      "built": "Absence rises only when Q01 is below 3.",
+      "correct": "Test the threshold, not only a straight line."
+    },
+    {
+      "id": "X5",
+      "name": "Subgroup",
+      "built": "Q04 matters twice as much for tenure under 2 years.",
+      "correct": "Report the subgroup difference."
+    },
+    {
+      "id": "X6",
+      "name": "Simpson's paradox",
+      "built": "Departments rate performance with different leniency, opposite to their mean Q07.",
+      "correct": "Report the within-department (positive) result."
+    },
+    {
+      "id": "X7",
+      "name": "Nonresponse",
+      "built": "Leavers answer less often, and among leavers the disengaged answer least.",
+      "correct": "Warn that turnover effects are likely understated."
+    },
+    {
+      "id": "X8",
+      "name": "Small groups",
+      "built": "About 5% of teams have fewer than 5 people.",
+      "correct": "Suppress results for those teams."
+    }
+  ],
+  "x7_design": {
+    "description": "Response depends on both later leaving and hidden engagement. Disengaged leavers answer least. Group response rates are calibrated to the targets, so respondents look more engaged than the workforce and engagement-turnover links look weaker than they are. A side effect: among respondents, items with no real effect can show small positive turnover odds ratios (about 1.02-1.07), because answering depends on both engagement and leaving. These stay inside the no-effect band (0.91-1.10).",
+    "response_rate_leavers": 0.807,
+    "response_rate_stayers": 0.801,
+    "mean_score_turnover_OR_all_employees": 0.997,
+    "mean_score_turnover_OR_respondents": 0.991,
+    "grading": "The agent cannot compute the all-employee value. It passes if it warns that the effect it reports is likely understated."
+  },
+  "realized_values": {
+    "all_employees": {
+      "n": 50000,
+      "T1_Q04_turnover_OR": 1.029,
+      "T1_X5_Q04_x_new_hire_logOR": 0.006,
+      "T2_Q05_turnover_OR": 0.98,
+      "T3_Q12_turnover_OR": 0.985,
+      "T4_Q01_performance_beta": -0.005,
+      "T5_Q05_absence_IRR": 1.009,
+      "N1_Q06_absence_IRR": 1.004,
+      "N2_Q10_turnover_OR": 0.992,
+      "N2_Q10_absence_IRR": 1.001,
+      "N2_Q10_performance_beta": -0.005,
+      "N3_Q08_turnover_OR": 0.996,
+      "N3_Q08_absence_IRR": 1.005,
+      "N3_Q08_performance_beta": -0.003,
+      "X1_Q02_turnover_OR_raw": 0.926,
+      "X1_Q02_turnover_OR_controlled": 0.991,
+      "X4_Q01_below3_absence_RR": 0.995,
+      "X6_Q07_performance_beta_pooled": -0.251,
+      "X6_Q07_performance_beta_within_dept": -0.0,
+      "X7_mean_score_turnover_OR": 0.997
+    },
+    "respondents_only": {
+      "n": 40097,
+      "T1_Q04_turnover_OR": 1.036,
+      "T1_X5_Q04_x_new_hire_logOR": 0.003,
+      "T2_Q05_turnover_OR": 0.974,
+      "T3_Q12_turnover_OR": 0.982,
+      "T4_Q01_performance_beta": -0.003,
+      "T5_Q05_absence_IRR": 1.004,
+      "N1_Q06_absence_IRR": 1.007,
+      "N2_Q10_turnover_OR": 0.99,
+      "N2_Q10_absence_IRR": 1.002,
+      "N2_Q10_performance_beta": -0.004,
+      "N3_Q08_turnover_OR": 1.005,
+      "N3_Q08_absence_IRR": 1.005,
+      "N3_Q08_performance_beta": -0.004,
+      "X1_Q02_turnover_OR_raw": 0.921,
+      "X1_Q02_turnover_OR_controlled": 0.991,
+      "X4_Q01_below3_absence_RR": 1.003,
+      "X6_Q07_performance_beta_pooled": -0.252,
+      "X6_Q07_performance_beta_within_dept": -0.0,
+      "X7_mean_score_turnover_OR": 0.991
+    }
+  },
+  "null_design": "No engagement item affects any outcome. X1, X2 and X6 still create misleading raw associations through department and prior performance; a correct agent controls for them and reports no item as a driver. X7 is also off: leavers and stayers answer equally often and answering does not depend on engagement, so nothing in the survey predicts turnover.",
+  "true_trends": [
+    {
+      "wave": 1,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.53,
+      "visible_mean_score_respondents": 3.53,
+      "turnover_rate": 0.2055,
+      "true_turnover_rate": 0.207,
+      "response_rate": 0.8019,
+      "outcomes_hidden": false
+    },
+    {
+      "wave": 2,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.532,
+      "visible_mean_score_respondents": 3.531,
+      "turnover_rate": 0.2063,
+      "true_turnover_rate": 0.2055,
+      "response_rate": 0.7976,
+      "outcomes_hidden": false
+    },
+    {
+      "wave": 3,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.555,
+      "visible_mean_score_respondents": 3.551,
+      "turnover_rate": 0.2088,
+      "true_turnover_rate": 0.208,
+      "response_rate": 0.7974,
+      "outcomes_hidden": false
+    },
+    {
+      "wave": 4,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.525,
+      "visible_mean_score_respondents": 3.552,
+      "turnover_rate": 0.2078,
+      "true_turnover_rate": 0.2081,
+      "response_rate": 0.7985,
+      "outcomes_hidden": false
+    },
+    {
+      "wave": 5,
+      "employees": 50000,
+      "true_mean_score_all_employees": 3.526,
+      "visible_mean_score_respondents": 3.531,
+      "turnover_rate": 0.2078,
+      "true_turnover_rate": 0.2082,
+      "response_rate": 0.799,
+      "outcomes_hidden": true
+    }
+  ],
+  "true_events": [
+    {
+      "id": "E1",
+      "name": "better manager",
+      "wave": 3,
+      "teams": 200,
+      "visible_score_change_event_teams": 0.54,
+      "visible_score_change_other_teams": -0.004,
+      "true_turnover_change_event_teams": 0.0027,
+      "true_turnover_change_other_teams": 0.0025,
+      "expected": "Scores rise; true turnover falls only if items affect turnover (main), not in the null variants."
+    },
+    {
+      "id": "E2",
+      "name": "worse manager",
+      "wave": 4,
+      "teams": 200,
+      "visible_score_change_event_teams": -0.526,
+      "visible_score_change_other_teams": 0.031,
+      "true_turnover_change_event_teams": 0.0003,
+      "true_turnover_change_other_teams": 0.0001,
+      "expected": "Scores fall; true turnover rises only if items affect turnover (main)."
+    },
+    {
+      "id": "E3",
+      "name": "inflated scores",
+      "wave": 4,
+      "teams": 120,
+      "visible_score_change_event_teams": 0.869,
+      "visible_score_change_other_teams": -0.023,
+      "true_turnover_change_event_teams": 0.0001,
+      "true_turnover_change_other_teams": 0.0001,
+      "expected": "Scores rise but true turnover does not change: a false turnaround. A good change gate does not count these teams as improved, and the health check flags the jump."
+    }
+  ],
+  "manager_changes": {
+    "per_wave": {
+      "2": 341,
+      "3": 517,
+      "4": 519,
+      "5": 315
+    },
+    "natural_change_rate": 0.08,
+    "manager_to_engagement": 0.4,
+    "note": "manager_id in survey_responses.csv changes when a team gets a new manager. Hidden quality is in answer_key/manager_changes.csv."
+  },
+  "team_true_risk_summary": {
+    "wave": 5,
+    "teams_5_plus": 3800,
+    "company_true_rate": 0.2082,
+    "auc_true_rate_vs_realized_above_company": 0.635,
+    "auc_previous_rate_vs_realized_above_company": 0.603,
+    "note": "auc_true_rate is the best any model could do (it knows each team's true risk); the gap to 1.0 is pure chance in who leaves. auc_previous_rate is the 'same as last year' baseline. A team model should land between the two."
+  },
+  "x7_prediction_note": "X7 is off in this variant: the survey response does not depend on leaving. No Q12-based team model should beat the department-and-size model.",
+  "hidden_outcomes": {
+    "wave": 5,
+    "file": "answer_key/hidden_outcomes.csv",
+    "grading": "Wave 5 outcomes are blank in agent_data, as if the year has not finished. The app trains on waves 1-4 and predicts wave 5 team risk; grade the ranking with team_true_risk.csv (true_above_company) and hidden_outcomes.csv (realized)."
+  }
+}

@@ -81,7 +81,8 @@ risk_results = {}
 for outcome, (column, _) in TARGETS.items():
     if column in df.columns:
         try:
-            risk_results[outcome] = team_risk(df, outcome)
+            risk_results[outcome] = team_risk(
+                df, outcome, health_report=st.session_state.get("health_report"))
         except ValueError:
             pass
 

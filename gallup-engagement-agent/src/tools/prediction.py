@@ -1,12 +1,18 @@
 """Predictions: team risk, employee risk (aggregate only), and engagement forecast.
 
-Every prediction is tested before it is shown:
+Every prediction is tested before it is shown (v4 adds the five Prediction
+Review fixes, see prediction_checks.py):
 - Risk models are trained on earlier survey waves and scored on the latest wave
   (out-of-time validation). They are compared with chance and with a
   "last year's rate" baseline. If a model does not beat them, it is marked
   'weak' and the app shows no ranking.
 - The engagement forecast needs 4+ waves and is backtested against a
   "same as last time" baseline.
+- v4 team risk: the target is the team's SMOOTHED rate from ALL employees
+  (respondents and non-respondents) 3+ points above the company rate; Q12 must
+  beat a within-department permutation test to be listed as a warning sign;
+  teams that changed must be predicted better than "last year's rate";
+  percentages are shown only when calibrated; blocked data is never predicted.
 
 Privacy: the employee model never returns individual scores. Only totals for
 groups of at least MIN_GROUP people leave this module.
@@ -29,7 +35,24 @@ import pandas as pd
 from scipy import stats
 
 from .data_ingestion import Q12_ITEMS
-from .longitudinal import INDEX, prepare
+from .longitudinal import INDEX, derive_wave, prepare
+from .prediction_checks import (
+    CHANGE_INDEX_DELTA,
+    N_PERMUTATIONS,
+    SMOOTHING_K,
+    TURNOVER_MARGIN,
+    RELATIVE_MARGIN,
+    above_normal,
+    attribution_text,
+    calibration_check,
+    calibration_pending,
+    change_gate,
+    permutation_test,
+    permutations_for,
+    prediction_health_gate,
+    smooth_rate,
+    survey_response_warning,
+)
 from .visualization import HIGH_COLOR, ITEM_LABELS, MUTED_COLOR, OVERALL_COLOR
 
 
@@ -218,70 +241,192 @@ def _validate_and_predict(table: pd.DataFrame, features: list[str], target: str,
 # PROCESS 4 – TEAM RISK
 
 def _team_table(data: pd.DataFrame) -> pd.DataFrame:
+    """Respondents' Q12 profile per team and wave (teams of MIN_TEAM_SIZE+ respondents)."""
     items = [i for i in Q12_ITEMS if i in data.columns]
     agg = {"size": (INDEX, "size"), INDEX: (INDEX, "mean"), **{i: (i, "mean") for i in items}}
-    for outcome, (column, _) in TARGETS.items():
-        if column in data.columns:
-            agg[outcome] = (column, "mean")
     if "department" in data.columns:
         agg["department"] = ("department", lambda s: s.mode().iat[0])
+    if "manager_id" in data.columns:
+        agg["manager_id"] = ("manager_id", lambda s: s.mode().iat[0] if len(s.mode()) else None)
     teams = data.groupby(["team_id", "wave"]).agg(**agg).reset_index()
     teams = teams[teams["size"] >= MIN_TEAM_SIZE].copy()
-    teams["log_size"] = np.log(teams["size"])
     return teams
 
 
-def team_risk(df: pd.DataFrame, outcome: str = "turnover") -> dict[str, Any]:
+def _team_outcomes(everyone: pd.DataFrame, column: str, outcome: str) -> tuple[pd.DataFrame, pd.Series]:
+    """Outcome per team and wave from ALL employees with a known outcome (fix 1/5: the
+    respondents-only rate misses the leavers who did not answer)."""
+    known = everyone[everyone[column].notna()]
+    company = known.groupby("wave")[column].mean()
+    g = everyone.groupby(["team_id", "wave"])
+    table = pd.DataFrame({
+        "headcount": g.size(),
+        "outcome_total": g[column].sum(min_count=1),
+        "outcome_count": g[column].count(),
+    }).reset_index()
+    rate = table["wave"].map(company)
+    table[outcome] = (table["outcome_total"] / table["outcome_count"]).where(table["outcome_count"] > 0)
+    table["smoothed_rate"] = smooth_rate(table["outcome_total"].fillna(0), table["outcome_count"], rate)
+    table["target"] = above_normal(table["smoothed_rate"], rate, outcome)
+    return table, company
+
+
+def _out_of_time_auc(table: pd.DataFrame, features: list[str], target: str, test_wave,
+                     lam: float | None = None) -> tuple[float, np.ndarray | None]:
+    labeled = table[table[target].notna()]
+    train = labeled[labeled["wave"] < test_wave]
+    test = labeled[labeled["wave"] == test_wave]
+    if len(train) < MIN_TRAIN_ROWS // 5 or train[target].nunique() < 2 or test[target].nunique() < 2:
+        return float("nan"), None
+    model = _Model(features)
+    X = train[features].to_numpy(float)
+    model.mean, model.std = X.mean(axis=0), X.std(axis=0)
+    model.std[model.std == 0] = 1.0
+    model.lam = lam if lam is not None else _choose_lambda((X - model.mean) / model.std,
+                                                           train[target].to_numpy(int))
+    model.beta = _fit_ridge_logit((X - model.mean) / model.std, train[target].to_numpy(int), model.lam)
+    score = model.predict(test)
+    return auc(test[target], score), score
+
+
+_TEAM_RISK_CACHE: dict = {}
+
+
+def team_risk(df: pd.DataFrame, outcome: str = "turnover", health_report: dict | None = None,
+              n_permutations: int = N_PERMUTATIONS, seed: int = 0) -> dict[str, Any]:
     """Each team's predicted chance of above-normal turnover/absence after the
-    latest survey, from its Q12 profile, size and department."""
+    latest survey, from its Q12 profile, recent change, size and department.
+
+    Raises PredictionBlocked (a ValueError) when the health report blocks the
+    outcome or everything (fix 4). Results are cached per data content, because
+    the permutation test refits the model 200 times and pages rerun often."""
+    prediction_health_gate(health_report, outcome)
+    key = (outcome, n_permutations, seed, len(df), tuple(df.columns),
+           int(pd.util.hash_pandas_object(df, index=False).sum()))
+    if key not in _TEAM_RISK_CACHE:
+        if len(_TEAM_RISK_CACHE) >= 8:
+            _TEAM_RISK_CACHE.pop(next(iter(_TEAM_RISK_CACHE)))
+        _TEAM_RISK_CACHE[key] = _team_risk(df, outcome, health_report, n_permutations, seed)
+    result = _TEAM_RISK_CACHE[key]
+    return {**result, "teams": result["teams"].copy()}
+
+
+def _team_risk(df, outcome, health_report, n_permutations, seed):
     column, label = TARGETS[outcome]
-    data = prepare(df)
-    if "team_id" not in data.columns or column not in data.columns:
+    everyone = derive_wave(df)
+    if "team_id" not in everyone.columns or column not in everyone.columns:
         raise ValueError(f"Team risk needs team_id and {column}.")
-    if "wave" not in data.columns:
-        data = data.assign(wave=1)
+    if "wave" not in everyone.columns:
+        everyone = everyone.assign(wave=1)
+    everyone = everyone.assign(**{column: pd.to_numeric(everyone[column], errors="coerce")})
+    data = prepare(everyone)
 
     teams = _team_table(data)
-    # Above-normal = worse than the company rate in that same wave (unknown stays unknown).
-    company_rate = data.groupby("wave")[column].mean()
-    above = teams[outcome] > teams["wave"].map(company_rate)
-    teams["target"] = above.astype(float).where(teams[outcome].notna())
+    outcomes, company_rate = _team_outcomes(everyone, column, outcome)
+    teams = teams.merge(outcomes, on=["team_id", "wave"], how="left")
+    teams["log_size"] = np.log(teams["headcount"].fillna(teams["size"]))
 
     items = [i for i in Q12_ITEMS if i in teams.columns]
-    features = items + ["log_size"]
+
+    # Change since the team's previous survey (fix 2): item and index deltas, new manager.
+    teams = teams.sort_values(["team_id", "wave"]).reset_index(drop=True)
+    prev = teams.groupby("team_id")
+    has_prev = prev["wave"].shift().notna()
+    teams["has_previous"] = has_prev.astype(float)
+    delta_cols = [f"d_{i}" for i in items] + ["d_index"]
+    for i in items:
+        teams[f"d_{i}"] = (teams[i] - prev[i].shift()).fillna(0.0)
+    teams["d_index"] = (teams[INDEX] - prev[INDEX].shift()).fillna(0.0)
+    change_features = delta_cols + ["has_previous"]
+    if "manager_id" in teams.columns:
+        teams["manager_changed"] = ((teams["manager_id"] != prev["manager_id"].shift())
+                                    & has_prev).astype(float)
+        change_features.append("manager_changed")
+    teams["changed"] = has_prev & ((teams["d_index"].abs() >= CHANGE_INDEX_DELTA)
+                                   | (teams.get("manager_changed", 0) == 1))
+
+    features = items + change_features + ["log_size"]
+    base_features = ["log_size"]
     if "department" in teams.columns:
         dummies = pd.get_dummies(teams["department"].astype(str), prefix="dept",
                                  drop_first=True, dtype=float)
         teams = pd.concat([teams, dummies], axis=1)
         features += list(dummies.columns)
+        base_features += list(dummies.columns)
 
-    # Persistence baseline: the team's own rate in its previous wave.
-    teams = teams.sort_values(["team_id", "wave"])
-    teams["previous_rate"] = teams.groupby("team_id")[outcome].shift()
+    # Persistence baseline: the team's own SMOOTHED rate in its previous wave (fix 5).
+    teams["previous_rate"] = prev["smoothed_rate"].shift()
+    teams["previous_target"] = prev["target"].shift()
 
     fit = _validate_and_predict(teams, features, "target", baseline="previous_rate")
     scored = fit["scored"]
 
+    # Fix 1: does Q12 add anything beyond department and size?
+    q12_columns = items + delta_cols
+    base_auc = float("nan")
+    survey_signal: dict[str, Any] = {"status": "untested", "adds_signal": False}
+    if fit["method"] == "out_of_time":
+        base_auc, _ = _out_of_time_auc(teams, base_features, "target", fit["test_wave"])
+        lam = fit["model"].lam
+        labeled = teams[teams["target"].notna()]
+        observed, _ = _out_of_time_auc(labeled, features, "target", fit["test_wave"], lam)
+        survey_signal = permutation_test(
+            lambda shuffled: _out_of_time_auc(shuffled, features, "target", fit["test_wave"], lam)[0],
+            labeled, q12_columns, ["department", "wave"], observed,
+            n=permutations_for(len(labeled), n_permutations), seed=seed)
+    survey_signal["department_size_auc"] = None if np.isnan(base_auc) else round(base_auc, 4)
+    survey_signal["text"] = attribution_text(survey_signal, fit["auc"], base_auc)
+
     contrib = fit["model"].contributions(scored)[items]
-    scored["risk_drivers"] = contrib.apply(
-        lambda r: ", ".join(f"{i} {ITEM_LABELS.get(i, i)}"
-                            for i in r[r > 0].sort_values(ascending=False).index[:2]), axis=1)
+    if survey_signal.get("adds_signal"):
+        scored["risk_drivers"] = contrib.apply(
+            lambda r: ", ".join(f"{i} {ITEM_LABELS.get(i, i)}"
+                                for i in r[r > 0].sort_values(ascending=False).index[:2]), axis=1)
+    else:
+        scored["risk_drivers"] = ""
     scored["risk_band"] = _bands(scored["risk"])
 
-    # How the High band did on the validation wave (out-of-time only).
+    # How the High band did, calibration (fix 3) and the change gate (fix 2): validation wave only.
     observed_high, base_rate = float("nan"), float("nan")
+    calibration = calibration_pending()
+    change = {"status": "pending", "text": "Change check pending: needs a later year with known outcomes."}
     if fit["validation"] is not None:
-        v = fit["validation"]
-        high = _bands(v["_score"]) == "High"
+        v = fit["validation"].copy()
+        v["_band"] = _bands(v["_score"])
+        high = v["_band"] == "High"
         observed_high = float(v.loc[high, "target"].mean())
         base_rate = float(v["target"].mean())
+        calibration = calibration_check(v["_score"], v["target"])
+        change = change_gate(v, auc)
+    scored["recent_change"] = scored["changed"].astype(bool)
+    scored["change_note"] = np.where(
+        scored["recent_change"] & (change["status"] != "passed"),
+        "Recent change: band unconfirmed", "")
+
+    warning = survey_response_warning(everyone, column, health_report) if outcome == "turnover" else None
 
     columns = ["team_id"] + (["department"] if "department" in scored.columns else []) + [
-        "size", INDEX, "risk", "risk_band", "risk_drivers", "previous_rate"]
+        "size", INDEX, "risk", "risk_band", "risk_drivers", "previous_rate",
+        "recent_change", "change_note"]
     return {**{k: v for k, v in fit.items() if k not in ("model", "scored", "validation")},
             "outcome": outcome, "label": label,
             "teams": scored.sort_values("risk", ascending=False)[columns].reset_index(drop=True),
-            "base_rate": base_rate, "observed_high_rate": observed_high}
+            "base_rate": base_rate, "observed_high_rate": observed_high,
+            "survey_signal": survey_signal, "change_check": change, "calibration": calibration,
+            "show_percentages": bool(calibration["show_percentages"]),
+            "survey_response_warning": warning,
+            "target_definition": {
+                "smoothing_k": SMOOTHING_K,
+                "margin": (f"{TURNOVER_MARGIN * 100:.0f} points above the company rate" if outcome == "turnover"
+                           else f"{RELATIVE_MARGIN:.0%} above the company average"),
+                "company_rate_by_wave": {str(k): round(float(v), 4) for k, v in company_rate.items()},
+                "text": (f"A team counts as {label} when its rate, pulled toward the company rate as "
+                         f"if {SMOOTHING_K} typical employees were added, is "
+                         + (f"{TURNOVER_MARGIN * 100:.0f}+ points above the company rate."
+                            if outcome == "turnover" else
+                            f"{RELATIVE_MARGIN:.0%}+ above the company average.")
+                         + " Rates use every employee, including those who did not answer the survey."),
+            }}
 
 
 # PROCESS 5 – EMPLOYEE RISK (AGGREGATE ONLY)
@@ -309,7 +454,8 @@ def _employee_model(df: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, Any]]:
     return scored, validation, {**info, "features": features}
 
 
-def employee_risk_by_group(df: pd.DataFrame, group: str = "department") -> dict[str, Any]:
+def employee_risk_by_group(df: pd.DataFrame, group: str = "department",
+                           health_report: dict | None = None) -> dict[str, Any]:
     """Aggregate employee turnover risk by group, plus a fairness check.
 
     Returns group totals only (groups under MIN_GROUP people are dropped).
@@ -317,6 +463,7 @@ def employee_risk_by_group(df: pd.DataFrame, group: str = "department") -> dict[
     calibration per group) uses the validation wave, where outcomes are known
     and the model had not seen them.
     """
+    prediction_health_gate(health_report, "turnover")
     scored, validation, info = _employee_model(df)
     column = TARGETS["turnover"][0]
     if group not in scored.columns:
@@ -346,7 +493,12 @@ def employee_risk_by_group(df: pd.DataFrame, group: str = "department") -> dict[
     overall_auc = info["auc"]
     table["fairness_flag"] = (
         (table["auc"] < overall_auc - 0.05) | (table["calibration_gap"].abs() > 0.05))
-    return {**info, "group": group, "table": table.reset_index(drop=True)}
+    calibration = (calibration_check(validation["risk"], validation[column], unit="employees")
+                   if validation is not None else calibration_pending())
+    warning = survey_response_warning(derive_wave(df), column, health_report)
+    return {**info, "group": group, "table": table.reset_index(drop=True),
+            "calibration": calibration, "show_percentages": bool(calibration["show_percentages"]),
+            "survey_response_warning": warning}
 
 
 # PROCESS 6 – ENGAGEMENT FORECAST
@@ -421,16 +573,23 @@ def explain_team_risk(result: dict[str, Any]) -> dict[str, Any]:
     if r["status"] == "useful" and not np.isnan(r["observed_high_rate"]):
         points.append(f"Of the teams it rated High, {r['observed_high_rate'] * 100:.0f}% actually had "
                       f"{r['label']}, vs {r['base_rate'] * 100:.0f}% of all teams.")
+    for key in ("survey_signal", "change_check", "calibration"):
+        if r.get(key, {}).get("text"):
+            points.append(r[key]["text"])
+    if r.get("survey_response_warning"):
+        points.append(r["survey_response_warning"]["text"])
     headline = {"useful": f"The {r['outcome']} risk model passed its test.",
                 "weak": f"The {r['outcome']} risk model did not pass its test.",
                 "untested": f"The {r['outcome']} risk model could not be tested yet."}[r["status"]]
     return {"headline": headline, "points": points + [r["status_text"]],
             "how_to_read": (
                 "Risk is the model's estimated chance that a team has "
-                f"{r['label']} (worse than the company rate) after the latest survey. "
-                "High = the riskiest 20% of teams, Elevated = the next 20%. 'Pushing risk up' "
-                "lists the questions where the team's answers raise its risk most. Use the "
-                "ranking to decide where to listen first; it is a probability, not a verdict.")}
+                f"{r['label']} (clearly worse than the company rate) after the latest survey. "
+                "High = the riskiest 20% of teams, Elevated = the next 20%. 'Warning signs' "
+                "lists the questions where the team's answers raise its predicted risk most; "
+                "they are signals to listen to, not causes, and the Outcomes page decides what "
+                "to improve. Percentages are shown only when they proved accurate on a year the "
+                "model never saw. Use the ranking to decide where to listen first.")}
 
 
 def explain_forecast(result: dict[str, Any]) -> str:
@@ -458,18 +617,22 @@ def _w(value: Any) -> str:
 
 def team_risk_chart(result: dict[str, Any], n: int = 15) -> alt.Chart:
     """Top-n teams by predicted risk, colored by band."""
-    top = result["teams"].head(n).assign(risk_pct=lambda d: d["risk"] * 100)
+    show = result.get("show_percentages", True)
+    ranked = result["teams"].assign(
+        risk_pct=lambda d: d["risk"] * 100 if show else (1 - d["risk"].rank(ascending=False, pct=True)) * 100)
+    top = ranked.head(n)
+    title = "Predicted risk (%)" if show else "Risk rank (100 = highest; percentages not yet calibrated)"
     return alt.Chart(top).mark_bar(cornerRadiusEnd=3, height=14).encode(
         y=alt.Y("team_id:N", sort="-x", title=None, axis=alt.Axis(labelOverlap=False)),
-        x=alt.X("risk_pct:Q", title="Predicted risk (%)", scale=alt.Scale(domain=[0, 100])),
+        x=alt.X("risk_pct:Q", title=title, scale=alt.Scale(domain=[0, 100])),
         color=alt.Color("risk_band:N", title=None,
                         scale=alt.Scale(domain=["High", "Elevated", "Typical"],
                                         range=["#B5473F", "#C27C1E", "#B9B1A8"]),
                         legend=alt.Legend(orient="top")),
         tooltip=[alt.Tooltip("team_id:N", title="Team"),
-                 alt.Tooltip("risk_pct:Q", title="Risk", format=".0f"),
+                 alt.Tooltip("risk_pct:Q", title="Risk" if show else "Risk rank", format=".0f"),
                  alt.Tooltip("risk_band:N", title="Band"),
-                 alt.Tooltip("risk_drivers:N", title="Pushing risk up")],
+                 alt.Tooltip("risk_drivers:N", title="Warning signs")],
     ).properties(height=alt.Step(24), width=600)
 
 

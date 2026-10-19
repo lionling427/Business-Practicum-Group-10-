@@ -1,0 +1,53 @@
+area,check,result,expected,observed
+Structure,Items correlate like real Q12 data,PASS,mean inter-item r 0.35-0.75,0.56
+Structure,Items have different score distributions (fix #5),PASS,agree share differs by 10+ points across items,Q10 42% to Q08 72%
+Structure,X8 about 5% of teams under 5 people,PASS,4%-6%,"5.0% (200 of 4,000)"
+Structure,Every outcome is dated after the survey,PASS,all rows,all rows
+Structure,Health check raises no FAIL on clean data,PASS,0 FAIL,"0 FAIL, 17 WARN"
+True effects,T1 Q04 -> turnover,PASS,ratio < 1 (realized 0.63),"0.63 [0.60, 0.65]"
+True effects,T1 realized value outside the no-effect band,PASS,realized ratio < 0.91 or > 1.10,0.627
+True effects,T2 Q05 -> turnover,PASS,ratio < 1 (realized 0.80),"0.80 [0.77, 0.83]"
+True effects,T2 realized value outside the no-effect band,PASS,realized ratio < 0.91 or > 1.10,0.803
+True effects,T3 Q12 -> turnover,PASS,ratio < 1 (realized 0.77),"0.77 [0.74, 0.80]"
+True effects,T3 realized value outside the no-effect band,PASS,realized ratio < 0.91 or > 1.10,0.774
+True effects,T5 Q05 -> absence,PASS,ratio < 1 (realized 0.86),"0.86 [0.85, 0.87]"
+True effects,T5 realized value outside the no-effect band,PASS,realized ratio < 0.91 or > 1.10,0.856
+True effects,T4 Q01 -> performance,PASS,beta > 0 (realized 0.14),beta 0.14 (p=0.000)
+True effects,T4 realized value outside the no-effect band,PASS,|realized beta| >= 0.05,0.136
+True nulls,N1 Q06 looks related to absence on its own,PASS,p < 0.05 alone,"0.77 [0.76, 0.78]"
+True nulls,N1 Q06 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"1.01 [1.00, 1.02] p=0.25"
+True nulls,N3 Q08 looks related to turnover on its own,PASS,p < 0.05 alone,"0.67 [0.65, 0.69]"
+True nulls,N2 Q10 -> turnover: no independent effect,PASS,p > 0.05 or OR 0.91-1.10,"1.02 [0.98, 1.06] p=0.27"
+True nulls,N2 Q10 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"1.01 [0.99, 1.02] p=0.31"
+True nulls,N2 Q10 -> performance: no independent effect,PASS,p > 0.05 or |beta| < 0.05,beta -0.010 p=0.03
+True nulls,N3 Q08 -> turnover: no independent effect,PASS,p > 0.05 or OR 0.91-1.10,"1.07 [1.03, 1.11] p=0.00"
+True nulls,N3 Q08 -> absence: no independent effect,PASS,p > 0.05 or IRR 0.91-1.10,"1.00 [0.99, 1.02] p=0.80"
+True nulls,N3 Q08 -> performance: no independent effect,PASS,p > 0.05 or |beta| < 0.05,beta 0.001 p=0.81
+Traps,"X1 Q02 looks related to turnover, until department is controlled",PASS,raw p < 0.05; controlled no effect,"raw 0.65 [0.63, 0.67] -> controlled 1.05 [1.01, 1.09]"
+Traps,X2 Q11 looks predictive until prior rating is controlled,PASS,raw beta > 2x controlled,raw 0.28 -> controlled 0.07
+Traps,X3 step 1: Q07 looks related to absence (department controlled),PASS,IRR < 1,"0.82 [0.81, 0.83]"
+Traps,X3 step 2: Q07 effect shrinks within teams (same manager),PASS,shrinks by more than half,-0.136 -> -0.002
+Traps,X3 step 3: absence clusters by team,PASS,"ICC > 0.01, p < 0.001",ICC 0.146 (p=0.0e+00)
+Traps,X3 step 4: controlling hidden manager quality removes Q07,PASS,p > 0.05 or under a quarter of step 1,-0.007 (p=0.12)
+Traps,X4 absence jumps when Q01 is below 3,PASS,RR > 1 (realized 1.80),"1.80 [1.72, 1.87]"
+Traps,X5 Q04 matters more for tenure under 2 years,PASS,"interaction < 0, p < 0.05",log-OR -0.33 (p=0.000)
+Traps,X6 Simpson's paradox: Q07 vs performance flips,PASS,pooled < 0 < within,"pooled -0.09, within 0.18"
+Traps,X7 leavers answer less often,PASS,gap > 10 points,leavers 60% vs stayers 86%
+Traps,X7 respondents understate the engagement-turnover link,PASS,respondent OR above the all-employee OR 0.35,respondent OR 0.48
+Traps,X8 health check asks to suppress small teams,PASS,suppress_groups:5,suppress_groups:5
+Multi-year,5 yearly waves,PASS,waves 1-5,"[np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5)]"
+Multi-year,Newest wave's outcomes are blank for the agent and kept for graders,PASS,"50,000 blank rows, same rows in hidden_outcomes.csv","50,000 blank, 50,000 hidden"
+Multi-year,manager_id changes match manager_changes.csv,PASS,"1,625 changes","1,625 in survey_responses.csv"
+Events,E1 better manager: event teams' scores rise,PASS,0.3+ points more than other teams,+0.58 vs +0.02
+Events,E1: true turnover moves the planted way,PASS,falls 3+ points,-0.079
+Events,E2 worse manager: event teams' scores fall,PASS,0.3+ points less than other teams,-0.50 vs +0.03
+Events,E2: true turnover moves the planted way,PASS,rises 3+ points,+0.060
+Events,E3 inflated scores: event teams' scores rise,PASS,0.3+ points more than other teams,+0.82 vs -0.02
+Events,E3: true turnover does not change,PASS,difference under 1.5 points,-0.011
+Health check,Multi-year check OUT_PENDING runs,PASS,present,PASS
+Health check,Multi-year check MG_MANAGER_CHANGE runs,PASS,present,WARN
+Health check,Multi-year check RS_TEAM_JUMP runs,PASS,present,WARN
+Health check,Multi-year check NR_LEAVERS_BY_WAVE runs,PASS,present,WARN
+Health check,RS_TEAM_JUMP flags most E3 (inflated) teams,PASS,50%+ of E3 teams,64% (77 of 120)
+Health check,NR_LEAVERS_BY_WAVE matches the X7 design,PASS,WARN,WARN
+Prediction key,True team risk beats last year's rate (room for a team model),PASS,true AUC 0.05+ above previous-rate AUC,"true 0.765, previous 0.617"

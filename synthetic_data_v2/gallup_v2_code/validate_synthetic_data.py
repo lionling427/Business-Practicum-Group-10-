@@ -1,5 +1,5 @@
 """
-Validator (v2): do the planted truths really show up in the generated data?
+Validator (v3): do the planted truths really show up in the generated data?
 
 Run after generate_synthetic_data.py, on any dataset folder:
   python validate_synthetic_data.py gallup_v2_5K
@@ -11,6 +11,9 @@ What it checks depends on the variant recorded in answer_key/ground_truth.json:
   weak         the weaker true effects are still detected; nulls stay null
   null         no engagement item is a significant driver after FDR correction
   dirty_*      every error in answer_key/error_log.csv is caught by health_check.py
+  long_*       the checks of the base variant on wave 1, plus the multi-year design:
+               waves, hidden last-year outcomes, manager changes, events E1-E3,
+               multi-year health checks, and (long_purenull) no nonresponse bias
 
 Expected values are read from ground_truth.json, never typed into this file.
 Writes <folder>/reports/validation_report.csv. Result is PASS or CHECK (needs a look).
@@ -33,7 +36,8 @@ MEANINGFUL_RATIO = 0.10      # OR or IRR within 0.91-1.10 counts as "no meaningf
 MEANINGFUL_BETA = 0.05       # standardized beta within +/-0.05 counts as "no meaningful effect"
 
 gt = json.load(open(f"{FOLDER}/answer_key/ground_truth.json"))
-VARIANT = gt["variant"]
+VARIANT = gt.get("base_variant", gt["variant"])    # long_* variants are checked as their base
+FULL_VARIANT = gt["variant"]
 REAL = gt["realized_values"]["respondents_only"]
 results = []
 
@@ -57,7 +61,7 @@ def save_and_print():
     out.to_csv(f"{FOLDER}/reports/validation_report.csv", index=False)
     pd.set_option("display.width", 250, "display.max_colwidth", 90, "display.max_rows", 200)
     print(out.to_string(index=False))
-    print(f"\n[{VARIANT}] {int((out.result == 'PASS').sum())} of {len(out)} checks PASS")
+    print(f"\n[{FULL_VARIANT}] {int((out.result == 'PASS').sum())} of {len(out)} checks PASS")
 
 
 # ---------------------------------------------------------------------------
@@ -140,7 +144,8 @@ tw = team[team["wave"] == 1]
 share = (tw["team_size"] < 5).mean()
 check("Structure", "X8 about 5% of teams under 5 people", abs(share - 0.05) < 0.01, "4%-6%",
       f"{share:.1%} ({(tw['team_size'] < 5).sum():,} of {len(tw):,})")
-dates_ok = all((pd.to_datetime(df[c]) > pd.to_datetime(df["survey_date"])).all()
+labeled = df.dropna(subset=["turnover_window_end"]) if FULL_VARIANT.startswith("long_") else df
+dates_ok = all((pd.to_datetime(labeled[c]) > pd.to_datetime(labeled["survey_date"])).all()
                for c in ["turnover_window_end", "absence_window_end", "performance_review_date"])
 check("Structure", "Every outcome is dated after the survey", dates_ok, "all rows", "all rows" if dates_ok else "violations")
 hc = run_health_check()
@@ -258,8 +263,12 @@ else:
           "pooled < 0 < within", f"pooled {pooled:.2f}, within {within:.2f}")
 
 rr = w1all.groupby("left_voluntarily_12m")["responded"].mean()
-check("Traps", "X7 leavers answer less often", rr[1] < rr[0] - 0.1, "gap > 10 points",
-      f"leavers {rr[1]:.0%} vs stayers {rr[0]:.0%}")
+if FULL_VARIANT == "long_purenull":
+    check("Traps", "X7 off: leavers and stayers answer equally often", abs(rr[1] - rr[0]) < 0.03,
+          "gap under 3 points", f"leavers {rr[1]:.0%} vs stayers {rr[0]:.0%}")
+else:
+    check("Traps", "X7 leavers answer less often", rr[1] < rr[0] - 0.1, "gap > 10 points",
+          f"leavers {rr[1]:.0%} vs stayers {rr[0]:.0%}")
 if VARIANT != "null":
     w1["mean_score"] = w1[ITEMS].mean(axis=1)
     mo = st.logit(w1["left_voluntarily_12m"],
@@ -270,5 +279,64 @@ if VARIANT != "null":
 smallflag = next(c for c in hc["checks"] if c["code"] == "COV_SMALL_TEAMS")
 check("Traps", "X8 health check asks to suppress small teams", "suppress_groups:5" in smallflag["actions"],
       "suppress_groups:5", ", ".join(smallflag["actions"]) or "none")
+
+# --- Multi-year design (long_* only) --------------------------------------------
+if FULL_VARIANT.startswith("long_"):
+    K = f"{FOLDER}/answer_key"
+    n_waves = gt["waves"]
+    check("Multi-year", f"{n_waves} yearly waves", sorted(survey["wave"].unique()) == list(range(1, n_waves + 1)),
+          f"waves 1-{n_waves}", str(sorted(survey["wave"].unique())))
+    last = indiv[indiv["wave"] == n_waves]
+    hidden = pd.read_csv(f"{K}/hidden_outcomes.csv")
+    check("Multi-year", "Newest wave's outcomes are blank for the agent and kept for graders",
+          bool(last["left_voluntarily_12m"].isna().all() and len(hidden) == len(last)
+               and hidden["left_voluntarily_12m"].notna().all()),
+          f"{len(last):,} blank rows, same rows in hidden_outcomes.csv",
+          f"{int(last['left_voluntarily_12m'].isna().sum()):,} blank, {len(hidden):,} hidden")
+    changes = pd.read_csv(f"{K}/manager_changes.csv")
+    mg = survey.groupby(["wave", "team_id"])["manager_id"].first().unstack(0)
+    seen = int(sum((mg[w] != mg[w - 1]).sum() for w in range(2, n_waves + 1)))
+    check("Multi-year", "manager_id changes match manager_changes.csv", seen == len(changes),
+          f"{len(changes):,} changes", f"{seen:,} in survey_responses.csv")
+    for e in gt["true_events"]:
+        tid, sv, so = e["id"], e["visible_score_change_event_teams"], e["visible_score_change_other_teams"]
+        dt = e["true_turnover_change_event_teams"] - e["true_turnover_change_other_teams"]
+        if tid in ("E1", "E3"):
+            check("Events", f"{tid} {e['name']}: event teams' scores rise", sv - so > 0.3,
+                  "0.3+ points more than other teams", f"{sv:+.2f} vs {so:+.2f}")
+        else:
+            check("Events", f"{tid} {e['name']}: event teams' scores fall", sv - so < -0.3,
+                  "0.3+ points less than other teams", f"{sv:+.2f} vs {so:+.2f}")
+        if tid == "E3" or VARIANT == "null":
+            check("Events", f"{tid}: true turnover does not change", abs(dt) < 0.015,
+                  "difference under 1.5 points", f"{dt:+.3f}")
+        else:
+            ok = dt < -0.03 if tid == "E1" else dt > 0.03
+            check("Events", f"{tid}: true turnover moves the planted way", ok,
+                  "falls 3+ points" if tid == "E1" else "rises 3+ points", f"{dt:+.3f}")
+    codes = {c["code"]: c for c in hc["checks"]}
+    for code in ["OUT_PENDING", "MG_MANAGER_CHANGE", "RS_TEAM_JUMP", "NR_LEAVERS_BY_WAVE"]:
+        check("Health check", f"Multi-year check {code} runs", code in codes, "present",
+              codes[code]["status"] if code in codes else "missing")
+    if "RS_TEAM_JUMP" in codes:
+        ev = pd.read_csv(f"{K}/events.csv")
+        e3 = set(ev.loc[ev["event"] == "E3", "team_id"])
+        e3_wave = next((str(e["wave"]) for e in gt["true_events"] if e["id"] == "E3"), None)
+        flagged = set(codes["RS_TEAM_JUMP"]["metrics"]["by_wave"].get(e3_wave, []))
+        share = len(e3 & flagged) / max(len(e3), 1)
+        check("Health check", "RS_TEAM_JUMP flags most E3 (inflated) teams", share >= 0.5, "50%+ of E3 teams",
+              f"{share:.0%} ({len(e3 & flagged)} of {len(e3)})")
+    nr = codes.get("NR_LEAVERS_BY_WAVE", {})
+    want = "PASS" if FULL_VARIANT == "long_purenull" else "WARN"
+    check("Health check", "NR_LEAVERS_BY_WAVE matches the X7 design", nr.get("status") == want, want,
+          nr.get("status", "missing"))
+    summ = gt["team_true_risk_summary"]
+    t_auc, p_auc = summ["auc_true_rate_vs_realized_above_company"], summ["auc_previous_rate_vs_realized_above_company"]
+    if VARIANT != "null":
+        check("Prediction key", "True team risk beats last year's rate (room for a team model)",
+              t_auc > p_auc + 0.05, "true AUC 0.05+ above previous-rate AUC", f"true {t_auc:.3f}, previous {p_auc:.3f}")
+    else:
+        check("Prediction key", "True team risk adds little over last year's rate (null design)",
+              t_auc - p_auc < 0.08, "gap under 0.08", f"true {t_auc:.3f}, previous {p_auc:.3f}")
 
 save_and_print()

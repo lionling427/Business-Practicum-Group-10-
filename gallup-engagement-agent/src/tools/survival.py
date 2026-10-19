@@ -19,6 +19,18 @@ beat chance and a "team's recent exit rate" baseline, or nothing is shown
 Output: expected leavers per month for the next 6 months, and the chance of
 leaving within 6 months by department and team (groups of 5+ only). No
 individual scores ever leave this module.
+
+v4 (Prediction Review fixes, see prediction_checks.py):
+1. Engagement attribution: the model is compared with the same model without
+   engagement, and with engagement shuffled between people of the same
+   department (100 shuffles). Engagement is named as a warning sign only if it
+   beats the 95th percentile; it is never called a cause.
+2. Change gate: on people whose engagement moved 0.5+ points or who got a new
+   manager, the model must beat the team-rate baseline by 0.05 AUC.
+3. Calibration in risk groups (not one overall ratio): chances are shown only
+   when every group's predicted chance matched what happened.
+4. Health gate: a blocked health report stops the prediction.
+5. The team-rate baseline is smoothed toward the company rate (k = 20).
 """
 
 # PROCESS 1 – IMPORTS
@@ -40,6 +52,14 @@ from .prediction import (
     _predict,
     auc,
 )
+from .prediction_checks import (
+    PERMUTATION_LEVEL,
+    SMOOTHING_K,
+    calibration_check,
+    calibration_pending,
+    change_gate,
+    prediction_health_gate,
+)
 from .ts_readiness import exit_flags, period_index, readiness
 from .visualization import HIGH_COLOR, MUTED_COLOR
 
@@ -51,6 +71,10 @@ MIN_GROUP = 5               # privacy: smallest group shown
 MIN_TRAIN_MONTHS = 6
 FOLDS = 3                   # rolling backtest cut-offs
 FOLD_STEP = 3               # months between cut-offs
+N_PERMUTATIONS_MONTHLY = 100
+ENGAGEMENT_FEATURES = ("engagement", "engagement_change")
+CHANGE_ENGAGEMENT_DELTA = 0.5
+MIN_CHANGED_PEOPLE = 30
 FEATURE_LABELS = {
     "engagement": "Engagement now",
     "engagement_change": "Change in engagement (3 months)",
@@ -144,14 +168,19 @@ def _leave_within(beta, scale, at_risk: pd.DataFrame, horizon: int) -> np.ndarra
 
 # PROCESS 4 – ROLLING BACKTESTS
 
-def backtest(data: pd.DataFrame, horizon: int = HORIZON) -> pd.DataFrame:
-    """Train on months before each cut-off, test who leaves in the next `horizon` months."""
-    cols = features(data)
+def _cutoffs(data: pd.DataFrame, horizon: int) -> list[int]:
     last = int(data["t"].max())
     cutoffs = [last - horizon + 1 - FOLD_STEP * k for k in range(FOLDS)]
-    cutoffs = sorted(c for c in cutoffs if c >= MIN_TRAIN_MONTHS)
-    rows = []
-    for c in cutoffs:
+    return sorted(c for c in cutoffs if c >= MIN_TRAIN_MONTHS)
+
+
+def backtest(data: pd.DataFrame, horizon: int = HORIZON, cols: list[str] | None = None,
+             return_predictions: bool = False):
+    """Train on months before each cut-off, test who leaves in the next `horizon` months.
+    The baseline is each team's recent exit rate, smoothed toward the company rate."""
+    cols = features(data) if cols is None else cols
+    rows, preds = [], []
+    for c in _cutoffs(data, horizon):
         train = data[data["t"] < c]
         at_risk = data[data["t"] == c]
         if train["exited"].sum() < 10 or at_risk.empty:
@@ -161,37 +190,106 @@ def backtest(data: pd.DataFrame, horizon: int = HORIZON) -> pd.DataFrame:
         window = data[(data["t"] >= c) & (data["t"] < c + horizon)]
         left = window.groupby("employee_id")["exited"].max()
         actual = at_risk["employee_id"].map(left).fillna(0).to_numpy(int)
+        recent = data[(data["t"] < c) & (data["t"] >= c - 12)]
+        company = float(recent["exited"].mean())
         if "team_id" in data.columns:
-            recent = data[(data["t"] < c) & (data["t"] >= c - 12)]
-            team_rate = recent.groupby("team_id")["exited"].mean()
-            baseline = at_risk["team_id"].map(team_rate).fillna(recent["exited"].mean()).to_numpy()
+            g = recent.groupby("team_id")["exited"]
+            team_rate = (g.sum() + SMOOTHING_K * company) / (g.size() + SMOOTHING_K)
+            baseline = at_risk["team_id"].map(team_rate).fillna(company).to_numpy()
         else:
             baseline = np.full(len(at_risk), 0.5)
         rows.append({"cutoff_month": c, "people": len(at_risk), "left": int(actual.sum()),
                      "expected": float(predicted.sum()), "model_auc": auc(actual, predicted),
                      "baseline_auc": auc(actual, baseline)})
-    return pd.DataFrame(rows)
+        if return_predictions:
+            change = np.zeros(len(at_risk), bool)
+            if "engagement_change" in at_risk.columns:
+                change |= at_risk["engagement_change"].abs().to_numpy() >= CHANGE_ENGAGEMENT_DELTA
+            if "manager_change" in at_risk.columns:
+                change |= at_risk["manager_change"].fillna(0).to_numpy() == 1
+            preds.append(pd.DataFrame({"cutoff_month": c, "predicted": predicted, "actual": actual,
+                                       "baseline": baseline, "changed": change, "_band": "",
+                                       "department": at_risk["department"].to_numpy()
+                                       if "department" in at_risk.columns else "all"}))
+    table = pd.DataFrame(rows)
+    if return_predictions:
+        return table, (pd.concat(preds, ignore_index=True) if preds else pd.DataFrame())
+    return table
+
+
+def _shuffle_engagement(data: pd.DataFrame, cols: list[str], rng) -> pd.DataFrame:
+    out = data.copy()
+    keys = [k for k in ("department", "t") if k in data.columns]
+    values = data[cols].to_numpy()
+    new = values.copy()
+    for _, idx in data.groupby(keys).indices.items():
+        new[idx] = values[rng.permutation(idx)]
+    out[cols] = new
+    return out
+
+
+def engagement_signal(data: pd.DataFrame, horizon: int, observed: float,
+                      n: int = N_PERMUTATIONS_MONTHLY, seed: int = 0) -> dict[str, Any]:
+    """Fix 1: does engagement add anything beyond tenure, absence, team exits and manager?"""
+    cols = features(data)
+    eng = [c for c in ENGAGEMENT_FEATURES if c in cols]
+    if not eng:
+        return {"status": "untested", "adds_signal": False,
+                "text": "No engagement answers in the file, so engagement is not part of the model."}
+    base_cols = [c for c in cols if c not in eng]
+    base = backtest(data, horizon, base_cols) if base_cols else pd.DataFrame()
+    base_auc = float(base["model_auc"].mean()) if not base.empty else float("nan")
+    rng = np.random.default_rng(seed)
+    null = []
+    for _ in range(n):
+        t = backtest(_shuffle_engagement(data, eng, rng), horizon, cols)
+        if not t.empty:
+            null.append(float(t["model_auc"].mean()))
+    null = np.array(null)
+    cut = float(np.quantile(null, PERMUTATION_LEVEL)) if len(null) else float("nan")
+    adds = bool(len(null) and observed > cut)
+    return {"status": "passed" if adds else "failed", "adds_signal": adds,
+            "observed_auc": round(observed, 4),
+            "without_engagement_auc": None if np.isnan(base_auc) else round(base_auc, 4),
+            "shuffled_auc_95th": None if np.isnan(cut) else round(cut, 4),
+            "p_value": round(float((1 + (null >= observed).sum()) / (1 + len(null))), 4) if len(null) else None,
+            "n_permutations": int(len(null)),
+            "text": (("Engagement adds warning signs beyond tenure, absence, team exits and manager "
+                      f"changes ({observed:.0%} vs {base_auc:.0%} without it; it beat {len(null)} "
+                      "shuffles within departments). A warning sign, not a cause.") if adds else
+                     ("Engagement did not add warning signs beyond tenure, absence, team exits and "
+                      "manager changes (shuffling it within departments predicted about as well), "
+                      "so it is not listed as a signal."))}
 
 
 # PROCESS 5 – THE WHOLE RUN
 
-def monthly_risk(df: pd.DataFrame, horizon: int = HORIZON) -> dict[str, Any]:
+def monthly_risk(df: pd.DataFrame, horizon: int = HORIZON, health_report: dict | None = None,
+                 n_permutations: int = N_PERMUTATIONS_MONTHLY) -> dict[str, Any]:
+    prediction_health_gate(health_report, "turnover")
     ready = readiness(df)
     if not ready["ready_for_survival"]:
         return {"status": "not_ready", "readiness": ready,
                 "status_text": ready["verdict"]}
     data = prepare(df)
-    tests = backtest(data, horizon)
+    tests, preds = backtest(data, horizon, return_predictions=True)
     if tests.empty:
         return {"status": "untested", "readiness": ready, "status_text":
                 "Not enough history to test the model on months it never saw."}
     model_auc = float(tests["model_auc"].mean())
     baseline_auc = float(tests["baseline_auc"].mean())
     useful = model_auc >= MIN_AUC and model_auc >= max(0.5, baseline_auc) + MIN_LIFT_OVER_BASELINE
+    calibration = (calibration_check(preds["predicted"], preds["actual"], unit="people")
+                   if len(preds) else calibration_pending())
+    change = change_gate(preds.rename(columns={"predicted": "_score", "actual": "target",
+                                               "baseline": "previous_rate"}),
+                         auc, unit="people", min_changed=MIN_CHANGED_PEOPLE)
     result = {
         "status": "useful" if useful else "weak", "readiness": ready, "tests": tests,
         "auc": model_auc, "baseline_auc": baseline_auc, "horizon": horizon,
         "months": int(data["t"].max()) + 1,
+        "calibration_check": calibration, "show_percentages": bool(calibration["show_percentages"]),
+        "change_check": change,
         "status_text": ("The model beat chance and the team's recent exit rate in every-month "
                         "backtests it never saw." if useful else
                         "The model did not clearly beat chance or the team's recent exit rate, "
@@ -200,12 +298,17 @@ def monthly_risk(df: pd.DataFrame, horizon: int = HORIZON) -> dict[str, Any]:
     if not useful:
         return result
 
+    result["engagement_signal"] = engagement_signal(data, horizon, model_auc, n_permutations)
     cols = features(data)
     beta, scale = _fit(data, cols)
     last = int(data["t"].max())
     at_risk = data[(data["t"] == last) & (data["exited"] == 0)].copy()
     chance, monthly = _leave_within(beta, scale, at_risk, horizon)
     at_risk["chance"] = chance
+    drivers = pd.DataFrame({"feature": [FEATURE_LABELS[c] for c in cols], "column": cols,
+                            "odds_change_per_sd": np.exp(beta[1:]) - 1})
+    if not result["engagement_signal"]["adds_signal"]:
+        drivers = drivers[~drivers["column"].isin(ENGAGEMENT_FEATURES)]
     result.update({
         "people_at_risk": len(at_risk),
         "expected_leavers": float(chance.sum()),
@@ -213,8 +316,7 @@ def monthly_risk(df: pd.DataFrame, horizon: int = HORIZON) -> dict[str, Any]:
                                   "expected_leavers": monthly.sum(axis=1)}),
         "by_department": _groups(at_risk, "department"),
         "by_team": _groups(at_risk, "team_id"),
-        "drivers": pd.DataFrame({"feature": [FEATURE_LABELS[c] for c in cols],
-                                 "odds_change_per_sd": np.exp(beta[1:]) - 1})
+        "drivers": drivers.drop(columns="column")
         .sort_values("odds_change_per_sd", key=abs, ascending=False).reset_index(drop=True),
         "calibration": float(tests["expected"].sum() / max(tests["left"].sum(), 1)),
     })
@@ -238,6 +340,7 @@ def explain_monthly_risk(result: dict[str, Any]) -> dict[str, Any]:
     if result["status"] != "useful":
         return {"headline": result["status_text"], "points": []}
     h = result["horizon"]
+    show = result.get("show_percentages", True)
     points = [f"Tested on {len(result['tests'])} cut-off months it never saw: it picks who "
               f"leaves {result['auc']:.0%} of the time (the team's recent exit rate gets "
               f"{result['baseline_auc']:.0%}).",
@@ -245,13 +348,17 @@ def explain_monthly_risk(result: dict[str, Any]) -> dict[str, Any]:
               "actually left" + (" (close)." if 0.8 <= result["calibration"] <= 1.2 else ".")]
     if not result["by_department"].empty:
         top = result["by_department"].iloc[0]
-        points.append(f"Highest risk: **{top.iloc[0]}**, where on average {top['average_chance']:.0%} "
-                      f"of people may leave within {h} months.")
+        points.append(f"Highest risk: **{top.iloc[0]}**"
+                      + (f", where on average {top['average_chance']:.0%} of people may leave within {h} months."
+                         if show else "."))
     if not result["drivers"].empty:
         d = result["drivers"].iloc[0]
-        points.append(f"Strongest signal: {d['feature'].lower()} "
+        points.append(f"Strongest warning sign (not a cause): {d['feature'].lower()} "
                       f"({'raises' if d['odds_change_per_sd'] > 0 else 'lowers'} the monthly "
                       f"odds of leaving by {abs(d['odds_change_per_sd']):.0%} per typical step).")
+    for key in ("engagement_signal", "change_check", "calibration_check"):
+        if result.get(key, {}).get("text"):
+            points.append(result[key]["text"])
     return {"headline": f"About **{result['expected_leavers']:,.0f} of {result['people_at_risk']:,} "
                         f"people** are likely to leave in the next {h} months if nothing changes.",
             "points": points}

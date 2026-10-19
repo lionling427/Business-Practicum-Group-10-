@@ -70,7 +70,8 @@ with st.container(border=True):
         ) or groups[0]
 
         try:
-            risk = employee_risk_by_group(df, group)
+            risk = employee_risk_by_group(
+                df, group, health_report=st.session_state.get("health_report"))
         except ValueError as exc:
             risk = None
             st.info(str(exc), icon=":material/info:")
@@ -83,13 +84,16 @@ with st.container(border=True):
     elif risk is not None:
 
         table = risk["table"]
+        show_pct = risk.get("show_percentages", True)
         fairness = ("Pending" if table["actual_rate"].isna().all()
                     else "Passed" if not table["fairness_flag"].any()
                     else f"{int(table['fairness_flag'].sum())} flagged")
 
         tiles = [
-            ("Expected leavers, next 12 months", f"~{table['expected_leavers'].sum():,.0f}",
-             "Sum of each group's predicted leaving rate × its people."),
+            ("Expected leavers, next 12 months",
+             f"~{table['expected_leavers'].sum():,.0f}" if show_pct else "Hidden",
+             "Sum of each group's predicted leaving rate × its people." if show_pct else
+             risk["calibration"]["text"]),
             ("Model accuracy", f"{risk['auc'] * 100:.0f}%",
              "How often the model picks the leaver out of two people (50% = coin flip). "
              + ("Tested on a survey it never saw." if risk["method"] == "out_of_time"
@@ -112,6 +116,10 @@ with st.container(border=True):
 
         with story_col:
             story_box(explain_group_risk(risk))
+
+        if risk.get("survey_response_warning"):
+            st.caption(":material/info: " + risk["survey_response_warning"]["text"])
+        st.caption(":material/fact_check: " + risk["calibration"]["text"])
 
         st.caption(
             ":material/lock: Privacy by design: individual scores are never shown or stored, "
@@ -281,7 +289,10 @@ with st.container(border=True):
         if key not in cache:
             with st.spinner("Testing the model on past months and looking ahead..."):
                 try:
-                    cache[key] = monthly_risk(monthly)
+                    cache[key] = monthly_risk(
+                        monthly,
+                        health_report=(st.session_state.get("health_report")
+                                       if source == "upload" else None))
                 except (ValueError, KeyError) as exc:
                     cache[key] = {"status": "error", "status_text": str(exc)}
         result = cache[key]
@@ -322,11 +333,17 @@ with st.container(border=True):
                         f"Chance of leaving in {HORIZON} months", format="percent"),
                     "expected_leavers": st.column_config.NumberColumn(
                         "Expected leavers", format="%.1f")}
+                hide = [] if result.get("show_percentages", True) else ["average_chance",
+                                                                         "expected_leavers"]
+                if hide:
+                    st.caption(result["calibration_check"]["text"])
                 if not result["by_department"].empty:
-                    st.dataframe(result["by_department"], hide_index=True, width="stretch",
+                    st.dataframe(result["by_department"].drop(columns=hide), hide_index=True,
+                                 width="stretch",
                                  column_config={"department": "Department", **count_columns})
                 if not result["by_team"].empty:
-                    st.dataframe(result["by_team"].head(20), hide_index=True, width="stretch",
+                    st.dataframe(result["by_team"].head(20).drop(columns=hide), hide_index=True,
+                                 width="stretch",
                                  column_config={"team_id": "Team", **count_columns})
                 st.caption("Groups of 5 or more people only; no individual scores are shown.")
 

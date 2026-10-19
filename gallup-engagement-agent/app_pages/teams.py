@@ -60,7 +60,8 @@ risk_results = {}
 for outcome, (column, _) in TARGETS.items():
     if column in df.columns:
         try:
-            risk_results[outcome] = team_risk(df, outcome)
+            risk_results[outcome] = team_risk(
+                df, outcome, health_report=st.session_state.get("health_report"))
         except ValueError:
             risk_results[outcome] = None
 
@@ -124,6 +125,11 @@ with watch_tab:
         shown = shown[shown["department"] == department]
     if attention_only:
         shown = shown[shown["needs_attention"]]
+
+    x7 = next((r["survey_response_warning"] for r in risk_results.values()
+               if r is not None and r.get("survey_response_warning")), None)
+    if x7 is not None:
+        st.caption(":material/info: " + x7["text"])
 
     if shown.empty:
         st.info("No teams match these filters.")

@@ -6,14 +6,19 @@ import json
 import os
 import re
 import sys
+import time
 from functools import lru_cache
 from pathlib import Path
 
+import openai
 from openai import AzureOpenAI
 
 from src.tools.analytics import (
     ITEM_LABELS,
+    HealthCheckBlocked,
+    allowed_outcomes as health_allowed_outcomes,
     analyze_dataset,
+    blocking_reasons,
 )
 
 
@@ -375,10 +380,13 @@ def get_dev_dashboard(dataset_path: str):
     from src.tools.longitudinal import analyze_change, survey_waves
     from src.tools.waves import model_sample
 
+    from src.tools.health_check import check_upload
+
     frame = load_dev_frame(dataset_path)
     analysis = analyze_dataframe(
         model_sample(frame),
         dataset_name=Path(dataset_path).name,
+        health_report=check_upload(frame, Path(dataset_path).name),
     )
     change = None
     if len(survey_waves(frame)) >= 2:
@@ -392,29 +400,72 @@ def get_dev_dashboard(dataset_path: str):
 
 # PROCESS 10 – HEALTH GATE
 
+# v3 fix 1, merged into the Oct 17 version:
+# - every outcome blocked          -> refuse, whatever the question
+# - the asked outcome is blocked   -> refuse that outcome, name what is still available
+# - no outcome named, some blocked -> answer from allowed outcomes only, say which were excluded
+# The analysis pipeline raises HealthCheckBlocked when everything is blocked;
+# ask_agent turns that into the same polite refusal (no language-model call).
+
+BLOCKED_ANALYSIS = {"allowed_outcomes": [], "blocked_outcomes": ["all"], "payloads": []}
+
+
+def analysis_allowed_outcomes(analysis):
+    if analysis.get("allowed_outcomes") is not None:
+        return list(analysis["allowed_outcomes"])
+    return health_allowed_outcomes(analysis["health_report"])
+
+
+def analysis_blocked_outcomes(analysis):
+    if analysis.get("blocked_outcomes") is not None:
+        return list(analysis["blocked_outcomes"])
+    return [o for o in OUTCOME_LABELS if o not in health_allowed_outcomes(analysis["health_report"])]
+
+
 def outcome_is_allowed(
     analysis,
     outcome,
 ):
+    """True when the outcome may be interpreted. With no outcome named, true only
+    when at least one outcome is allowed (the old version returned True here)."""
+
+    allowed = analysis_allowed_outcomes(analysis)
+
     if outcome is None:
-        return True
+        return bool(allowed)
 
-    allowed = (
-        analysis[
-            "health_report"
-        ][
-            "summary"
-        ][
-            "analysis_allowed"
-        ]
-    )
+    return outcome in allowed
 
-    return bool(
-        allowed.get(
-            outcome,
-            False,
+
+def health_gate(analysis, outcome):
+    """None when the question may continue, otherwise the refusal text."""
+
+    blocked = analysis_blocked_outcomes(analysis)
+
+    if not analysis_allowed_outcomes(analysis):
+        reasons = blocking_reasons(analysis["health_report"])
+        detail = (
+            " Issues found: " + "; ".join(reasons[:4])
+            + (f"; and {len(reasons) - 4} more" if len(reasons) > 4 else "") + "."
+            if reasons else ""
         )
-    )
+        return (
+            "I can't answer this yet: the data-health checks found errors that block "
+            "every outcome analysis (turnover, absenteeism and performance)." + detail
+            + " Please fix the data and upload it again; see the Data page for the full list."
+        )
+
+    if outcome is not None and outcome in blocked:
+        label = OUTCOME_LABELS.get(outcome, outcome)
+        return (
+            f"Analysis for {label} is currently blocked by the data-health checks, so I "
+            "won't provide a business interpretation until the underlying data issue is "
+            "resolved. I can still answer about: "
+            + ", ".join(OUTCOME_LABELS.get(o, o) for o in analysis_allowed_outcomes(analysis))
+            + "."
+        )
+
+    return None
 
 
 # PROCESS 11 – BUILD NON-REPORTABLE EVIDENCE
@@ -637,6 +688,39 @@ def select_verified_evidence(
 
 # PROCESS 13 – CREATE AZURE CLIENT
 
+def add_patterns_and_exclusions(evidence, analysis, route):
+    """Attach X4/X5-type patterns that match the question, and the list of
+    outcomes the health check excluded."""
+
+    item = route["item"]
+    outcome = route["outcome"]
+
+    patterns = [
+        sf
+        for sf in analysis.get("special_findings", [])
+        if (item is None or sf["item"] == item)
+        and (outcome is None or sf["outcome"] == outcome)
+    ]
+
+    if patterns:
+        evidence["threshold_and_subgroup_patterns"] = patterns
+
+    blocked = analysis_blocked_outcomes(analysis)
+
+    if blocked:
+        evidence["excluded_by_data_health_checks"] = {
+            "outcomes": [OUTCOME_LABELS.get(o, o) for o in blocked],
+            "note": (
+                "These outcomes failed the data-health checks. Do not discuss "
+                "them; say once that they were excluded until the data is fixed."
+            ),
+        }
+
+    return evidence
+
+
+# PROCESS 13 – CREATE AZURE CLIENT (v3 retry below)
+
 def get_azure_client():
 
     # Re-read .env so a key added while the app is running is picked up.
@@ -848,7 +932,92 @@ STRICT RULES:
     given there, written as markdown links; never invent a link. Say the
     Recommendations page can download each team's action plan for Gallup
     Access. Do not imply this app is made or endorsed by Gallup.
+
+45. If VERIFIED_EVIDENCE lists outcomes excluded by the data-health checks,
+    do not give any figure, trend, cost or recommendation for those outcomes.
+    Say once, briefly, that they were excluded until the data is fixed.
+
+46. If threshold or subgroup patterns are supplied, mention them when they
+    concern the item or outcome asked about: a threshold means the link is
+    concentrated below a score; a subgroup difference means the two groups
+    should be reported separately, with both values.
+
+47. Team risk predictions are warning signs, not causes. Never say a Q12
+    item "drives" a team's predicted risk, and never choose what to improve
+    from the predictions: the Outcomes findings decide that. If the
+    predictions section carries a survey-response warning, explain it in one
+    plain sentence: people who later leave answer the survey less often, so
+    team scores can look better than the team really is. If the predictions
+    section says percentages are hidden (calibration), give only the risk
+    band (High, Elevated, Typical), never a percentage. If predictions are
+    blocked or not validated, say so and do not name at-risk teams.
 """
+
+
+# PROCESS 14A – API RETRY (fix #6)
+#
+# The Azure guide asks every client to retry HTTP 429 (rate limit) with a
+# wait. Validation runs ask dozens of questions in a row, so one 429, timeout
+# or empty answer must not stop the run.
+
+MAX_RETRIES = 3
+RETRY_BASE_SECONDS = 2.0
+RETRY_STATUS_CODES = {408, 409, 429, 500, 502, 503, 504}
+
+
+def _retry_wait(attempt, exc=None):
+    """Wait time: the server's Retry-After header when given, else 2, 4, 8 s."""
+    try:
+        header = exc.response.headers.get("retry-after")  # type: ignore[union-attr]
+        if header:
+            return min(float(header), 60.0)
+    except Exception:  # noqa: BLE001
+        pass
+    return RETRY_BASE_SECONDS * (2 ** attempt)
+
+
+def _is_retryable(exc):
+    if isinstance(exc, (openai.RateLimitError, openai.APITimeoutError, openai.APIConnectionError)):
+        return True
+    if isinstance(exc, openai.APIStatusError):
+        return exc.status_code in RETRY_STATUS_CODES
+    return False
+
+
+def call_with_retry(client, request, max_retries=MAX_RETRIES, sleep=time.sleep):
+    """Call chat.completions.create; retry 429 / 5xx / timeouts / empty answers
+    up to max_retries times. Returns (response, answer_text)."""
+
+    last_error = None
+
+    for attempt in range(max_retries + 1):
+
+        try:
+            response = client.chat.completions.create(**request)
+
+        except Exception as exc:  # noqa: BLE001
+            if not _is_retryable(exc) or attempt == max_retries:
+                raise
+            last_error = exc
+            sleep(_retry_wait(attempt, exc))
+            continue
+
+        answer = (response.choices[0].message.content or "")
+
+        if answer.strip():
+            return response, answer
+
+        last_error = RuntimeError(
+            "The language model returned no visible answer. "
+            f"Finish reason: {response.choices[0].finish_reason}"
+        )
+
+        if attempt == max_retries:
+            raise last_error
+
+        sleep(_retry_wait(attempt))
+
+    raise last_error  # pragma: no cover
 
 
 # PROCESS 15 – GENERATE BUSINESS ANSWER
@@ -879,10 +1048,7 @@ def generate_business_answer(
         indent=2,
     )
 
-    response = (
-        client
-        .chat.completions
-        .create(
+    request = dict(
             model=AZURE_DEPLOYMENT,
 
             messages=[
@@ -919,24 +1085,13 @@ Use only VERIFIED_EVIDENCE.
             max_completion_tokens=16000,
 
             reasoning_effort="low",
-        )
     )
 
-    answer = (
-        response
-        .choices[0]
-        .message
-        .content
-        or ""
+    # Retries 429 / 5xx / timeouts / empty answers (v3 fix 6).
+    response, answer = call_with_retry(
+        client,
+        request,
     )
-
-    if not answer.strip():
-        raise RuntimeError(
-            "The language model returned "
-            "no visible answer. "
-            f"Finish reason: "
-            f"{response.choices[0].finish_reason}"
-        )
 
     return {
         "answer":
@@ -1001,30 +1156,40 @@ def ask_agent(
 
     frame = data
 
-    if analysis_override is not None:
+    stopped = None
 
-        analysis = analysis_override
+    try:
 
-    elif include_dashboard and data is None:
+        if analysis_override is not None:
 
-        frame, analysis, dev_change = get_dev_dashboard(
-            str(Path(dataset_path).resolve())
-        )
+            analysis = analysis_override
 
-        if change_analysis is None:
-            change_analysis = dev_change
+        elif include_dashboard and data is None:
 
-    else:
+            frame, analysis, dev_change = get_dev_dashboard(
+                str(Path(dataset_path).resolve())
+            )
 
-        dataset_path = str(
-            Path(
+            if change_analysis is None:
+                change_analysis = dev_change
+
+        else:
+
+            dataset_path = str(
+                Path(
+                    dataset_path
+                ).resolve()
+            )
+
+            analysis = get_analysis(
                 dataset_path
-            ).resolve()
-        )
+            )
 
-        analysis = get_analysis(
-            dataset_path
-        )
+    except HealthCheckBlocked as exc:
+
+        # Every outcome is blocked: refuse without calling the language model.
+        stopped = str(exc)
+        analysis = BLOCKED_ANALYSIS
 
     outcome = route["outcome"]
 
@@ -1032,23 +1197,17 @@ def ask_agent(
     # HEALTH GATE
     # -----------------------------------------
 
-    if (
-        outcome is not None
-        and not outcome_is_allowed(
-            analysis,
-            outcome,
+    blocked_answer = (
+        health_gate(analysis, outcome)
+        if stopped is None
+        else (
+            "I can't answer this yet: the data-health checks found errors that block "
+            "every outcome analysis (turnover, absenteeism and performance). "
+            + stopped
         )
-    ):
+    )
 
-        blocked_answer = (
-            f"Analysis for {outcome} "
-            "is currently blocked by "
-            "the data-health checks. "
-            "I won't provide a business "
-            "interpretation until the "
-            "underlying data issue is "
-            "resolved."
-        )
+    if blocked_answer is not None:
 
         if return_debug:
 
@@ -1061,6 +1220,9 @@ def ask_agent(
 
                 "evidence":
                     None,
+
+                "blocked":
+                    True,
             }
 
         return blocked_answer
@@ -1070,6 +1232,12 @@ def ask_agent(
     # -----------------------------------------
 
     evidence = select_verified_evidence(
+        analysis,
+        route,
+    )
+
+    evidence = add_patterns_and_exclusions(
+        evidence,
         analysis,
         route,
     )
@@ -1112,6 +1280,12 @@ def ask_agent(
             or route["outcome"] is not None
         )
 
+        exclusions = {
+            key: evidence[key]
+            for key in ("excluded_by_data_health_checks",)
+            if key in evidence
+        }
+
         evidence = {
             **(
                 {"statistical_findings": evidence}
@@ -1120,6 +1294,8 @@ def ask_agent(
             ),
 
             **context,
+
+            **exclusions,
         }
 
     # -----------------------------------------

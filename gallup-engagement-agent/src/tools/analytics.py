@@ -176,12 +176,15 @@ def required_model_controls(health_report, df):
     return applied, decisions
 
 
-def run_standard_models(df, extra_controls=None):
-    """Fit each outcome's pre-defined model (model_spec.SPECS)."""
+def run_standard_models(df, extra_controls=None, outcomes=None):
+    """Fit each allowed outcome's pre-defined model (model_spec.SPECS).
+    Outcomes blocked by the health check are never fitted (v3 fix 2)."""
     extra = extra_controls or {}
+    outcomes = list(SPECS) if outcomes is None else list(outcomes)
     return {
         outcome: fit_outcome_model(df, outcome, tuple(extra.get(outcome, ())))
         for outcome in SPECS
+        if outcome in outcomes
     }
 
 
@@ -194,75 +197,69 @@ def enforce_health(health_report):
             "Analysis stopped: the data health check found errors that must be fixed first ("
             + "; ".join(failed) + "). See the Data page."
         )
-    return [b for b in blocked if b != "all"]
+    partial = [b for b in blocked if b != "all"]
+    if partial and not [o for o in SPECS if o not in partial]:
+        raise HealthCheckBlocked(
+            "Analysis stopped: the data health check blocked every outcome ("
+            + "; ".join(blocking_reasons(health_report)) + "). See the Data page."
+        )
+    return partial
+
+
+ALL_OUTCOMES = tuple(SPECS)
+
+
+def allowed_outcomes(health_report):
+    """Outcomes the health check allows: the single source for the agent's gate."""
+    blocked = health_report.get("summary", {}).get("blocked_outcomes", [])
+    if "all" in blocked:
+        return []
+    return [o for o in ALL_OUTCOMES if o not in blocked]
+
+
+def blocking_reasons(health_report):
+    """Plain-language reasons for every FAIL check, for refusal messages."""
+    reasons = []
+    for c in health_report.get("checks", []):
+        if c.get("status") != "FAIL":
+            continue
+        violations = (c.get("metrics") or {}).get("violations")
+        reasons.append(
+            f"{c['check']} failed"
+            + (f" ({violations:,} problem rows or values)"
+               if isinstance(violations, int) and violations else "")
+        )
+    return reasons
 
 
 # PROCESS 7 – COLLECT MODEL RESULTS
 
 def collect_model_results(models):
+    """One row per item for every fitted outcome (blocked outcomes are absent)."""
     rows = []
 
-    turnover_fit = models["turnover"]
+    for outcome, fit in models.items():
 
-    for item in st.ITEMS:
-        effect, ci_low, ci_high = (
-            turnover_fit.ratio(item)
-        )
+        spec = SPECS[outcome]
 
-        rows.append({
-            "item": item,
-            "outcome": "turnover",
-            "effect_type": "Odds Ratio",
-            "effect": effect,
-            "ci_low": ci_low,
-            "ci_high": ci_high,
-            "p_value":
-                turnover_fit.pvalues[item],
-            "n": turnover_fit.n,
-        })
+        for item in st.ITEMS:
 
-    absence_fit = models["absence"]
+            if spec.method == "ols":
+                ci_low, ci_high = fit.ci(item)
+                effect = float(fit.params[item])
+            else:
+                effect, ci_low, ci_high = fit.ratio(item)
 
-    for item in st.ITEMS:
-        effect, ci_low, ci_high = (
-            absence_fit.ratio(item)
-        )
-
-        rows.append({
-            "item": item,
-            "outcome": "absence",
-            "effect_type":
-                "Incidence Rate Ratio",
-            "effect": effect,
-            "ci_low": ci_low,
-            "ci_high": ci_high,
-            "p_value":
-                absence_fit.pvalues[item],
-            "n": absence_fit.n,
-        })
-
-    performance_fit = models[
-        "performance"
-    ]
-
-    for item in st.ITEMS:
-        ci_low, ci_high = (
-            performance_fit.ci(item)
-        )
-
-        rows.append({
-            "item": item,
-            "outcome": "performance",
-            "effect_type":
-                "Standardized Beta",
-            "effect":
-                performance_fit.params[item],
-            "ci_low": ci_low,
-            "ci_high": ci_high,
-            "p_value":
-                performance_fit.pvalues[item],
-            "n": performance_fit.n,
-        })
+            rows.append({
+                "item": item,
+                "outcome": outcome,
+                "effect_type": spec.effect_type,
+                "effect": effect,
+                "ci_low": ci_low,
+                "ci_high": ci_high,
+                "p_value": fit.pvalues[item],
+                "n": fit.n,
+            })
 
     return pd.DataFrame(rows)
 
@@ -587,20 +584,27 @@ def run_robustness_diagnostics(
 ):
     combined = {}
 
-    diagnostics_sets = [
-        prior_performance_diagnostics(
-            df,
-            models,
-        ),
+    # Only for outcomes that were fitted (blocked outcomes have no model).
+    diagnostics_sets = []
 
-        team_confounding_diagnostics(
-            df
-        ),
+    if "performance" in models:
+        diagnostics_sets += [
+            prior_performance_diagnostics(
+                df,
+                models,
+            ),
 
-        simpson_diagnostics(
-            df
-        ),
-    ]
+            simpson_diagnostics(
+                df
+            ),
+        ]
+
+    if "absence" in models:
+        diagnostics_sets.append(
+            team_confounding_diagnostics(
+                df
+            )
+        )
 
     for diagnostic_set in diagnostics_sets:
 
@@ -614,6 +618,169 @@ def run_robustness_diagnostics(
             ).append(diagnostic)
 
     return combined
+
+
+# PROCESS 12A – THRESHOLD AND SUBGROUP PATTERNS (v3 fixes 4 and 5: X4, X5)
+#
+# A straight-line model can hide two patterns HR needs to hear about:
+# - a threshold: absence jumps only below a score (Q01 below 3). This is the
+#   pre-registered derived control q01_low in the absence spec, so its term is
+#   read from the absence model, not fitted again;
+# - a subgroup difference: an item matters more for new hires (tenure under
+#   2 years). Screened for all 12 items in one turnover model, FDR-corrected.
+
+THRESHOLD_TESTS = [
+    # (item, outcome, model term, cut-off)
+    ("Q01", "absence", "q01_low", 3),
+]
+
+NEW_HIRE_YEARS = 2
+
+
+def threshold_diagnostics(models, dataset_name):
+    findings = []
+
+    for item, outcome, term, cut in THRESHOLD_TESTS:
+
+        fit = models.get(outcome)
+
+        if fit is None or term not in fit.params.index:
+            continue
+
+        ratio, low, high = fit.ratio(term)
+        p_value = float(fit.pvalues[term])
+
+        if p_value >= 0.05 or 0.91 <= ratio <= 1.10:
+            continue
+
+        findings.append({
+            "type": "threshold",
+            "item": item,
+            "item_label": ITEM_LABELS.get(item, item),
+            "outcome": outcome,
+            "outcome_label": OUTCOME_LABELS.get(outcome, outcome),
+            "effect_type": "Rate Ratio (score below threshold vs at or above)",
+            "threshold": f"score below {cut}",
+            "effect": round(ratio, 4),
+            "confidence_interval": {
+                "low": round(low, 4),
+                "high": round(high, 4),
+                "level": 0.95,
+            },
+            "p_value": round(p_value, 6),
+            "sample_size": int(fit.n),
+            "summary": (
+                f"Employees who score {item} ({ITEM_LABELS.get(item, item)}) "
+                f"below {cut} have about {abs(ratio - 1):.0%} "
+                f"{'more' if ratio > 1 else 'fewer'} "
+                f"{OUTCOME_LABELS.get(outcome, outcome)} days than the "
+                "straight-line pattern alone would suggest. The link is "
+                "concentrated at low scores, so a single average effect "
+                "understates it for that group."
+            ),
+            "calculation_id": make_calculation_id(
+                dataset_name, outcome, item, f"Threshold below {cut}|{method_id(outcome)}"
+            ),
+        })
+
+    return findings
+
+
+def subgroup_diagnostics(df, dataset_name, extra_controls=()):
+    """New hires (tenure under 2 years) vs everyone else, every item, turnover."""
+    if "tenure_years" not in df.columns:
+        return []
+
+    work = df.assign(
+        new_hire=(df["tenure_years"] < NEW_HIRE_YEARS).astype(float)
+    )
+
+    if work["new_hire"].nunique() < 2:
+        return []
+
+    interactions = [(item, "new_hire") for item in st.ITEMS]
+
+    fit = st.turnover_model(
+        work,
+        extra_numeric=["new_hire"],
+        interactions=interactions,
+        extra_categorical=tuple(extra_controls),
+    )
+
+    terms = [f"{item}:new_hire" for item in st.ITEMS]
+    discoveries = st.bh_fdr(
+        fit.pvalues[terms].to_numpy(),
+        q=0.05,
+    )
+
+    findings = []
+
+    for item, term, significant in zip(st.ITEMS, terms, discoveries):
+
+        ratio_of_ors, low, high = fit.ratio(term)
+
+        if not significant or 0.91 <= ratio_of_ors <= 1.10:
+            continue
+
+        or_others = float(np.exp(fit.params[item]))
+        or_new = float(np.exp(fit.params[item] + fit.params[term]))
+
+        findings.append({
+            "type": "subgroup_difference",
+            "item": item,
+            "item_label": ITEM_LABELS.get(item, item),
+            "outcome": "turnover",
+            "outcome_label": OUTCOME_LABELS["turnover"],
+            "subgroup": f"tenure under {NEW_HIRE_YEARS} years",
+            "effect_type": "Odds Ratio by subgroup",
+            "odds_ratio_new_hires": round(or_new, 4),
+            "odds_ratio_others": round(or_others, 4),
+            "ratio_of_odds_ratios": round(ratio_of_ors, 4),
+            "confidence_interval": {
+                "low": round(low, 4),
+                "high": round(high, 4),
+                "level": 0.95,
+                "applies_to": "ratio_of_odds_ratios",
+            },
+            "p_value": round(float(fit.pvalues[term]), 6),
+            "sample_size": int(fit.n),
+            "summary": (
+                f"{ITEM_LABELS.get(item, item)} ({item}) is linked to turnover "
+                f"{'more strongly' if abs(np.log(or_new)) > abs(np.log(or_others)) else 'less strongly'} "
+                f"for employees with under {NEW_HIRE_YEARS} years of tenure "
+                f"(odds ratio {or_new:.2f} per point) than for others "
+                f"({or_others:.2f}). Report the two groups separately; the "
+                "overall average hides the difference."
+            ),
+            "calculation_id": make_calculation_id(
+                dataset_name, "turnover", item, "New-hire interaction"
+            ),
+        })
+
+    return findings
+
+
+def special_patterns(df, models, dataset_name, extra_controls=None):
+    """Threshold and subgroup patterns for the outcomes that were fitted."""
+    extra = extra_controls or {}
+    found = threshold_diagnostics(models, dataset_name)
+    if "turnover" in models:
+        found += subgroup_diagnostics(df, dataset_name, extra.get("turnover", ()))
+    return found
+
+
+def attach_patterns(payloads, special_findings):
+    """Put each pattern on the matching finding as related_patterns."""
+    for payload in payloads:
+        related = [
+            {k: v for k, v in sf.items()
+             if k not in ("item", "item_label", "outcome", "outcome_label")}
+            for sf in special_findings
+            if sf["item"] == payload["item"] and sf["outcome"] == payload["outcome"]
+        ]
+        if related:
+            payload["related_patterns"] = related
+    return payloads
 
 
 # PROCESS 13 – CLASSIFY ROBUSTNESS
@@ -1048,9 +1215,12 @@ def analyze_dataset(
 
     extra_controls, control_decisions = required_model_controls(health_report, df)
 
+    fitted_outcomes = [o for o in SPECS if o not in blocked_outcomes]
+
     models = run_standard_models(
         df,
         extra_controls,
+        fitted_outcomes,
     )
 
     results = collect_model_results(
@@ -1105,7 +1275,25 @@ def analyze_dataset(
             )
         )
 
+    special_findings = special_patterns(df, models, dataset_name, extra_controls)
+    attach_patterns(payloads, special_findings)
+
     return {
+        "dataset_name":
+            dataset_name,
+
+        "status":
+            "PARTIAL" if blocked_outcomes else "OK",
+
+        "allowed_outcomes":
+            fitted_outcomes,
+
+        "blocked_outcomes":
+            blocked_outcomes,
+
+        "special_findings":
+            special_findings,
+
         "health_report":
             health_report,
 
@@ -1134,7 +1322,7 @@ def analyze_dataset(
 
         "methods": {
             outcome: describe(outcome, extra_controls.get(outcome))
-            for outcome in SPECS
+            for outcome in fitted_outcomes
         },
     }
 
@@ -1155,6 +1343,18 @@ def analyze_dataframe(
     """
 
     df = df.copy()
+
+    # Health check on the rows as given (non-respondents included, so the
+    # survey-response checks such as NR_LEAVERS can run). Callers with the
+    # whole multi-wave upload should pass its report instead.
+    if health_report is None:
+
+        from .health_check import check_upload
+
+        health_report = check_upload(
+            df,
+            dataset_name,
+        )
 
     # -----------------------------------------
     # BASIC FILTERING
@@ -1223,15 +1423,6 @@ def analyze_dataframe(
     # caller; otherwise it runs here on these rows.
     # -----------------------------------------
 
-    if health_report is None:
-
-        from .health_check import check_upload
-
-        health_report = check_upload(
-            df,
-            dataset_name,
-        )
-
     blocked_outcomes = enforce_health(
         health_report
     )
@@ -1245,9 +1436,12 @@ def analyze_dataframe(
     # STANDARD MODELS
     # -----------------------------------------
 
+    fitted_outcomes = [o for o in SPECS if o not in blocked_outcomes]
+
     models = run_standard_models(
         df,
         extra_controls,
+        fitted_outcomes,
     )
 
     results = collect_model_results(
@@ -1318,9 +1512,24 @@ def analyze_dataframe(
             payload
         )
 
+    special_findings = special_patterns(df, models, dataset_name, extra_controls)
+    attach_patterns(payloads, special_findings)
+
     return {
         "dataset_name":
             dataset_name,
+
+        "status":
+            "PARTIAL" if blocked_outcomes else "OK",
+
+        "allowed_outcomes":
+            fitted_outcomes,
+
+        "blocked_outcomes":
+            blocked_outcomes,
+
+        "special_findings":
+            special_findings,
 
         "sample_size":
             len(df),
@@ -1350,7 +1559,7 @@ def analyze_dataframe(
 
         "methods": {
             outcome: describe(outcome, extra_controls.get(outcome))
-            for outcome in SPECS
+            for outcome in fitted_outcomes
         },
     }
 
