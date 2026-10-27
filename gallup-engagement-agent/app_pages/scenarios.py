@@ -3,7 +3,7 @@
 import pandas as pd
 import streamlit as st
 
-from src.tools.financial import Assumptions, md, money
+from src.tools.financial_updated import default_assumptions, money_warning, Assumptions, md, money
 from src.tools.insights import ITEM_LABELS, analysis_frame
 from src.tools.priorities import factor_value
 from src.tools.scenario import (
@@ -45,7 +45,11 @@ if analysis is None:
     st.stop()
 
 assumptions = (st.session_state.get("assumptions")
-               or Assumptions(headcount=len(analysis_frame(df))))
+               or default_assumptions(df))
+
+_response_note = money_warning(df, st.session_state.get("health_report"))
+if _response_note:
+    st.warning(_response_note, icon=":material/info:")
 c = assumptions.currency
 links = verified_links(analysis)
 verified_items = list(dict.fromkeys(links["item"]))

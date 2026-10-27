@@ -11,9 +11,12 @@ direction that helps the business:
   performance        rating points gained (standardized beta converted to rating
                      points), x the value of a rating point, if one is entered
 
-This is the same scenario and arithmetic as the Financials page
-(insights.dollar_impact), applied to every verified factor, not just the top
-one, and scaled to company headcount.
+UPDATED (branch Will): every number comes from scenario.simulate(), the same engine
+as the Scenarios page (each person's own risk, 95% range), applied to every verified
+factor and scaled to company headcount. The older shortcut (company rate x people
+answering 1-3) understated the value by about a fifth, because the people answering
+1-3 leave more often than the company average. avoided_leavers() and
+avoided_absence_days() below are kept for the audit page and for comparison only.
 
 Ranking combines impact and current score:
   value_per_person  dollars a year for each person who moves up (impact)
@@ -41,7 +44,7 @@ import altair as alt
 import numpy as np
 import pandas as pd
 
-from .financial import ABSENCE, TURNOVER, Assumptions, md, money
+from .financial_updated import ABSENCE, TURNOVER, Assumptions, md, money, resolve_point_value
 from .insights import ITEM_LABELS, Q12_ITEMS, _robust_favorable, analysis_frame
 
 
@@ -57,10 +60,10 @@ PRIORITY_MEANING = {
     "Improve next": "smaller payoff, many people score low",
     "Maintain": "smaller payoff, already strong",
 }
-COLUMNS = ["rank", "item", "label", "priority", "yearly_value", "value_per_person",
-           "agree_pct", "mean_score", "people_below", "avoided_leavers", "turnover_value",
-           "avoided_absence_days", "absence_value", "rating_points", "performance_value",
-           "outcomes", "caution"]
+COLUMNS = ["rank", "item", "label", "priority", "yearly_value", "value_low", "value_high",
+           "value_per_person", "agree_pct", "mean_score", "people_below", "avoided_leavers",
+           "turnover_value", "avoided_absence_days", "absence_value", "rating_points",
+           "performance_value", "outcomes", "caution"]
 
 
 # PROCESS 3 – PER-FACTOR DOLLARS
@@ -76,47 +79,77 @@ def avoided_absence_days(people_below: float, base_days_6m: float, rate_ratio: f
     return people_below * base_days_6m * (1 - rate_ratio) * 2
 
 
+def _factor_physical(df: pd.DataFrame, analysis: dict) -> dict[str, Any]:
+    """What lifting each verified factor by 1 point does, for the people who answer 1-3,
+    from the scenario engine (each person's own risk). Independent of cost assumptions
+    and headcount (scale 1), so it is computed once per analysis and cached on it."""
+    from .audit import audit_sample                  # local imports: both import this chain
+    from .scenario import simulate
+
+    sample = audit_sample(df)
+    cache = analysis.setdefault("_physical_cache", {})
+    key = ("factors", len(sample))
+    if key in cache:
+        return cache[key]
+
+    unit = Assumptions(headcount=len(sample))
+    findings = _robust_favorable(analysis["findings"])
+    fits = analysis.setdefault("_fit_cache", {})        # coefficients only; shared with Scenarios
+    rows = {}
+    for item in dict.fromkeys(findings["item"]):
+        sim = simulate(df, analysis, {item: 1.0}, unit, who="low", ramp_months=0, fits=fits)
+        t = sim["totals"]
+        rows[item] = {
+            "people_below": int((sample[item] <= 3).sum()),
+            **{bound: {"leavers": t[bound]["leavers"], "days": t[bound]["absence_days"],
+                       "points": t[bound]["rating_points"] * len(sample)}
+               for bound in ("estimate", "cautious", "optimistic")},
+            "outcomes": sorted(o for o, items in sim["moved"].items() if item in items),
+        }
+    out = {"n": len(sample), "factors": rows}
+    cache[key] = out
+    return out
+
+
 def factor_value(df: pd.DataFrame, analysis: dict | None, a: Assumptions,
                  traps: dict | None = None) -> pd.DataFrame:
-    """One row per verified factor: avoided turnover and absence, dollars, priority.
-    Empty if the analysis has not run or nothing passed all checks."""
+    """One row per verified factor: avoided turnover and absence, dollars, a 95% range,
+    priority. Uses the same engine as the Scenarios page (scenario.simulate), so the two
+    pages agree. Empty if the analysis has not run or nothing passed all checks."""
     if analysis is None or analysis["findings"].empty:
         return pd.DataFrame(columns=COLUMNS)
     findings = _robust_favorable(analysis["findings"])
     if findings.empty:
         return pd.DataFrame(columns=COLUMNS)
+    a = resolve_point_value(df, a)           # performance priced from SD of productivity, if given
 
+    physical = _factor_physical(df, analysis)
+    scale = a.scale(physical["n"])
     data = analysis_frame(df)
-    scale = a.scale(len(data))
-    base_rate = float(data[TURNOVER].mean()) if TURNOVER in data.columns else None
-    base_days = float(data[ABSENCE].mean()) if ABSENCE in data.columns else None
-    sd_perf = float(data[PERFORMANCE].std()) if PERFORMANCE in data.columns else None
     trapped = set((traps or {}).get("manager", {}).get("affected", []))
 
+    def dollars(q: dict) -> float:
+        return (q["leavers"] * a.cost_per_leaver + q["days"] * a.day_cost
+                + q["points"] * a.value_per_rating_point) * scale
+
     rows = []
-    for item, group in findings.groupby("item", sort=False):
-        effects = dict(zip(group["outcome"], group["effect"].astype(float)))
-        below = int((data[item] <= 3).sum())
+    for item, p in physical["factors"].items():
+        below = p["people_below"]
+        est = p["estimate"]
+        effects = set(p["outcomes"])
+        low, high = sorted([dollars(p["cautious"]), dollars(p["optimistic"])])
         row = {"item": item, "label": ITEM_LABELS.get(item, item),
                "agree_pct": float((data[item] >= 4).mean()),
                "mean_score": float(data[item].mean()),
                "people_below": below * scale,
-               "avoided_leavers": 0.0, "avoided_absence_days": 0.0, "rating_points": 0.0}
-
-        if "turnover" in effects and base_rate:
-            row["avoided_leavers"] = avoided_leavers(below, base_rate, effects["turnover"]) * scale
-        if "absence" in effects and base_days is not None:
-            row["avoided_absence_days"] = avoided_absence_days(
-                below, base_days, effects["absence"]) * scale
-        if "performance" in effects and sd_perf:
-            sd_item = float(data[item].std())
-            if sd_item > 0:
-                row["rating_points"] = below * effects["performance"] * sd_perf / sd_item * scale
-
+               "avoided_leavers": est["leavers"] * scale,
+               "avoided_absence_days": est["days"] * scale,
+               "rating_points": est["points"] * scale}
         row["turnover_value"] = row["avoided_leavers"] * a.cost_per_leaver
         row["absence_value"] = row["avoided_absence_days"] * a.day_cost
         row["performance_value"] = row["rating_points"] * a.value_per_rating_point
         row["yearly_value"] = row["turnover_value"] + row["absence_value"] + row["performance_value"]
+        row["value_low"], row["value_high"] = low, high
         row["value_per_person"] = row["yearly_value"] / row["people_below"] if below else 0.0
         row["outcomes"] = ", ".join(o for o in ("turnover", "absence", "performance") if o in effects)
         notes = []

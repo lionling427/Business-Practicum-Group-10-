@@ -30,7 +30,7 @@ import pandas as pd                                    # noqa: E402
 
 from .action_story import build_action_story           # noqa: E402
 from .ceo_brief import build_ceo_brief                 # noqa: E402
-from .financial import Assumptions, money              # noqa: E402
+from .financial_updated import default_assumptions, Assumptions, money              # noqa: E402
 from .insights import analysis_frame                   # noqa: E402
 from .priorities import PRIORITY_COLORS, PRIORITY_ORDER, factor_value  # noqa: E402
 
@@ -64,7 +64,7 @@ def _plain(text: str) -> str:
 def build_pack(df: pd.DataFrame, analysis: dict | None, assumptions: Assumptions | None = None,
                traps: dict | None = None, change_analysis: dict | None = None,
                audit: dict | None = None, sections: list[str] | None = None) -> list[dict]:
-    a = assumptions or Assumptions(headcount=len(analysis_frame(df)))
+    a = assumptions or default_assumptions(df)
     wanted = set(sections or SECTIONS)
     brief = build_ceo_brief(df, analysis, a, traps)
     story = build_action_story(df, analysis, change_analysis, a, traps)

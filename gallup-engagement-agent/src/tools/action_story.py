@@ -24,7 +24,8 @@ from typing import Any
 
 import pandas as pd
 
-from .financial import Assumptions, current_costs, md, money, team_excess_cost
+from .financial_updated import (default_assumptions, Assumptions, current_costs, md, money,
+                                outcome_frame, team_cost_persistence, team_excess_cost)
 from .insights import ACTION_LIBRARY, ITEM_LABELS, analysis_frame
 from .prediction import TARGETS, employee_risk_by_group, explain_forecast, forecast_engagement, team_risk
 from .priorities import factor_value
@@ -108,7 +109,9 @@ def _predict(df, risks, a) -> tuple[dict[str, Any], dict[str, Any]]:
             risk = employee_risk_by_group(df, "department")
             if risk["status"] == "useful":
                 leavers = float(risk["table"]["expected_leavers"].sum())
-                facts["expected_leavers"] = leavers * a.scale(len(analysis_frame(df)))
+                # Same count as the Predictions page by default; scales only when the user enters a
+                # headcount different from the number of employees in the file.
+                facts["expected_leavers"] = leavers * a.scale(len(outcome_frame(df)))
                 points.insert(0, f"About **{facts['expected_leavers']:,.0f} people** are likely to "
                                  "leave voluntarily in the next 12 months if nothing changes.")
         except ValueError:
@@ -241,15 +244,18 @@ def build_action_story(df: pd.DataFrame, analysis: dict | None = None,
                        change_analysis: dict | None = None,
                        assumptions: Assumptions | None = None,
                        traps: dict | None = None) -> dict[str, Any]:
-    a = assumptions or Assumptions(headcount=len(analysis_frame(df)))
+    a = assumptions or default_assumptions(df)
     risks = _risks(df, (analysis or {}).get("health_report"))
     factors = factor_value(df, analysis, a, traps)
     excess = team_excess_cost(df, a)
+    # Do not name costly teams when last year's costly teams did not stay costly (chance).
+    named_teams = (excess.iloc[0:0] if team_cost_persistence(df, a)["status"] == "failed"
+                   else excess)
 
     predict, facts = _predict(df, risks, a)
     act, plans = _act(df, analysis, change_analysis, facts, factors, risks)
     worth = _money(df, a, facts, factors, excess)
-    start = where_to_start(facts, plans, excess, a)
+    start = where_to_start(facts, plans, named_teams, a)
 
     parts = []
     if facts["expected_leavers"]:

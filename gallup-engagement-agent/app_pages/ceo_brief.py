@@ -3,7 +3,7 @@
 import streamlit as st
 
 from src.tools.ceo_brief import brief_for_screen, brief_markdown, build_ceo_brief
-from src.tools.financial import Assumptions
+from src.tools.financial_updated import default_assumptions, money_warning, Assumptions
 from src.tools.insights import analysis_frame
 from src.ui import (
     OUTCOME_LEVEL,
@@ -28,7 +28,11 @@ df, validation = require_data()
 has_outcomes = validation["capabilities"]["level"] == OUTCOME_LEVEL
 analysis = analysis_runner(df, key="run_analysis_ceo") if has_outcomes else None
 assumptions = (st.session_state.get("assumptions")
-               or Assumptions(headcount=len(analysis_frame(df))))
+               or default_assumptions(df))
+
+_response_note = money_warning(df, st.session_state.get("health_report"))
+if _response_note:
+    st.warning(_response_note, icon=":material/info:")
 
 brief = build_ceo_brief(df, analysis, assumptions,
                         trap_checks(df) if has_outcomes else None)

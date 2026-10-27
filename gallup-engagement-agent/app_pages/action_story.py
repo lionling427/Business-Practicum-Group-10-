@@ -3,7 +3,7 @@
 import streamlit as st
 
 from src.tools.action_story import CHAPTERS, build_action_story, for_screen, story_markdown
-from src.tools.financial import Assumptions
+from src.tools.financial_updated import default_assumptions, money_warning, Assumptions
 from src.tools.insights import analysis_frame
 from src.ui import (
     OUTCOME_LEVEL,
@@ -32,7 +32,11 @@ if validation["capabilities"]["level"] != OUTCOME_LEVEL:
 
 analysis = analysis_runner(df, key="run_analysis_story")
 assumptions = (st.session_state.get("assumptions")
-               or Assumptions(headcount=len(analysis_frame(df))))
+               or default_assumptions(df))
+
+_response_note = money_warning(df, st.session_state.get("health_report"))
+if _response_note:
+    st.warning(_response_note, icon=":material/info:")
 
 with st.spinner("Putting the story together..."):
     story = build_action_story(df, analysis, st.session_state.get("change_analysis"),

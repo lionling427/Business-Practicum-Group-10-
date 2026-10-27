@@ -188,6 +188,24 @@ def test_financials_page_values_engagement(csv_bytes):
     assert any("Where to invest" in h.value for h in at.subheader)
 
 
+def test_financials_page_shows_return_when_program_cost_entered(csv_bytes):
+
+    from src.tools.financial_updated import Assumptions
+
+    at = _app_with_upload(csv_bytes)
+    at.session_state["assumptions"] = Assumptions(
+        program_cost=50_000, effect_realization=0.5, sd_productivity_pct=0.4,
+        sources={"program_cost": "My own scenario assumption"})
+    at.switch_page("app_pages/financials.py").run()
+
+    _assert_clean(at, "financials")
+    labels = {m.label for m in at.metric}
+    assert {"Return on investment", "Payback", "Break-even cost"} <= labels
+    assert any("What would have to be true" in m.value for m in at.markdown)
+    assert any("Sensitivity" in e.label for e in at.expander)
+    assert any("exactly how" in e.label for e in at.expander)
+
+
 FIVE_YEAR_FILE = __import__("pathlib").Path.home() / "Downloads" / "gallup_q12_survey_5yr.csv"
 
 

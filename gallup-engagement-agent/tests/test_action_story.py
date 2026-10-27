@@ -6,7 +6,7 @@ import pytest
 from src.agent import DEFAULT_DATASET
 from src.tools.action_story import build_action_story, story_markdown, where_to_start
 from src.tools.analytics import analyze_dataframe
-from src.tools.financial import Assumptions, current_costs, money
+from src.tools.financial_updated import Assumptions, current_costs, default_assumptions, money
 from src.tools.health_check import check_upload
 from src.tools.insights import analysis_frame
 from src.tools.prediction import employee_risk_by_group
@@ -57,7 +57,7 @@ def test_predictions_match_the_predictions_page(data, story):
 
 def test_money_matches_the_financials_page(data, analysis, story):
 
-    a = Assumptions(headcount=len(analysis_frame(data)))
+    a = default_assumptions(data)
     top = factor_value(data, analysis, a).iloc[0]
 
     text = " ".join(story["chapters"]["money"]["points"])

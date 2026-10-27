@@ -33,7 +33,7 @@ import numpy as np
 import pandas as pd
 
 from .audit import audit_sample
-from .financial import Assumptions, money
+from .financial_updated import Assumptions, default_assumptions, money, resolve_point_value
 from .insights import ITEM_LABELS, _robust_favorable
 from .model_spec import SPECS, design_matrix, fit_outcome_model
 from .visualization import HIGH_COLOR
@@ -73,11 +73,18 @@ def _coefficient(link: pd.Series, bound: str, ratio: bool) -> float:
     return {"estimate": estimate, "cautious": edges[0], "optimistic": edges[1]}[bound]
 
 
-def _simulate_outcome(sample, scope, outcome, analysis, lifts, who, links) -> dict[str, Any]:
+def _simulate_outcome(sample, scope, outcome, analysis, lifts, who, links,
+                      fits: dict | None = None) -> dict[str, Any]:
     """Yearly change in one outcome for the people in scope, per bound."""
     spec = SPECS[outcome]
     extra = _extras(analysis, outcome)
-    fit = fit_outcome_model(sample, outcome, extra)
+    key = (len(sample), outcome, extra)
+    if fits is not None and key in fits:                    # one fit per outcome, reused
+        fit = fits[key]
+    else:
+        fit = fit_outcome_model(sample, outcome, extra)
+        if fits is not None:
+            fits[key] = fit
     X0 = design_matrix(sample, outcome, extra).loc[scope.index]
     ratio = spec.method in ("logit", "negbin")
     standardized = set(spec.standardize)
@@ -119,10 +126,13 @@ def _simulate_outcome(sample, scope, outcome, analysis, lifts, who, links) -> di
 def simulate(df: pd.DataFrame, analysis: dict, lifts: dict[str, float],
              assumptions: Assumptions | None = None, who: str = "everyone",
              department: str | None = None, ramp_months: int = 6,
-             quarters: int = 4) -> dict[str, Any]:
-    """Run one scenario. lifts = {'Q04': 0.3, ...} in points on the 1-5 scale."""
+             quarters: int = 4, fits: dict | None = None) -> dict[str, Any]:
+    """Run one scenario. lifts = {'Q04': 0.3, ...} in points on the 1-5 scale.
+    `fits` (optional dict) lets several scenarios on the same data share one model fit."""
     sample = audit_sample(df)
-    a = assumptions or Assumptions(headcount=len(sample))
+    a = resolve_point_value(df, assumptions or default_assumptions(df))
+    if fits is None:                  # fits are small (coefficients only): keep them on the analysis
+        fits = analysis.setdefault("_fit_cache", {})
     scale = a.scale(len(sample))
     scope = sample if not department else sample[sample["department"] == department]
     if scope.empty:
@@ -133,7 +143,7 @@ def simulate(df: pd.DataFrame, analysis: dict, lifts: dict[str, float],
     outcomes = [o for o in SPECS if SPECS[o].outcome_column in sample.columns
                 and o in set(analysis["results"]["outcome"])]
     per_outcome = {o: _simulate_outcome(sample, scope, o, analysis, lifts, who,
-                                        links[links["outcome"] == o].set_index("item"))
+                                        links[links["outcome"] == o].set_index("item"), fits)
                    for o in outcomes}
 
     totals = {}
@@ -197,9 +207,9 @@ def quarterly_path(totals, value_range, ramp_months: int, quarters: int) -> pd.D
 def contributions(df, analysis, lifts, assumptions=None, who="everyone",
                   department=None) -> pd.DataFrame:
     """Value of each question's lift on its own (they overlap, so do not add them)."""
-    rows = []
+    rows, fits = [], {}
     for item, lift in lifts.items():
-        r = simulate(df, analysis, {item: lift}, assumptions, who, department, 0, 4)
+        r = simulate(df, analysis, {item: lift}, assumptions, who, department, 0, 4, fits)
         t = r["totals"]["estimate"]
         rows.append({"item": item, "question": ITEM_LABELS.get(item, item), "lift": lift,
                      "leavers_avoided": t["leavers"], "absence_days_avoided": t["absence_days"],

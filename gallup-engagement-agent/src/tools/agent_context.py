@@ -33,9 +33,18 @@ import pandas as pd
 
 from .action_tools import DISCLAIMER, plan_resources_summary
 from .dashboard import kpi_tiles, team_watchlist, where_we_stand
-from .financial import (
+from .financial_updated import (
+    default_assumptions,
     Assumptions,
     current_costs,
+    assumption_register,
+    calculation_receipts,
+    department_excess_cost,
+    exposure_vs_opportunity,
+    gallup_benchmark_check,
+    money_warning,
+    program_economics,
+    team_cost_persistence,
     engagement_value,
     money,
     team_excess_cost,
@@ -353,13 +362,52 @@ def _financials(df, analysis, change, a, risk_results=None) -> dict:
     }
     if analysis is not None:
         value = engagement_value(df, analysis, a)
+        low, high = value["range"]
+        program = value.get("program")
         section["what_engagement_could_be_worth_per_year"] = {
             "total": money(value["total"], c),
+            "likely_range": f"{money(low, c)} to {money(high, c)} (sampling error only)",
+            "program": (f"Everyone who answers 1-3 on {program['names']} moves up one point, "
+                        "counted once per person; not a sum of separate programs."
+                        if program else ""),
             "scenarios": [{"area": r["source"], "assumes": r["what"],
                            "result": f"{r['units']:,.0f} {r['unit_label']}",
                            "value": money(r["value"], c)}
                           for _, r in value["scenarios"].iterrows()],
         }
+    if analysis is not None and program:
+        split = exposure_vs_opportunity(costs, value)
+        section["exposure_vs_opportunity"] = (
+            f"Turnover and absence cost {money(split['exposure'], c)} a year today (exposure). "
+            f"The modeled program is {split['opportunity_share']:.0%} of that (opportunity, "
+            "not a realized return).")
+        economics = program_economics(value, a)
+        if economics:
+            base = economics["cases"]["base"]
+            section["program_economics"] = {
+                "program_cost": money(economics["cost"], c),
+                "net_value_per_year": money(base["net"], c),
+                "return_on_investment": f"{base['roi']:.0%}",
+                "break_even_cost": money(economics["break_even_cost"], c),
+                "share_of_modeled_effect_needed_to_break_even": f"{base['required_realization']:.0%}",
+                "note": "Uses the program cost and realization share the user entered.",
+            }
+        register = assumption_register(a, int(costs["headcount"]))
+        entered = register[~register["source"].isin(
+            ["Application default (placeholder)", "Taken from your data", "Not entered"])]
+        section["assumption_sources"] = (
+            [f"{r['assumption']}: {r['value']} ({r['source']})" for _, r in entered.iterrows()]
+            + ["Others: defaults or from the data."])
+        bench = gallup_benchmark_check(df)
+        if not bench.empty:
+            section["gallup_plausibility_check"] = {
+                "rows": [f"{r['outcome']}: team-level r {r['this_data_r']:.2f} here, Gallup "
+                         f"average {r['gallup_r']:.2f}; {r['verdict']}" for _, r in bench.iterrows()],
+            }
+        section["calculation_receipts"] = [
+            {"figure": r["figure"], "result": r["result"], "formula": r["formula"][:160]}
+            for r in calculation_receipts(df, analysis, a, costs, value, economics,
+                                          _health(analysis))[:2]]
     if analysis is not None:
         factors = factor_value(df, analysis, a)
         if not factors.empty:
@@ -370,15 +418,31 @@ def _financials(df, analysis, change, a, risk_results=None) -> dict:
                                "score; Protect = high impact, already strong. Values overlap "
                                "across factors, so never add them together."),
             }
+    note = money_warning(df, _health(analysis))
+    if note:
+        section["survey_response_warning"] = note
+    departments = department_excess_cost(df, a)
+    over = departments[departments["excess_cost"] > 0] if not departments.empty else departments
+    if not over.empty:
+        section["costliest_departments_vs_company_rate"] = [
+            f"{r['department']}: {money(r['excess_cost'], c)} a year above what the company "
+            "rate would cost" for _, r in over.head(3).iterrows()]
     teams = team_excess_cost(df, a)
+    persistence = team_cost_persistence(df, a)
+    section["team_ranking_check"] = persistence["text"]
     above = teams[teams["excess_cost"] > 0]
+    if not above.empty and persistence["status"] == "failed":
+        section["team_ranking_note"] = ("Team-level extra costs did not hold up from one year "
+                                        "to the next, so do not name individual teams; use the "
+                                        "department figures.")
+        above = above.iloc[0:0]
     if not above.empty:
         section["costliest_teams_vs_company_rate"] = [
             f"{r['team_id']} ({r.get('department', '')}): {money(r['excess_cost'], c)} a year "
             "above what the company rate would cost"
             for _, r in above.head(5).iterrows()]
         section["where_costs_sit"] = (
-            f"{len(above)} teams cost {money(above['excess_cost'].sum(), c)} a year more in "
+            f"{len(above):,} teams cost {money(above['excess_cost'].sum(), c)} a year more in "
             "turnover and absence than the company rate would for teams their size. This is "
             "where today's costs are concentrated, not a saving or a forecast.")
     section["limit"] = ("Estimates from the user's cost assumptions, not measured profit; "
@@ -415,7 +479,7 @@ def build_context(df: pd.DataFrame, analysis: dict | None = None,
                   sections: list[str] | None = None) -> dict[str, Any]:
     """Facts for the requested sections (all by default). A section that cannot
     be built is replaced by a short note instead of failing the whole answer."""
-    a = assumptions or Assumptions(headcount=len(analysis_frame(df)))
+    a = assumptions or default_assumptions(df)
     wanted = sections or list(BUILDERS)
     needs_risk = {"teams", "recommendations", "predictions"} & set(wanted)
     risk_results = _risk_results(df, analysis) if needs_risk else None

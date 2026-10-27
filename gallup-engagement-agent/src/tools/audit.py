@@ -42,10 +42,10 @@ import numpy as np
 import pandas as pd
 
 from . import stats_tools as st
-from .financial import Assumptions, money
+from .financial_updated import Assumptions, default_assumptions, money
 from .insights import ITEM_LABELS
 from .model_spec import SPEC_VERSION, SPECS, design_matrix, fit_outcome_model, spec_fingerprint
-from .priorities import avoided_absence_days, avoided_leavers, factor_value
+from .priorities import factor_value
 from .waves import model_sample, wave_label
 
 
@@ -387,28 +387,10 @@ def check_money_range(df, analysis, a) -> dict[str, Any]:
     factors = factors[factors["yearly_value"] > 0].head(3)
     if factors.empty:
         return _skip("money", "Range around each dollar figure", "No factor has a dollar value.", why)
-    sample = audit_sample(df)
-    scale = a.scale(len(sample))
-    base_rate = float(sample[SPECS["turnover"].outcome_column].mean())
-    base_days = float(sample[SPECS["absence"].outcome_column].mean())
-    found = analysis["findings"].set_index(["item", "outcome"])
-    rows = []
-    for _, f in factors.iterrows():
-        below = f["people_below"] / scale
-        lows, highs = [], []
-        for bound in ("ci_low", "ci_high"):
-            value = f["performance_value"]
-            if (f["item"], "turnover") in found.index:
-                value += avoided_leavers(below, base_rate, found.loc[(f["item"], "turnover"), bound]) \
-                    * scale * a.cost_per_leaver
-            if (f["item"], "absence") in found.index:
-                value += avoided_absence_days(below, base_days, found.loc[(f["item"], "absence"), bound]) \
-                    * scale * a.day_cost
-            (lows if bound == "ci_low" else highs).append(value)
-        low, high = sorted([lows[0], highs[0]])
-        rows.append({"factor": f["label"], "estimate": f["yearly_value"], "cautious": low,
-                     "optimistic": high})
-    table = pd.DataFrame(rows)
+    # factor_value already carries the 95% range from the same engine as the Scenarios page.
+    table = pd.DataFrame({"factor": factors["label"], "estimate": factors["yearly_value"],
+                          "cautious": factors["value_low"], "optimistic": factors["value_high"]}
+                         ).reset_index(drop=True)
     c = a.currency
     top = table.iloc[0]
     return _check("money", "Range around each dollar figure",
@@ -519,7 +501,7 @@ def run_audit(df: pd.DataFrame, analysis: dict, health_report: dict | None = Non
               assumptions: Assumptions | None = None) -> dict[str, Any]:
     """Every check, a verdict and a downloadable record."""
     sample = audit_sample(df)
-    a = assumptions or Assumptions(headcount=len(sample))
+    a = assumptions or default_assumptions(df)
     runners = [
         lambda: check_independent_recompute(sample, analysis),
         lambda: check_reported_numbers(sample, analysis),

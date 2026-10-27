@@ -12,7 +12,7 @@ from src.tools.audit import (
     audit_record,
     run_audit,
 )
-from src.tools.financial import Assumptions, md
+from src.tools.financial_updated import default_assumptions, Assumptions, md
 from src.tools.insights import analysis_frame
 from src.ui import (
     OUTCOME_LEVEL,
@@ -64,7 +64,7 @@ if analysis is None:
     st.stop()
 
 assumptions = (st.session_state.get("assumptions")
-               or Assumptions(headcount=len(analysis_frame(df))))
+               or default_assumptions(df))
 raw = st.session_state.get("uploaded_raw", df)
 audit_key = (st.session_state.get("upload_signature"), id(analysis), repr(assumptions))
 stored = st.session_state.get("audit_result")

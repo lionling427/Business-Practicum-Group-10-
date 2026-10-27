@@ -23,7 +23,7 @@ from typing import Any
 import pandas as pd
 
 from .dashboard import kpi_tiles
-from .financial import Assumptions, current_costs, md, money
+from .financial_updated import default_assumptions, Assumptions, current_costs, md, money
 from .insights import analysis_frame, explain_finding, team_scorecard, top_drivers
 from .priorities import factor_value
 from .waves import latest_wave, model_wave, wave_label
@@ -61,7 +61,7 @@ def _change(tile: dict[str, Any], judge: bool = True) -> str:
 def build_ceo_brief(df: pd.DataFrame, analysis: dict | None = None,
                     assumptions: Assumptions | None = None,
                     traps: dict | None = None) -> dict[str, Any]:
-    a = assumptions or Assumptions(headcount=len(analysis_frame(df)))
+    a = assumptions or default_assumptions(df)
     c = a.currency
     tiles = kpi_tiles(df)
     by_label = {t["label"]: t for t in tiles}

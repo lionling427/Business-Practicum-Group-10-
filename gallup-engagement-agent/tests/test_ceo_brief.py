@@ -9,7 +9,7 @@ from src.agent import DEFAULT_DATASET
 from src.tools.analytics import analyze_dataframe
 from src.tools.ceo_brief import brief_for_screen, brief_markdown, build_ceo_brief
 from src.tools.dashboard import kpi_tiles
-from src.tools.financial import Assumptions, current_costs, money
+from src.tools.financial_updated import Assumptions, current_costs, default_assumptions, money
 from src.tools.health_check import check_upload
 from src.tools.insights import analysis_frame
 from src.tools.priorities import factor_value
@@ -51,7 +51,7 @@ def test_scorecard_matches_the_overview_tiles(data, brief):
 
 def test_money_matches_the_financials_page(data, analysis, brief):
 
-    a = Assumptions(headcount=len(analysis_frame(data)))
+    a = default_assumptions(data)
     top = factor_value(data, analysis, a).iloc[0]
 
     assert money(current_costs(data, a)["total_cost"]) in brief["money"][0]

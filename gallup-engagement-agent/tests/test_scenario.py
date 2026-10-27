@@ -6,7 +6,7 @@ import pytest
 from src.agent import DEFAULT_DATASET
 from src.tools.analytics import analyze_dataframe
 from src.tools.audit import audit_sample
-from src.tools.financial import Assumptions
+from src.tools.financial_updated import Assumptions
 from src.tools.health_check import check_upload
 from src.tools.scenario import (
     contributions,

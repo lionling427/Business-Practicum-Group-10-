@@ -6,7 +6,8 @@ import pytest
 from src.agent import DEFAULT_DATASET
 from src.tools.agent_context import build_context, route_sections
 from src.tools.analytics import analyze_dataframe
-from src.tools.financial import Assumptions, engagement_value
+from src.tools.financial_updated import Assumptions, default_assumptions, engagement_value
+from src.tools.scenario import simulate
 from src.tools.health_check import check_upload
 from src.tools.insights import analysis_frame, dollar_impact
 from src.tools.priorities import (
@@ -58,16 +59,18 @@ def test_every_verified_factor_is_valued(data, analysis, sample):
 
 
 def test_matches_the_financials_page_scenario(data, analysis, sample):
-    """The top turnover factor's numbers equal the existing dollar_impact scenario."""
-    a = Assumptions(headcount=sample)
-    table = factor_value(data, analysis, a).set_index("item")
-    impact = dollar_impact(analysis, data, a.avg_salary, a.replacement_cost_pct)
+    """The top factor's numbers equal the Scenarios engine, and the one-factor program."""
+    a = default_assumptions(data)
+    table = factor_value(data, analysis, a)
+    row = table[table["yearly_value"] > 0].iloc[0]
 
-    row = table.loc[impact["item"]]
-    assert row["avoided_leavers"] == pytest.approx(impact["fewer_leavers"])
-    assert row["turnover_value"] == pytest.approx(impact["savings"])
+    sim = simulate(data, analysis, {row["item"]: 1.0}, a, who="low", ramp_months=0)
+    assert row["avoided_leavers"] == pytest.approx(sim["totals"]["estimate"]["leavers"])
+    assert row["turnover_value"] == pytest.approx(
+        sim["totals"]["estimate"]["leavers"] * a.cost_per_leaver)
 
-    scenarios = engagement_value(data, analysis, a)["scenarios"].set_index("source")
+    scenarios = engagement_value(data, analysis, a, items=[row["item"]])["scenarios"]
+    scenarios = scenarios.set_index("source")
     assert row["turnover_value"] == pytest.approx(scenarios.loc["Turnover", "value"])
 
 

@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-from src.tools.financial import Assumptions
+from src.tools.financial_updated import default_assumptions, money_warning, Assumptions
 from src.tools.insights import analysis_frame
 from src.tools.report_pack import (
     SECTIONS,
@@ -55,7 +55,11 @@ branding = Branding(company=company.strip() or "Your organization", color=color,
                     logo=logo_file.getvalue() if logo_file else None,
                     prepared_by=prepared_by.strip() or "People Analytics")
 assumptions = (st.session_state.get("assumptions")
-               or Assumptions(headcount=len(analysis_frame(df))))
+               or default_assumptions(df))
+
+_response_note = money_warning(df, st.session_state.get("health_report"))
+if _response_note:
+    st.warning(_response_note, icon=":material/info:")
 audit = (st.session_state.get("audit_result") or {}).get("audit")
 
 slides = build_pack(df, analysis, assumptions, trap_checks(df),
