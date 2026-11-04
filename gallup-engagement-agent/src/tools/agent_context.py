@@ -36,7 +36,6 @@ from .dashboard import kpi_tiles, team_watchlist, where_we_stand
 from .financial import (
     Assumptions,
     current_costs,
-    engagement_value,
     money,
     team_excess_cost,
 )
@@ -57,10 +56,11 @@ from .prediction import (
     forecast_engagement,
     team_risk,
 )
-from .priorities import factor_sentence, factor_value
+from .priorities import factor_sentence, factor_value, recommended_program
 from .recommendations import company_summary, productivity_levers, team_plans
 from .traps import run_trap_checks, trap_summary
 from .waves import latest_wave, model_wave, wave_label
+from ..layout import where
 
 
 # PROCESS 2 – SECTION ROUTING
@@ -348,7 +348,7 @@ def _recommendations(df, analysis, change, a, risk_results=None) -> dict:
             "links": plan_resources_summary(list(levers["item"].head(4))),
             "how_to_use": "Teams can turn their first step into a Gallup Access action plan "
                           "(goal, next steps, owner, due date, success indicator, follow-up); "
-                          "the Recommendations page downloads these plans. " + DISCLAIMER,
+                          f"{where('app_pages/recommendations.py', bold=False)} downloads these plans. " + DISCLAIMER,
         },
     }
 
@@ -362,7 +362,7 @@ def _financials(df, analysis, change, a, risk_results=None) -> dict:
             "replacement_cost_percent_of_salary": round(a.replacement_cost_pct * 100),
             "cost_per_absence_day": money(a.day_cost, c),
             "headcount": int(costs["headcount"]),
-            "note": "Cost assumptions entered on the Financials page (defaults are placeholders).",
+            "note": f"Cost assumptions entered under {where('app_pages/financials.py', bold=False)} (defaults are placeholders).",
         },
         "cost_today_per_year": {
             "total_people_cost": money(costs["total_cost"], c),
@@ -370,14 +370,21 @@ def _financials(df, analysis, change, a, risk_results=None) -> dict:
             "unplanned_absence": money(costs.get("absence_cost", 0), c),
         },
     }
-    if analysis is not None:
-        value = engagement_value(df, analysis, a)
+    program = recommended_program(df, analysis, a) if analysis is not None else None
+    if program is not None:
+        # The one program every page values (same engine as Scenarios), so Ask AI
+        # quotes the same number as the screens.
+        gains = [f"{program['leavers']:,.0f} fewer leavers" if program["leavers"] > 0 else "",
+                 f"{program['absence_days']:,.0f} fewer absence days"
+                 if program["absence_days"] > 0 else ""]
         section["what_engagement_could_be_worth_per_year"] = {
-            "total": money(value["total"], c),
-            "scenarios": [{"area": r["source"], "assumes": r["what"],
-                           "result": f"{r['units']:,.0f} {r['unit_label']}",
-                           "value": money(r["value"], c)}
-                          for _, r in value["scenarios"].iterrows()],
+            "program": f"The {program['people']:,.0f} people who answer 1-3 on "
+                       f"{program['label']} ({program['item']}) move up one point.",
+            "result": " and ".join(g for g in gains if g) + " a year",
+            "value": money(program["value"], c),
+            "likely_range": f"{money(program['low'], c)} to {money(program['high'], c)}",
+            "share_of_cost_today": f"{program['value'] / costs['total_cost']:.0%}"
+                                   if costs.get("total_cost") else "",
         }
     if analysis is not None:
         factors = factor_value(df, analysis, a)

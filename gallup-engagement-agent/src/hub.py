@@ -3,19 +3,14 @@
 # A page with several views shows a switcher and runs only the chosen page
 # file, so each view behaves exactly as it does as a stand-alone page.
 
-import re
 import runpy
 
 import streamlit as st
 
-from src.layout import NAVIGATION, VIEW_HIDE_KEY
+from src.layout import NAVIGATION, VIEW_HIDE_KEY, slug as _slug
 from src.ui import page_header
 
 EMBEDDED_KEY = "_embedded_view"
-
-
-def _slug(text):
-    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
 def _view(view):

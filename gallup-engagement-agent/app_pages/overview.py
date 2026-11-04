@@ -19,7 +19,7 @@ from src.tools.visualization import (
     trend_sparkline_chart,
 )
 from src.tools.waves import latest_wave, model_wave, wave_label
-from src.layout import hidden
+from src.layout import hidden, where
 from src.ui import (
     analysis_runner,
     page_header,
@@ -39,7 +39,7 @@ df, validation = require_data()
 
 if not validation["is_valid"]:
     st.warning(
-        "The survey data has validation issues. See **Data** for details.",
+        f"The survey data has validation issues. See {where('app_pages/data_quality.py')} for details.",
         icon=":material/warning:",
     )
     st.stop()
@@ -49,34 +49,37 @@ now = wave_label(latest_wave(df))
 
 # PROCESS 3 – HEADLINE TILES (LATEST SURVEY)
 
-st.subheader(
-    f"Latest survey · {now} · {latest_responses(df):,} people",
-    anchor=False,
-)
+if not hidden("overview.tiles"):     # off when the CEO brief above already shows them
 
-tiles = kpi_tiles(df)
+    st.subheader(
+        f"Latest survey · {now} · {latest_responses(df):,} people",
+        anchor=False,
+    )
 
-# Fixed grid so every tile has the same width.
-for tile, column in zip(tiles, st.columns(len(tiles))):
+    tiles = kpi_tiles(df)
 
-    # Changes too small to matter read "About the same", not a red or green arrow.
-    small = tile["delta"] is not None and abs(tile["delta"]) < (
-        SMALL_POINTS if "%" in tile["value"] else SMALL_SCORE)
+    # Fixed grid so every tile has the same width.
+    for tile, column in zip(tiles, st.columns(len(tiles))):
 
-    with column:
+        # Changes too small to matter read "About the same", not a red or green arrow.
+        small = tile["delta"] is not None and abs(tile["delta"]) < (
+            SMALL_POINTS if "%" in tile["value"] else SMALL_SCORE)
 
-        st.metric(
-            tile["label"],
-            tile["value"],
-            delta=None if small else tile["delta"],   # no badge for tiny changes
-            delta_color="off" if small else "inverse" if tile["inverse"] else "normal",
-            delta_arrow="off" if small else "auto",
-            delta_description="vs. last survey" if tile["delta"] is not None and not small else None,
-            chart_data=tile["trend"],
-            chart_type="line",
-            help=tile["help"],
-            border=True,
-        )
+        with column:
+
+            st.metric(
+                tile["label"],
+                tile["value"],
+                delta="About the same" if small else tile["delta"],   # neutral for tiny changes
+                delta_color="off" if small else "inverse" if tile["inverse"] else "normal",
+                delta_arrow="off" if small else "auto",
+                delta_description=("vs. the survey before" if tile.get("pending") else "vs. last survey")
+                if tile["delta"] is not None and not small else None,
+                chart_data=tile["trend"],
+                chart_type="line",
+                help=tile["help"],
+                border=True,
+            )
 
 
 # PROCESS 4 – SCORECARD (COMPANY, DEPARTMENT OR TEAM)
@@ -232,8 +235,8 @@ with st.container(border=True):
 
     if drivers:
         st.info(
-            "Next: open **Recommendations** for a plan for each team, or **Teams** "
-            "to see where to listen first.",
+            f"Next: open {where('app_pages/recommendations.py')} for a plan for each team, "
+            f"or {where('app_pages/teams.py')} to see where to listen first.",
             icon=":material/arrow_forward:",
         )
 

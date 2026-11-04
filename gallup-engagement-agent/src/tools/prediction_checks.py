@@ -76,11 +76,11 @@ def prediction_health_gate(health_report: dict | None, outcome: str | None) -> N
     if "all" in blocked:
         raise PredictionBlocked(
             "Predictions are stopped: the data health check found errors that must be fixed "
-            "first. See the Data page.")
+            "first. See Trust → Data quality.")
     if outcome is not None and outcome in blocked:
         raise PredictionBlocked(
             f"{outcome.capitalize()} predictions are stopped: the data health check blocked "
-            f"{outcome} for this file. See the Data page.")
+            f"{outcome} for this file. See Trust → Data quality.")
 
 
 def allowed_prediction_outcomes(health_report: dict | None, outcomes) -> list[str]:
@@ -132,7 +132,7 @@ def survey_response_warning(data: pd.DataFrame, outcome_column: str,
         "text": (f"People who later left answered the survey less often ({leaver:.0%} vs "
                  f"{stayer:.0%} of those who stayed). So a team that is about to lose people "
                  "can look better on the survey than it really is. Treat team scores here as "
-                 "warning signs, not causes, and use the Outcomes page to decide what to improve."),
+                 "warning signs, not causes, and use Strategy: where to act to decide what to improve."),
     }
 
 

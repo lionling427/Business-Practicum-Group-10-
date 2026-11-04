@@ -22,7 +22,25 @@ APP = str(PROJECT_ROOT / "app.py")
 
 # PROCESS 2 – FIXTURES
 
+
+def _open(at, path, view=None):
+    """Open the sidebar page that shows a page file (src/layout.py), on its view."""
+    from src.layout import locate
+
+    spot = locate(path, view)
+    if spot["view_key"]:
+        at.session_state[spot["view_key"]] = spot["view"]
+    # The sidebar pages are functions (src/hub.py), which AppTest.switch_page()
+    # cannot open by file; pick the registered page by its URL name instead.
+    for page_hash, info in at._registered_pages.items():
+        if spot["page"] in (info.get("url_pathname"), info.get("page_name")):
+            at._page_hash = page_hash
+            return at
+    raise ValueError(f"No sidebar page shows {path}")
+
+
 @pytest.fixture(scope="module")
+
 def data():
 
     path = DEFAULT_DATASET / "agent_data"
@@ -144,11 +162,11 @@ def test_app_pauses_pages_when_data_has_errors(data):
     at = _upload(pd.concat([data, data.head(3)]))
 
     for page in ["app_pages/overview.py", "app_pages/outcomes.py", "app_pages/agent.py"]:
-        at.switch_page(page).run()
+        _open(at, page).run()
         assert not at.exception
         assert any("Analysis stopped" in e.value for e in at.error)
 
-    at.switch_page("app_pages/data_quality.py").run()
+    _open(at, "app_pages/data_quality.py").run()
     assert not at.exception
     assert any("Errors to fix" in m.value for m in at.markdown)
 
@@ -160,5 +178,5 @@ def test_app_removes_a_blocked_outcome(data):
     assert "unplanned_absence_days_6m" not in at.session_state["uploaded_data"].columns
     assert "unplanned_absence_days_6m" in at.session_state["uploaded_raw"].columns
 
-    at.switch_page("app_pages/overview.py").run()
+    _open(at, "app_pages/overview.py").run()
     assert not at.exception

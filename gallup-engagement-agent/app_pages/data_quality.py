@@ -22,11 +22,11 @@ from src.ui import (
 
 LEVELS = {
     "SURVEY_ONLY": ("Survey only",
-                    "Engagement pages work. Add business outcomes to unlock Outcomes, "
-                    "Predictions, Recommendations and Financials."),
+                    "Engagement pages work. Add business outcomes to unlock Strategy, "
+                    "Financial impact, Predictions & risk and Team plans."),
     "SEGMENT_ANALYSIS": ("Survey + workforce groups",
                          "Engagement can be compared across groups. Add business outcomes to "
-                         "unlock Outcomes, Predictions, Recommendations and Financials."),
+                         "unlock Strategy, Financial impact, Predictions & risk and Team plans."),
     OUTCOME_LEVEL: ("Survey + business outcomes", "Every page in the app is available."),
 }
 

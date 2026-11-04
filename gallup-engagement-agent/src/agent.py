@@ -452,7 +452,7 @@ def health_gate(analysis, outcome):
         return (
             "I can't answer this yet: the data-health checks found errors that block "
             "every outcome analysis (turnover, absenteeism and performance)." + detail
-            + " Please fix the data and upload it again; see the Data page for the full list."
+            + " Please fix the data and upload it again; see Trust → Data quality for the full list."
         )
 
     if outcome is not None and outcome in blocked:
@@ -946,9 +946,9 @@ STRICT RULES:
 44. When recommending what to do, you may point to Gallup resources from
     recommendations.gallup_resources: the element guide for the question,
     action planning help, or manager learning. Use only the titles and URLs
-    given there, written as markdown links; never invent a link. Say the
-    Recommendations page can download each team's action plan for Gallup
-    Access. Do not imply this app is made or endorsed by Gallup.
+    given there, written as markdown links; never invent a link. Say
+    Team drill-down → Team plans can download each team's action plan for
+    Gallup Access. Do not imply this app is made or endorsed by Gallup.
 
 45. If VERIFIED_EVIDENCE lists outcomes excluded by the data-health checks,
     do not give any figure, trend, cost or recommendation for those outcomes.

@@ -73,11 +73,31 @@ def _coefficient(link: pd.Series, bound: str, ratio: bool) -> float:
     return {"estimate": estimate, "cautious": edges[0], "optimistic": edges[1]}[bound]
 
 
-def _simulate_outcome(sample, scope, outcome, analysis, lifts, who, links) -> dict[str, Any]:
+# Fitted models and samples are reused across calls on the same upload, so valuing
+# every question (priorities.factor_value) does not refit the models each time.
+_CACHE: dict[tuple, tuple] = {}
+_CACHE_SIZE = 16
+
+
+def _cached(df: pd.DataFrame, key: tuple, build):
+    full = (id(df), df.shape) + key
+    hit = _CACHE.get(full)
+    if hit is not None and hit[0] is df:                # same object, not a reused id
+        return hit[1]
+    value = build()
+    if len(_CACHE) >= _CACHE_SIZE:
+        _CACHE.pop(next(iter(_CACHE)))
+    _CACHE[full] = (df, value)
+    return value
+
+
+def _simulate_outcome(sample, scope, outcome, analysis, lifts, who, links,
+                      source=None) -> dict[str, Any]:
     """Yearly change in one outcome for the people in scope, per bound."""
     spec = SPECS[outcome]
     extra = _extras(analysis, outcome)
-    fit = fit_outcome_model(sample, outcome, extra)
+    fit = (_cached(source, ("fit", outcome, extra), lambda: fit_outcome_model(sample, outcome, extra))
+           if source is not None else fit_outcome_model(sample, outcome, extra))
     X0 = design_matrix(sample, outcome, extra).loc[scope.index]
     ratio = spec.method in ("logit", "negbin")
     standardized = set(spec.standardize)
@@ -121,7 +141,7 @@ def simulate(df: pd.DataFrame, analysis: dict, lifts: dict[str, float],
              department: str | None = None, ramp_months: int = 6,
              quarters: int = 4) -> dict[str, Any]:
     """Run one scenario. lifts = {'Q04': 0.3, ...} in points on the 1-5 scale."""
-    sample = audit_sample(df)
+    sample = _cached(df, ("sample",), lambda: audit_sample(df))
     a = assumptions or Assumptions(headcount=len(sample))
     scale = a.scale(len(sample))
     scope = sample if not department else sample[sample["department"] == department]
@@ -133,7 +153,7 @@ def simulate(df: pd.DataFrame, analysis: dict, lifts: dict[str, float],
     outcomes = [o for o in SPECS if SPECS[o].outcome_column in sample.columns
                 and o in set(analysis["results"]["outcome"])]
     per_outcome = {o: _simulate_outcome(sample, scope, o, analysis, lifts, who,
-                                        links[links["outcome"] == o].set_index("item"))
+                                        links[links["outcome"] == o].set_index("item"), df)
                    for o in outcomes}
 
     totals = {}

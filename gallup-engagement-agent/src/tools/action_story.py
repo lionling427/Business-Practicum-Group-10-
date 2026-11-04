@@ -29,6 +29,7 @@ from .insights import ACTION_LIBRARY, ITEM_LABELS, analysis_frame
 from .prediction import TARGETS, employee_risk_by_group, explain_forecast, forecast_engagement, team_risk
 from .priorities import factor_value
 from .recommendations import PERFORMANCE, productivity_levers, team_plans
+from ..layout import where
 
 
 # PROCESS 2 – CONFIGURATION
@@ -167,7 +168,7 @@ def _act(df, analysis, change, facts, factors, risks) -> tuple[dict[str, Any], p
         return _chapter("Add turnover, absence or performance data to see what to do.", [], False), plans
     lead = (f"Focus on {factors.iloc[0]['label']} first: it is the lever with the biggest verified "
             "payoff." if not factors.empty else
-            "Use each team's plan on the Recommendations page.")
+            f"Use each team's plan under {where('app_pages/recommendations.py', bold=False)}.")
     return _chapter(lead, points), plans
 
 
@@ -269,7 +270,7 @@ def build_action_story(df: pd.DataFrame, analysis: dict | None = None,
                           f"{_purpose(factors.iloc[0]['outcomes'])}.")
     if not start.empty:
         next_steps.append(f"Meet the managers of the {len(start)} start-here teams this month and "
-                          "agree each team's first step (Recommendations page).")
+                          f"agree each team's first step ({where('app_pages/recommendations.py', bold=False)}).")
     next_steps.append("Check progress at the next survey: risk, the lever's score and the cost.")
 
     return {"headline": headline,

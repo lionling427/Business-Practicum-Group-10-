@@ -18,6 +18,7 @@ from src.tools.strengths import (
     themes_chart,
 )
 from src.ui import how_to_read, page_header, require_data, story_box
+from src.layout import where
 
 
 # PROCESS 2 – HEADER AND DATA
@@ -172,7 +173,7 @@ with st.container(border=True):
         how_to_read(
             "Each person's Top 5 themes are grouped into four domains. A team's strongest "
             "domain is where most of its Top 5 themes fall. The suggested action tackles the "
-            "team's focus question (its weakest verified question, from the Teams page) in a "
+            f"team's focus question (its weakest verified question, from {where('app_pages/teams.py', bold=False)}) in a "
             "way that suits that domain. Only teams with 5+ people with strengths data are "
             "shown; individual themes are never displayed.",
             "How the plans are built",

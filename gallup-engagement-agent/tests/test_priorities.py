@@ -57,19 +57,23 @@ def test_every_verified_factor_is_valued(data, analysis, sample):
     assert table["yearly_value"].is_monotonic_decreasing
 
 
-def test_matches_the_financials_page_scenario(data, analysis, sample):
-    """The top turnover factor's numbers equal the existing dollar_impact scenario."""
+def test_matches_the_scenarios_page(data, analysis, sample):
+    """One engine: each factor's value is the Scenarios page's number for the same
+    scenario (people answering 1-3 move up one point), with the same range."""
+    from src.tools.priorities import factor_value_range
+    from src.tools.scenario import simulate
+
     a = Assumptions(headcount=sample)
-    table = factor_value(data, analysis, a).set_index("item")
-    impact = dollar_impact(analysis, data, a.avg_salary, a.replacement_cost_pct)
+    table = factor_value(data, analysis, a)
+    ranges = factor_value_range(data, analysis, a)
 
-    row = table.loc[impact["item"]]
-    assert row["avoided_leavers"] == pytest.approx(impact["fewer_leavers"])
-    assert row["turnover_value"] == pytest.approx(impact["savings"])
-
-    scenarios = engagement_value(data, analysis, a)["scenarios"].set_index("source")
-    assert row["turnover_value"] == pytest.approx(scenarios.loc["Turnover", "value"])
-
+    for _, row in table[table["yearly_value"] > 0].iterrows():
+        sim = simulate(data, analysis, {row["item"]: 1.0}, a, who="low", ramp_months=0)
+        assert row["yearly_value"] == pytest.approx(sim["totals"]["estimate"]["value"])
+        assert row["avoided_leavers"] == pytest.approx(
+            sim["totals"]["estimate"]["leavers"] if "turnover" in row["outcomes"] else 0.0)
+        low, high = ranges[row["item"]]
+        assert low <= row["yearly_value"] <= high
 
 def test_dollars_follow_the_assumptions(data, analysis, sample):
 

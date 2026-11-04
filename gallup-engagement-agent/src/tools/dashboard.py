@@ -59,26 +59,38 @@ def latest_responses(df: pd.DataFrame) -> int:
 
 
 def kpi_tiles(df: pd.DataFrame) -> list[dict[str, Any]]:
-    """Headline tiles for the latest survey, each with change and trend."""
+    """Headline tiles for the latest survey, each with change and trend.
+
+    Outcomes are only known some months after a survey, so the newest wave can
+    have none yet. Those tiles show the latest wave that has them, labelled with
+    that wave ("pending" = the newest survey's result is not known yet)."""
     table = wave_summary(df)
-    latest = table.iloc[-1]
-    previous = table.iloc[-2] if len(table) >= 2 else None
+    newest = table["wave"].iloc[-1]
     tiles = []
     for label, key, fmt, good, help_text in TILES:
-        if key not in table or pd.isna(latest[key]):
+        if key not in table:
             continue
+        known = table[table[key].notna()]
+        if known.empty:
+            continue
+        latest = known.iloc[-1]
+        previous = known.iloc[-2] if len(known) >= 2 else None
+        pending = latest["wave"] != newest
         delta = None
-        if previous is not None and not pd.isna(previous[key]):
+        if previous is not None:
             # Percent tiles change in points (1 decimal); scores in 2 decimals.
             digits = 1 if "%" in fmt else 2
             delta = round(float(latest[key] - previous[key]), digits)
         tiles.append({
-            "label": label,
+            "label": f"{label} · {wave_label(latest['wave'])}" if pending else label,
             "value": fmt.format(latest[key]),
             "delta": delta,
-            "help": help_text,
-            "trend": table[key].round(3).tolist() if len(table) >= 2 else None,
+            "help": help_text + (f" {wave_label(newest).capitalize()} results are not known yet, "
+                                 f"so this is the latest known ({wave_label(latest['wave'])})."
+                                 if pending else ""),
+            "trend": known[key].round(3).tolist() if len(known) >= 2 else None,
             "inverse": good == "down",
+            "pending": bool(pending),
         })
     return tiles
 

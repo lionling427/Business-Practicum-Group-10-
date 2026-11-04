@@ -45,7 +45,7 @@ from . import stats_tools as st
 from .financial import Assumptions, money
 from .insights import ITEM_LABELS
 from .model_spec import SPEC_VERSION, SPECS, design_matrix, fit_outcome_model, spec_fingerprint
-from .priorities import avoided_absence_days, avoided_leavers, factor_value
+from .priorities import factor_value, factor_value_range
 from .waves import model_sample, wave_label
 
 
@@ -387,25 +387,12 @@ def check_money_range(df, analysis, a) -> dict[str, Any]:
     factors = factors[factors["yearly_value"] > 0].head(3)
     if factors.empty:
         return _skip("money", "Range around each dollar figure", "No factor has a dollar value.", why)
-    sample = audit_sample(df)
-    scale = a.scale(len(sample))
-    base_rate = float(sample[SPECS["turnover"].outcome_column].mean())
-    base_days = float(sample[SPECS["absence"].outcome_column].mean())
-    found = analysis["findings"].set_index(["item", "outcome"])
+    # The same engine and the same 95% edges every page uses (factor_value_range,
+    # i.e. the Scenarios simulation), so the audit checks the numbers people see.
+    ranges = factor_value_range(df, analysis, a)
     rows = []
     for _, f in factors.iterrows():
-        below = f["people_below"] / scale
-        lows, highs = [], []
-        for bound in ("ci_low", "ci_high"):
-            value = f["performance_value"]
-            if (f["item"], "turnover") in found.index:
-                value += avoided_leavers(below, base_rate, found.loc[(f["item"], "turnover"), bound]) \
-                    * scale * a.cost_per_leaver
-            if (f["item"], "absence") in found.index:
-                value += avoided_absence_days(below, base_days, found.loc[(f["item"], "absence"), bound]) \
-                    * scale * a.day_cost
-            (lows if bound == "ci_low" else highs).append(value)
-        low, high = sorted([lows[0], highs[0]])
+        low, high = ranges.get(f["item"], (f["yearly_value"], f["yearly_value"]))
         rows.append({"factor": f["label"], "estimate": f["yearly_value"], "cautious": low,
                      "optimistic": high})
     table = pd.DataFrame(rows)

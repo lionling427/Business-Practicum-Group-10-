@@ -73,8 +73,10 @@ def require_data(stop_when_blocked=True):
             st.markdown("\n".join(
                 f"- **{c['check']}:** {c['detail']}"
                 for c in report["checks"] if c["status"] == "FAIL"))
-            st.caption("Fix these in the source file and upload it again. The **Data** page "
-                       "lists every check.")
+            from src.layout import where     # here: src.layout must not import src.ui
+
+            st.caption("Fix these in the source file and upload it again. "
+                       f"{where('app_pages/data_quality.py')} lists every check.")
         st.stop()
 
     return df, validation

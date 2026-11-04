@@ -27,6 +27,7 @@ from .financial import Assumptions, current_costs, md, money
 from .insights import analysis_frame, explain_finding, team_scorecard, top_drivers
 from .priorities import factor_value, factor_value_range
 from .waves import latest_wave, model_wave, wave_label
+from ..layout import where
 
 
 # PROCESS 2 – CONFIGURATION
@@ -148,7 +149,7 @@ def build_ceo_brief(df: pd.DataFrame, analysis: dict | None = None,
                          "executive owner.")
     if not priority.empty:
         decisions.append(f"Ask the managers of the {len(priority)} priority teams for an action "
-                         "plan within 30 days (ready-made on the Recommendations page).")
+                         f"plan within 30 days (ready-made under {where('app_pages/recommendations.py', bold=False)}).")
     if traps and traps.get("nonresponse", {}).get("status") == "caution":
         decisions.append("Raise survey participation next time: the people who did not answer "
                          "look different from those who did.")
@@ -169,7 +170,7 @@ def build_ceo_brief(df: pd.DataFrame, analysis: dict | None = None,
         if trap and trap["status"] in ("trap", "caution"):
             confidence.append(sentence)
     confidence.append("These are links found in your data, not proof of cause; money figures "
-                      "use cost assumptions you can change on the Financials page.")
+                      f"use cost assumptions you can change under {where('app_pages/financials.py', bold=False)}.")
     brief["confidence"] = confidence
     return brief
 

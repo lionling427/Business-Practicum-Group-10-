@@ -195,13 +195,13 @@ def enforce_health(health_report):
         failed = [c["check"] for c in health_report.get("checks", []) if c["status"] == "FAIL"]
         raise HealthCheckBlocked(
             "Analysis stopped: the data health check found errors that must be fixed first ("
-            + "; ".join(failed) + "). See the Data page."
+            + "; ".join(failed) + "). See Trust → Data quality."
         )
     partial = [b for b in blocked if b != "all"]
     if partial and not [o for o in SPECS if o not in partial]:
         raise HealthCheckBlocked(
             "Analysis stopped: the data health check blocked every outcome ("
-            + "; ".join(blocking_reasons(health_report)) + "). See the Data page."
+            + "; ".join(blocking_reasons(health_report)) + "). See Trust → Data quality."
         )
     return partial
 

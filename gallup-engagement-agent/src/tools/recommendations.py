@@ -31,6 +31,7 @@ from .data_ingestion import Q12_ITEMS
 from .insights import ACTION_LIBRARY, ITEM_LABELS, analysis_frame
 from .longitudinal import INDEX, prepare
 from .visualization import HIGH_COLOR, MUTED_COLOR
+from ..layout import where
 
 
 # PROCESS 2 – CONFIGURATION
@@ -209,8 +210,8 @@ def team_plan(plan: pd.Series) -> dict[str, Any]:
                 f"about **{plan['estimated_gain']:+.2f}** points higher "
                 f"({perf:.2f} → {perf + plan['estimated_gain']:.2f}).")
     if plan["high_risk"]:
-        estimate += (f" Note: this team is also at high {plan['high_risk']} risk; see the "
-                     "Teams page for its risk plan.")
+        estimate += (f" Note: this team is also at high {plan['high_risk']} risk; see "
+                     f"{where('app_pages/teams.py', bold=False)} for its risk plan.")
     if plan["keep_strength"]:
         why += f" Keep doing what works on {_item_name(plan['keep_strength'])}."
     return {"summary": summary, "headline": headline, "why": why, "steps": steps,

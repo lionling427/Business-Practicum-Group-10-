@@ -23,7 +23,7 @@ from src.tools.recommendations import (
     team_plans,
 )
 from src.tools.waves import model_sample
-from src.layout import hidden
+from src.layout import hidden, where
 from src.ui import (
     OUTCOME_LEVEL,
     analysis_runner,
@@ -285,7 +285,7 @@ with st.container(border=True):
         st.markdown("\n".join(f"- **{when}:** {step}" for when, step in plan["steps"]))
 
         if plan_row["high_risk"]:
-            st.caption(":material/groups: This team also has a risk plan on the **Teams** page.")
+            st.caption(f":material/groups: This team also has a risk plan: {where('app_pages/teams.py')}.")
 
     with chart_col:
 

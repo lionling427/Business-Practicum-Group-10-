@@ -4,16 +4,17 @@ For every Q12 question (factor) with a finding that passed all checks, in the
 direction that helps the business:
 
   avoided turnover   leavers avoided a year if the employees who answer 1-3 on
-                     the question move up 1 point (the model's odds ratio applied
-                     to the company turnover rate), x cost per leaver
-  avoided absence    unplanned absence days avoided a year in the same scenario
-                     (rate ratio x company average days), x cost per day
-  performance        rating points gained (standardized beta converted to rating
-                     points), x the value of a rating point, if one is entered
+                     the question move up 1 point, x cost per leaver
+  avoided absence    unplanned absence days avoided a year in the same scenario,
+                     x cost per day
+  performance        rating points gained, x the value of a rating point, if one
+                     is entered
 
-This is the same scenario and arithmetic as the Financials page
-(insights.dollar_impact), applied to every verified factor, not just the top
-one, and scaled to company headcount.
+All three come from scenario.simulate(), the Scenarios page's engine: each
+person's own predicted turnover, absence and rating, with today's answers and
+with the improved ones. So "If we fix", the Strategy page, the Executive summary,
+the board deck and the Scenarios page give the same number for the same
+scenario. Scaled to company headcount.
 
 Ranking combines impact and current score:
   value_per_person  dollars a year for each person who moves up (impact)
@@ -82,7 +83,10 @@ def factor_value(df: pd.DataFrame, analysis: dict | None, a: Assumptions,
     Empty if the analysis has not run or nothing passed all checks."""
     if analysis is None or analysis["findings"].empty:
         return pd.DataFrame(columns=COLUMNS)
-    findings = _robust_favorable(analysis["findings"])
+    from .scenario import simulate       # here: scenario imports this module's neighbours
+
+    findings_all = analysis["findings"]
+    findings = _robust_favorable(findings_all)
     if findings.empty:
         return pd.DataFrame(columns=COLUMNS)
 
@@ -103,15 +107,16 @@ def factor_value(df: pd.DataFrame, analysis: dict | None, a: Assumptions,
                "people_below": below * scale,
                "avoided_leavers": 0.0, "avoided_absence_days": 0.0, "rating_points": 0.0}
 
+        # One engine: the same simulation as the Scenarios page (each person's own
+        # predicted risk), for "people answering 1-3 move up one point".
+        sim = simulate(df, {**analysis, "findings": findings_all}, {item: 1.0}, a,
+                       who="low", ramp_months=0)["totals"]["estimate"]
         if "turnover" in effects and base_rate:
-            row["avoided_leavers"] = avoided_leavers(below, base_rate, effects["turnover"]) * scale
+            row["avoided_leavers"] = sim["leavers"]
         if "absence" in effects and base_days is not None:
-            row["avoided_absence_days"] = avoided_absence_days(
-                below, base_days, effects["absence"]) * scale
+            row["avoided_absence_days"] = sim["absence_days"]
         if "performance" in effects and sd_perf:
-            sd_item = float(data[item].std())
-            if sd_item > 0:
-                row["rating_points"] = below * effects["performance"] * sd_perf / sd_item * scale
+            row["rating_points"] = sim["rating_points"] * len(data) * scale
 
         row["turnover_value"] = row["avoided_leavers"] * a.cost_per_leaver
         row["absence_value"] = row["avoided_absence_days"] * a.day_cost

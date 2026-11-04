@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-from src.layout import hidden
+from src.layout import hidden, where
 
 from src.tools.prediction import (
     MIN_FORECAST_WAVES,
@@ -154,7 +154,7 @@ if not hidden("predictions.group_risk"):
                 )
 
 
-    st.caption(":material/groups: Team-by-team risk is on the **Teams** page.")
+    st.caption(f":material/groups: Team-by-team risk: {where('app_pages/teams.py')}.")
 
 
 # PROCESS 4 – ENGAGEMENT FORECAST
@@ -262,7 +262,7 @@ if not hidden("predictions.monthly_risk"):
                                     "(e.g. 2026-03), exited (1 in the month they leave) or "
                                     "exit_date, plus team_id, department, tenure_years, "
                                     "absence_days and pulse answers Q01–Q12 if you have them. "
-                                    "An example file is on the Data page.")
+                                    f"An example file is under {where('app_pages/data_quality.py', bold=False)}.")
             if file is not None:
                 import pandas as pd
                 monthly, key = pd.read_csv(file), ("file", file.name, file.size)

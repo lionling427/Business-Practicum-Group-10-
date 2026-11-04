@@ -587,8 +587,8 @@ def explain_team_risk(result: dict[str, Any]) -> dict[str, Any]:
                 f"{r['label']} (clearly worse than the company rate) after the latest survey. "
                 "High = the riskiest 20% of teams, Elevated = the next 20%. 'Warning signs' "
                 "lists the questions where the team's answers raise its predicted risk most; "
-                "they are signals to listen to, not causes, and the Outcomes page decides what "
-                "to improve. Percentages are shown only when they proved accurate on a year the "
+                "they are signals to listen to, not causes, and Strategy: where to act decides "
+                "what to improve. Percentages are shown only when they proved accurate on a year the "
                 "model never saw. Use the ranking to decide where to listen first.")}
 
 

@@ -30,9 +30,13 @@ NAVIGATION = {
             "title": "Executive summary",
             "icon": ":material/summarize:",
             "default": True,
-            "description": "Where engagement stands now and how it is changing.",
+            "description": "The bottom line, what drives results, what it is worth and "
+                           "what to decide; then where engagement stands.",
+            "stack": True,
             "views": [
-                ("Engagement at a glance", "app_pages/overview.py", {"hide": ["page.header"]}),
+                ("Bottom line and decisions", "app_pages/ceo_brief.py", {"hide": ["page.header"]}),
+                ("Engagement at a glance", "app_pages/overview.py",
+                 {"hide": ["page.header", "overview.tiles"]}),
             ],
         },
         {
@@ -65,7 +69,7 @@ NAVIGATION = {
             "stack": True,
             "views": [
                 ("Engagement forecast", "app_pages/predictions.py",
-                 {"hide": ["page.header", "predictions.group_risk"]}),
+                 {"hide": ["page.header", "predictions.group_risk", "predictions.monthly_risk"]}),
                 ("Change for the same people", "app_pages/change.py",
                  {"hide": ["page.header", "change.teams"]}),
                 ("Turnover risk by group", "app_pages/predictions.py",
@@ -80,6 +84,8 @@ NAVIGATION = {
             "description": "Which teams need support first, and a plan for each manager.",
             "views": [
                 ("Watchlist and coaching", "app_pages/teams.py"),
+                ("Team plans", "app_pages/recommendations.py"),
+                ("Question scores", "app_pages/engagement.py"),
                 ("Teams that moved", "app_pages/change.py",
                  {"hide": ["change.overall", "change.linked"]}),
                 ("Strengths", "app_pages/strengths.py"),
@@ -120,12 +126,13 @@ NAVIGATION = {
 #   predictions.forecast / .group_risk  the engagement forecast / turnover risk by group
 #   change.overall / .teams / .linked  overall change and chart / teams that moved /
 #                                       is change linked to results
+#   overview.tiles                    the headline tiles (the CEO brief shows its own)
 #   outcomes.drivers                  tiles and "which questions matter"
 #   outcomes.checks                   analytical traps and sorting effect
 #   recommendations.where_to_start    tiles and the "where to start" chart
 #   recommendations.team_plans        the team table and each team's plan
 HIDE = {
-    "predictions.monthly_risk": True,
+    "predictions.monthly_risk": False,
     "overview.key_findings": True,
     "change.linked": True,
 }
@@ -138,3 +145,44 @@ def hidden(section):
     if HIDE.get(section, False):
         return True
     return section in st.session_state.get(VIEW_HIDE_KEY, ())
+
+
+# WHERE A PAGE FILE IS SHOWN – so text and tests never hard-code page names.
+
+def slug(text):
+    """URL path of a sidebar page: 'Team drill-down' -> 'team-drill-down'."""
+    import re
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def locate(path, view=None):
+    """Where a page file appears: the page title, its id for st.switch_page /
+    AppTest.switch_page, and the view to pick (None on single or stacked pages).
+    If the file appears more than once, the view that hides the least wins."""
+    best, wanted = None, view
+    for entries in NAVIGATION.values():
+        for entry in entries:
+            views = entry["views"]
+            switcher = len(views) > 1 and not entry.get("stack")
+            for view in views:
+                if view[1] != path or (wanted and view[0] != wanted):
+                    continue
+                hide = view[2].get("hide", []) if len(view) > 2 else []
+                score = len([h for h in hide if h != "page.header"])
+                if best is None or score < best[0]:
+                    best = (score, {
+                        "title": entry["title"],
+                        "page": entry["title"] if entry.get("default") else slug(entry["title"]),
+                        "view": view[0] if switcher else None,
+                        "view_key": f"view_{slug(entry['title'])}" if switcher else None,
+                    })
+    return best[1] if best else None
+
+
+def where(path, bold=True, view=None):
+    """'**Team drill-down → Team plans**': how to find a page file in the sidebar."""
+    spot = locate(path, view)
+    if spot is None:
+        return ""
+    label = spot["title"] + (f" → {spot['view']}" if spot["view"] else "")
+    return f"**{label}**" if bold else label

@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-from src.layout import hidden
+from src.layout import hidden, where
 
 from src.tools.action_tools import DISCLAIMER, links_markdown, resources_for
 from src.tools.dashboard import team_watchlist
@@ -275,8 +275,8 @@ with st.container(border=True):
                        f"{strength_play(brief['focus']['item'], r['lead_domain'])}",
                        icon=":material/workspace_premium:")
     else:
-        st.caption(":material/workspace_premium: Load strengths data on the **Strengths** page "
-                   "to tailor this plan to what the team does best.")
+        st.caption(f":material/workspace_premium: Load strengths data under "
+                   f"{where('app_pages/strengths.py')} to tailor this plan to what the team does best.")
 
     with st.expander(f"Manager learning: {brief['focus']['label']}",
                      icon=":material/school:"):

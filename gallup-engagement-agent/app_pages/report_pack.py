@@ -13,6 +13,7 @@ from src.tools.report_pack import (
     to_pptx,
 )
 from src.ui import OUTCOME_LEVEL, analysis_runner, page_header, require_data, trap_checks
+from src.layout import where
 
 
 # PROCESS 2 – HEADER AND DATA
@@ -66,9 +67,9 @@ slides = build_pack(df, analysis, assumptions, trap_checks(df),
 
 st.subheader(f"Preview · {len(slides)} slides", anchor=False)
 st.caption("Every number comes from the app's verified results. Money uses the cost "
-           "assumptions on the Financials page"
+           f"assumptions under {where('app_pages/financials.py')}"
            + ("; the audit verdict is included." if audit else
-              "; run the Audit page to add its verdict to 'How sure we are'."))
+              f"; run {where('app_pages/audit.py')} to add its verdict to 'How sure we are'."))
 
 with st.spinner("Drawing the slides..."):
     previews = slide_previews(slides, branding, dpi=50)

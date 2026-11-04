@@ -21,6 +21,7 @@ from src.ui import (
     require_data,
     story_box,
 )
+from src.layout import where
 
 
 # PROCESS 2 – HEADER
@@ -35,7 +36,7 @@ df, validation = require_data()
 
 if not validation["is_valid"]:
     st.warning(
-        "The survey data has validation issues. See **Data** for details.",
+        f"The survey data has validation issues. See {where('app_pages/data_quality.py')} for details.",
         icon=":material/warning:",
     )
     st.stop()
