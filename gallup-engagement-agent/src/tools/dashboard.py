@@ -200,7 +200,7 @@ def driver_chart(rows: pd.DataFrame, outcome: str):
                 axis=alt.Axis(tickCount=4)),
         color=alt.Color("reliability:N", title=None,
                         scale=alt.Scale(domain=["Passed all checks", "Use with caution"],
-                                        range=["#2E9E3E", "#B9B1A8"]),
+                                        range=["#2F6B3F", "#B9B1A8"]),
                         legend=None),
         tooltip=[alt.Tooltip("question:N", title="Question"),
                  alt.Tooltip("headline:N", title="What it means"),

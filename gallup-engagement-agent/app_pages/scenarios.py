@@ -21,6 +21,7 @@ from src.ui import (
     page_header,
     require_data,
     story_box,
+    trap_checks,
 )
 
 
@@ -58,8 +59,10 @@ def item_name(item: str) -> str:
     return f"{item} · {ITEM_LABELS[item]}{mark}"
 
 
-factors = factor_value(df, analysis, assumptions)
+factors = factor_value(df, analysis, assumptions, trap_checks(df))
 default_items = list(factors["item"].head(1)) or verified_items[:1]
+
+
 departments = sorted(analysis_frame(df)["department"].dropna().unique()) \
     if "department" in df.columns else []
 
@@ -77,15 +80,15 @@ with st.container(border=True):
     if items:
         for item, column in zip(items, st.columns(len(items))):
             lifts[item] = column.slider(
-                f"{ITEM_LABELS[item]}: raise by", min_value=0.1, max_value=1.0, value=0.3,
+                f"{ITEM_LABELS[item]}: raise by", min_value=0.1, max_value=1.0, value=1.0,
                 step=0.1, key=f"lift_{item}",
                 help="Points on the 1–5 answer scale. 0.3 is a solid improvement for one "
                 "year; 1.0 is a big change.")
 
     who_col, where_col, ramp_col, horizon_col = st.columns(4)
-    who = who_col.segmented_control("Who improves", options=list(WHO), default="everyone",
+    who = who_col.segmented_control("Who improves", options=list(WHO), default="low",
                                     format_func=lambda w: "Everyone" if w == "everyone"
-                                    else "Low scorers (1–3)", key="scenario_who") or "everyone"
+                                    else "Low scorers (1–3)", key="scenario_who") or "low"
     where = where_col.selectbox("Where", ["Whole company"] + departments, key="scenario_where")
     ramp = ramp_col.slider("Months to build up", 0, 12, 6, key="scenario_ramp",
                            help="How long until the improvement is fully in place.")
@@ -141,7 +144,7 @@ if len(lifts) > 1:
     with st.expander("Each question on its own", icon=":material/stacked_bar_chart:"):
         parts = contributions(df, analysis, lifts, assumptions, who,
                               None if where == "Whole company" else where)
-        st.dataframe(parts.drop(columns=["item"]), hide_index=True, width="stretch",
+        st.dataframe(parts.drop(columns=["item"]).round({"yearly_value": 0}), hide_index=True, width="stretch",
                      column_config={
                          "question": "Question", "lift": st.column_config.NumberColumn(
                              "Raise by", format="+%.1f"),
@@ -152,21 +155,12 @@ if len(lifts) > 1:
                          "rating_points": st.column_config.NumberColumn(
                              "Rating change", format="%+.2f"),
                          "yearly_value": st.column_config.NumberColumn(
-                             "Yearly value", format="compact"),
+                             f"Yearly value ({c})", format="localized"),
                          "verified_for": "Verified link to"})
         st.caption("Questions overlap (the same people answer all of them), so these do not "
                    "add up exactly to the combined scenario.")
 
-how_to_read(
-    "Each employee's turnover risk, absence and rating are predicted twice with the app's "
-    "verified models: with today's answers and with the improved ones. The difference, scaled "
-    "to your headcount, is the effect. Only links that passed every check count; everything "
-    "else (tenure, department, other questions) stays as it is today. The likely range uses "
-    "each link's margin of error. Numbers can differ a little from the Financials page, "
-    "which uses the company's average turnover rate; this page uses each person's own risk. "
-    "These are associations in your data, not guarantees.",
-    "How these scenarios work",
-)
+
 
 
 # PROCESS 5 – COMPARE SCENARIOS

@@ -13,6 +13,7 @@ from src.tools.audit import (
     run_audit,
 )
 from src.tools.financial import Assumptions, md
+from src.tools.pdf_export import markdown_pdf
 from src.tools.insights import analysis_frame
 from src.ui import (
     OUTCOME_LEVEL,
@@ -182,11 +183,12 @@ with st.container(border=True):
 
     with st.container(horizontal=True):
         st.download_button(
-            "Download audit report (Markdown)",
-            data=audit_markdown(audit, sign_off).encode(),
-            file_name="statistical_audit.md",
-            mime="text/markdown",
-            icon=":material/description:",
+            "Download audit report (PDF)",
+            data=markdown_pdf("Statistical audit", audit_markdown(audit, sign_off)),
+            file_name="engagai_statistical_audit.pdf",
+            mime="application/pdf",
+            icon=":material/picture_as_pdf:",
+            type="primary",
         )
         st.download_button(
             "Download audit pack (JSON)",

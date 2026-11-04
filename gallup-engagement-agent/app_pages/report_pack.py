@@ -45,7 +45,7 @@ with st.container(border=True):
     company = name_col.text_input("Organization name", value="Your organization",
                                   key="pack_company")
     prepared_by = by_col.text_input("Prepared by", value="People Analytics", key="pack_by")
-    color = color_col.color_picker("Brand color", value="#1E7B34", key="pack_color")
+    color = color_col.color_picker("Brand color", value="#2F6B3F", key="pack_color")
     logo_file = st.file_uploader("Logo (optional, PNG or JPG)", type=["png", "jpg", "jpeg"],
                                  key="pack_logo")
     sections = st.pills("Slides to include", options=SECTIONS, selection_mode="multi",
@@ -83,13 +83,8 @@ for row in range(0, len(previews), 3):
 file_name = "".join(ch if ch.isalnum() else "_" for ch in branding.company).strip("_").lower()
 
 with st.container(horizontal=True):
-    st.download_button("Download PowerPoint", data=to_pptx(slides, branding),
-                       file_name=f"{file_name}_engagement_report.pptx",
-                       mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                       icon=":material/slideshow:", type="primary",
-                       help="Editable slides: text and tables can be changed in PowerPoint, "
-                       "Keynote or Google Slides.")
-    st.download_button("Download PDF", data=to_pdf(slides, branding),
+    # Every report downloads as PDF (to_pptx is kept in src/tools/report_pack.py).
+    st.download_button("Download board deck (PDF)", data=to_pdf(slides, branding),
                        file_name=f"{file_name}_engagement_report.pdf", mime="application/pdf",
-                       icon=":material/picture_as_pdf:",
-                       help="The same slides as a PDF, ready to email.")
+                       icon=":material/picture_as_pdf:", type="primary",
+                       help="The slides as a PDF, ready to email or present.")

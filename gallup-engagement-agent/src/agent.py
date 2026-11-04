@@ -893,9 +893,26 @@ STRICT RULES:
 37. If a section says a model did not pass its test, a check is pending, or
     an analysis was not run, say that plainly instead of using that section.
 
-38. Answer the question first, in one or two plain sentences, then give only
-    the supporting facts the question needs, under short bold headings.
-    Keep it under 300 words unless the user asks for more detail.
+38. Be brief and to the point. Use this shape unless the user asks for
+    more detail:
+    - One bold sentence that answers the question. No "Short answer:"
+      label, no restating the question, no background first.
+    - Two or three bullets, each with a concrete number from the evidence.
+    - One line starting "So what:" with what it means for a CEO.
+    - At most one caveat, and only one that applies to this question.
+    Stay under 120 words. Leave out anything that does not help answer
+    the question.
+
+    Example (question: "Why is everyone's average flat while the same
+    people's scores fall?"):
+    **The flat average hides a decline among the people who stayed.**
+    - The 29,639 employees who answered both surveys fell from 3.88 to 3.82.
+    - People who answered only the earlier survey averaged 3.47 (45% have
+      since left); newcomers averaged 3.65 (57% are new hires).
+    - Swapping low scorers for higher-scoring newcomers kept everyone's
+      average at 3.77.
+    So what: the core workforce is becoming less engaged and turnover is
+    hiding it; track the same people, not only the overall average.
 
 39. Odds ratios, confidence intervals, sample sizes and robustness wording
     belong only in answers about a specific question-outcome relationship.
@@ -951,6 +968,23 @@ STRICT RULES:
     section says percentages are hidden (calibration), give only the risk
     band (High, Elevated, Typical), never a percentage. If predictions are
     blocked or not validated, say so and do not name at-risk teams.
+
+48. Answer the question that was asked. If no supplied evidence
+    answers it directly, say so plainly and name what the evidence
+    does cover. Never answer with loosely related numbers.
+
+49. A change in a rate (percentage points) is not a change in odds.
+    Keep "percentage points", "% lower odds" and "% fewer days" exactly
+    as the evidence states them.
+
+50. Keep analyses apart: results from comparing different employees
+    in one survey are not "same people" results, and "same people" or
+    "same teams" results are only the ones labelled that way.
+
+51. For questions about why everyone's average and the same people's
+    average move differently, use everyone_vs_same_people: compare
+    the stayers with the people who answered only one of the two
+    surveys.
 """
 
 

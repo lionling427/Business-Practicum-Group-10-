@@ -50,7 +50,7 @@ from .insights import ITEM_LABELS, Q12_ITEMS, _robust_favorable, analysis_frame
 PERFORMANCE = "performance_rating"
 HIGH_IMPACT_SHARE = 0.5    # high impact = at least half the strongest factor's value per person
 PRIORITY_ORDER = ["Fix first", "Protect", "Improve next", "Maintain"]
-PRIORITY_COLORS = ["#B5473F", "#1E7B34", "#E0A030", "#9AA5B1"]
+PRIORITY_COLORS = ["#8C2A3A", "#2F6B3F", "#D4AF37", "#9AA5B1"]
 PRIORITY_MEANING = {
     "Fix first": "big payoff and many people score low: start here",
     "Protect": "big payoff but already strong: keep it that way",
@@ -143,6 +143,57 @@ def factor_value(df: pd.DataFrame, analysis: dict | None, a: Assumptions,
     table["rank"] = np.arange(1, len(table) + 1)
     table.attrs["agree_benchmark"] = benchmark
     return table[COLUMNS]
+
+
+def factor_value_range(df: pd.DataFrame, analysis: dict | None, a: Assumptions,
+                       traps: dict | None = None) -> dict[str, tuple[float, float]]:
+    """Likely range of each factor's yearly value: the same calculation as
+    factor_value with every effect at the cautious and the optimistic edge of
+    its 95% margin of error. Returns {item: (low, high)}."""
+    if analysis is None or analysis["findings"].empty:
+        return {}
+
+    findings = analysis["findings"]
+    ratio = findings["outcome"].isin(["turnover", "absence"])
+    low, high = findings["ci_low"].astype(float), findings["ci_high"].astype(float)
+    # Distance from "no effect": on the log scale for odds and rate ratios.
+    far_low = np.where(ratio, np.abs(np.log(low.where(low > 0))), np.abs(low))
+    far_high = np.where(ratio, np.abs(np.log(high.where(high > 0))), np.abs(high))
+    cautious = np.where(far_low <= far_high, low, high)
+    optimistic = np.where(far_low <= far_high, high, low)
+
+    values = []
+    for edge in (cautious, optimistic):
+        shifted = findings.copy()
+        shifted["effect"] = pd.Series(edge, index=findings.index).fillna(findings["effect"])
+        table = factor_value(df, {**analysis, "findings": shifted}, a, traps)
+        values.append(dict(zip(table["item"], table["yearly_value"])))
+
+    estimate = factor_value(df, analysis, a, traps)
+    out = {}
+    for item, value in zip(estimate["item"], estimate["yearly_value"]):
+        edges = [v.get(item, value) for v in values]
+        out[item] = (float(min(edges + [value])), float(max(edges + [value])))
+    return out
+
+
+def recommended_program(df: pd.DataFrame, analysis: dict | None, a: Assumptions,
+                        traps: dict | None = None) -> dict[str, Any] | None:
+    """The one program every page values: lift the #1 factor by one point for
+    the people answering 1-3. Financial impact, the Executive summary, the
+    action story, the report pack and the Scenarios starting point all use it,
+    so the money is the same number everywhere."""
+    table = factor_value(df, analysis, a, traps)
+    if table.empty or table["yearly_value"].iloc[0] <= 0:
+        return None
+    top = table.iloc[0]
+    low, high = factor_value_range(df, analysis, a, traps).get(
+        top["item"], (top["yearly_value"], top["yearly_value"]))
+    return {"row": top, "item": top["item"], "label": top["label"],
+            "value": float(top["yearly_value"]), "low": low, "high": high,
+            "people": float(top["people_below"]), "leavers": float(top["avoided_leavers"]),
+            "absence_days": float(top["avoided_absence_days"]),
+            "rating_points": float(top["rating_points"])}
 
 
 # PROCESS 4 – PLAIN LANGUAGE

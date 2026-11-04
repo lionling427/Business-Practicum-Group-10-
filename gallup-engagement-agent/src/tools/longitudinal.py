@@ -62,7 +62,7 @@ MIN_PANEL_TEAMS = 20                # teams seen in 2+ waves
 MIN_TEAM_SIZE = VISUAL_CONFIG["min_team_size"]
 FDR_Q = 0.05
 
-DECLINE_COLOR = "#B5473F"           # same red as "Reversed" elsewhere in the app
+DECLINE_COLOR = "#8C2A3A"           # same red as "Reversed" elsewhere in the app
 
 
 # PROCESS 3 – PREPARATION
@@ -92,6 +92,80 @@ def prepare(df: pd.DataFrame) -> pd.DataFrame:
     if "employee_id" in data.columns and "wave" in data.columns:
         data = data.drop_duplicates(["employee_id", "wave"])
     return data
+
+
+def composition(df: pd.DataFrame, before: Any = None, after: Any = None,
+                prepared: pd.DataFrame | None = None,
+                roster: pd.DataFrame | None = None) -> dict[str, Any] | None:
+    """Why the average for everyone and for the same people can move differently.
+
+    Splits the people who answered `before` and `after` into stayers (answered
+    both), people who answered only `before` (left, or skipped the later survey)
+    and people who answered only `after` (joined, or skipped the earlier one),
+    with each group's average Q12 score. Also each survey's average for
+    everyone, and for the stayers. None without employee_id or two waves."""
+    data = prepared if prepared is not None else prepare(df)
+    roster = roster if roster is not None else derive_wave(df)
+    if "employee_id" not in data.columns or "wave" not in data.columns:
+        return None
+    waves = sorted(data["wave"].dropna().unique().tolist())
+    if len(waves) < 2:
+        return None
+    after = after if after is not None else waves[-1]
+    before = before if before is not None else waves[waves.index(after) - 1]
+    first, second = data[data["wave"] == before], data[data["wave"] == after]
+    stay = set(first["employee_id"]) & set(second["employee_id"])
+    only_first = first[~first["employee_id"].isin(stay)]
+    only_second = second[~second["employee_id"].isin(stay)]
+    roster_after = set(roster.loc[roster["wave"] == after, "employee_id"])
+    roster_before = set(roster.loc[roster["wave"] == before, "employee_id"])
+    out = {
+        "before": before, "after": after,
+        "everyone_average_by_survey": {f"wave {_w(w)}": round(float(v), 2) for w, v in
+                                       data.groupby("wave")[INDEX].mean().items()},
+        "these_stayers_average_in_every_survey": {f"wave {_w(w)}": round(float(v), 2) for w, v in
+                                          data[data["employee_id"].isin(stay)]
+                                          .groupby("wave")[INDEX].mean().items()},
+        "stayers": {"people": len(stay),
+                    "average_before": round(float(first[first["employee_id"].isin(stay)][INDEX].mean()), 2),
+                    "average_after": round(float(second[second["employee_id"].isin(stay)][INDEX].mean()), 2)},
+        "answered_only_before": {"people": len(only_first),
+                                 "average": round(float(only_first[INDEX].mean()), 2),
+                                 "share_no_longer_employed": round(float(
+                                     (~only_first["employee_id"].isin(roster_after)).mean()), 2)},
+        "answered_only_after": {"people": len(only_second),
+                                "average": round(float(only_second[INDEX].mean()), 2),
+                                "share_new_hires": round(float(
+                                    (~only_second["employee_id"].isin(roster_before)).mean()), 2)},
+    }
+    out["everyone_before"] = round(float(first[INDEX].mean()), 2)
+    out["everyone_after"] = round(float(second[INDEX].mean()), 2)
+    # Ready-made differences, so an explanation never has to calculate them.
+    out["everyone_change"] = round(out["everyone_after"] - out["everyone_before"], 2)
+    out["stayers"]["change"] = round(out["stayers"]["average_after"]
+                                     - out["stayers"]["average_before"], 2)
+    out["joiners_minus_leavers"] = round(out["answered_only_after"]["average"]
+                                         - out["answered_only_before"]["average"], 2)
+    total = len(first)
+    out["stayers"]["share_of_earlier_survey"] = round(len(stay) / total, 2) if total else None
+    return out
+
+
+def composition_pairs(df: pd.DataFrame) -> dict[str, dict[str, Any]]:
+    """composition() for every pair of surveys, keyed "wave 3 → wave 4"."""
+    data, roster = prepare(df), derive_wave(df)
+    if "employee_id" not in data.columns or "wave" not in data.columns:
+        return {}
+    waves = sorted(data["wave"].dropna().unique().tolist())
+    out = {}
+    for i, before in enumerate(waves):
+        for after in waves[i + 1:]:
+            mix = composition(df, before, after, prepared=data, roster=roster)
+            if mix is not None:
+                out[f"wave {_w(before)} → wave {_w(after)}"] = {
+                    k: v for k, v in mix.items() if k not in ("before", "after",
+                                                             "everyone_average_by_survey")}
+    return out
 
 
 def survey_waves(df: pd.DataFrame) -> list:
@@ -427,6 +501,14 @@ def item_change_chart(change: dict[str, Any]) -> alt.LayerChart:
     table = change["table"][change["table"]["measure"] != INDEX].copy()
     table["label"] = table["measure"] + " · " + table["measure"].map(ITEM_LABELS)
     limit = max(0.05, float(table["change"].abs().max()) * 1.3)
+    verdict = {"Rose": "a clear rise, more than chance would explain",
+               "Fell": "a clear drop, more than chance would explain",
+               "No clear change": "within what chance alone could explain"}
+    table["explain"] = [
+        f"{ITEM_LABELS.get(m, m)} {'rose' if c > 0 else 'fell'} {abs(c):.2f} points "
+        f"({b:.2f} → {a:.2f}): {verdict.get(d, d)}."
+        for m, c, b, a, d in zip(table["measure"], table["change"], table["before"],
+                                 table["after"], table["direction"])]
     bars = alt.Chart(table).mark_bar(cornerRadiusEnd=3, height=18).encode(
         y=alt.Y("label:N", sort=alt.EncodingSortField("change", order="descending"),
                 title=None, axis=alt.Axis(labelLimit=260, labelOverlap=False)),
@@ -440,7 +522,7 @@ def item_change_chart(change: dict[str, Any]) -> alt.LayerChart:
                  alt.Tooltip("before:Q", title=f"Wave {_w(change['before'])}", format=".2f"),
                  alt.Tooltip("after:Q", title=f"Wave {_w(change['after'])}", format=".2f"),
                  alt.Tooltip("change:Q", title="Change", format="+.2f"),
-                 alt.Tooltip("direction:N", title="Verdict")])
+                 alt.Tooltip("explain:N", title="What it means")])
     zero = alt.Chart(pd.DataFrame({"x": [0]})).mark_rule(color="#555").encode(x="x:Q")
     return (bars + zero).properties(height=alt.Step(28), width="container")
 

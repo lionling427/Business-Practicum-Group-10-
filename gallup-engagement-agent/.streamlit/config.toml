@@ -1,7 +1,5 @@
-# Gallup-style report theme: white report pages, a near-black sidebar
-# (like Gallup's dark header band), green accents, and dark table headers.
-# Chart palettes were checked with the dataviz palette validator
-# (lightness, chroma, color-blind separation, contrast) in both modes.
+# EngagAI theme: forest green (brand, good news), butter yellow (warm
+# backgrounds, highlights) and burgundy (risk, cost, bad news).
 
 [theme]
 font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
@@ -17,53 +15,53 @@ showSidebarBorder = false
 linkUnderline = false
 
 [theme.light]
-primaryColor = "#1E7B34"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F3F4F2"
-textColor = "#1A1A1A"
-borderColor = "#E2E4E0"
-linkColor = "#1E7B34"
-greenColor = "#1E7B34"
-redColor = "#B5473F"
-orangeColor = "#C27C1E"
-blueColor = "#1F6FC5"
-grayColor = "#6B7069"
-dataframeHeaderBackgroundColor = "#1A1A1A"
-dataframeHeaderTextColor = "#FFFFFF"
-dataframeBorderColor = "#E2E4E0"
-chartCategoricalColors = ["#1E7B34", "#1F6FC5", "#B5473F", "#8C5BC4", "#C27C1E"]
+primaryColor = "#2F6B3F"
+backgroundColor = "#FFFDF5"
+secondaryBackgroundColor = "#FBF1CF"
+textColor = "#1F2A22"
+borderColor = "#E8DDB5"
+linkColor = "#2F6B3F"
+greenColor = "#2F6B3F"
+redColor = "#8C2A3A"
+orangeColor = "#B8901E"
+blueColor = "#3B6E8F"
+grayColor = "#6E6A5E"
+dataframeHeaderBackgroundColor = "#1F4A2E"
+dataframeHeaderTextColor = "#FFF8E1"
+dataframeBorderColor = "#E8DDB5"
+chartCategoricalColors = ["#2F6B3F", "#8C2A3A", "#C9A227", "#3B6E8F", "#9C6B4E"]
 
 [theme.light.sidebar]
-backgroundColor = "#1A1A1A"
-secondaryBackgroundColor = "#2A2B2A"
-textColor = "#F4F5F3"
-borderColor = "#3A3B3A"
-primaryColor = "#5CC26E"
-linkColor = "#8FD69C"
-codeBackgroundColor = "#2A2B2A"
+backgroundColor = "#1F4A2E"
+secondaryBackgroundColor = "#2B5C3A"
+textColor = "#FFF8E1"
+borderColor = "#356B45"
+primaryColor = "#F3D77A"
+linkColor = "#F3D77A"
+codeBackgroundColor = "#2B5C3A"
 
 [theme.dark]
-primaryColor = "#2E8B44"
-backgroundColor = "#141615"
-secondaryBackgroundColor = "#1E211F"
-textColor = "#E8EAE7"
-borderColor = "#2F332F"
-linkColor = "#5CC26E"
-greenColor = "#3A9E50"
-redColor = "#D9584C"
-orangeColor = "#B87D24"
-blueColor = "#3F86D6"
-grayColor = "#9AA09A"
-dataframeHeaderBackgroundColor = "#0B0C0B"
-dataframeHeaderTextColor = "#F4F5F3"
-dataframeBorderColor = "#2F332F"
-chartCategoricalColors = ["#3A9E50", "#3F86D6", "#D9584C", "#9B6FD6", "#B87D24"]
+primaryColor = "#4E9A62"
+backgroundColor = "#141A15"
+secondaryBackgroundColor = "#1F2820"
+textColor = "#F4EFDC"
+borderColor = "#334034"
+linkColor = "#F3D77A"
+greenColor = "#4E9A62"
+redColor = "#C2566A"
+orangeColor = "#D9B44A"
+blueColor = "#6A9CC0"
+grayColor = "#A39E8E"
+dataframeHeaderBackgroundColor = "#0F2416"
+dataframeHeaderTextColor = "#FFF8E1"
+dataframeBorderColor = "#334034"
+chartCategoricalColors = ["#4E9A62", "#C2566A", "#D9B44A", "#6A9CC0", "#B88A6C"]
 
 [theme.dark.sidebar]
-backgroundColor = "#0B0C0B"
-secondaryBackgroundColor = "#1E211F"
-textColor = "#F4F5F3"
-borderColor = "#2A2D2A"
-primaryColor = "#5CC26E"
-linkColor = "#8FD69C"
-codeBackgroundColor = "#1E211F"
+backgroundColor = "#0F2416"
+secondaryBackgroundColor = "#1F3A27"
+textColor = "#FFF8E1"
+borderColor = "#2B4A33"
+primaryColor = "#F3D77A"
+linkColor = "#F3D77A"
+codeBackgroundColor = "#1F3A27"

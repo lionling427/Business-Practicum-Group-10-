@@ -10,18 +10,25 @@ from src.tools.data_ingestion import (
     read_uploaded_file,
     validate_uploaded_data,
 )
+from src.tools.agent_context import fact_sheet
+from src.tools.financial import data_assumptions
 from src.tools.health_check import OUTCOMES, check_upload
 from src.tools.longitudinal import derive_wave
+from src.hub import build_pages, reset_view_state
+from src.layout import APP_NAME, LOGO, LOGO_ICON
 from src.ui import OUTCOME_LEVEL, run_statistical_analysis, sidebar_help
 
 
 # PROCESS 2 – PAGE CONFIGURATION
 
 st.set_page_config(
-    page_title="Engagement insights",
-    page_icon=":material/insights:",
+    page_title=APP_NAME,
+    page_icon=LOGO_ICON,
     layout="wide",
 )
+
+# Brand: full logo in the sidebar, the icon when the sidebar is collapsed.
+st.logo(LOGO, size="large", icon_image=LOGO_ICON)
 
 
 # PROCESS 3 – SIDEBAR: DATA SOURCE
@@ -45,16 +52,24 @@ SESSION_DATA_KEYS = [
     "uploaded_name",
     "upload_signature",
     "coach_notes",
+    "assumptions",
+    "salary_source",
+    "agent_fact_sheet",
+    "as_salary",
+    "as_replace",
+    "as_point",
+    "as_headcount",
+    "as_currency",
 ]
 
 with st.sidebar:
 
     st.markdown(
-        "### :material/insights: Engagement insights"
+        "### EngagAI"
     )
 
     st.caption(
-        "Gallup Q12 engagement and business outcomes"
+        "Engagement intelligence for leaders: Gallup Q12 and business outcomes"
     )
 
     uploaded_file = st.file_uploader(
@@ -111,6 +126,12 @@ with st.sidebar:
                 st.session_state["uploaded_name"] = uploaded_file.name
                 st.session_state["upload_signature"] = upload_signature
 
+                # Cost assumptions start from the data (average salary when the
+                # file has a salary column), so every page uses the same numbers.
+                assumptions, salary_source = data_assumptions(usable)
+                st.session_state["assumptions"] = assumptions
+                st.session_state["salary_source"] = salary_source
+
                 # Run the analysis once now (well under a second), so every
                 # page opens with results instead of a "run" step.
                 if (st.session_state["uploaded_validation"]["capabilities"]["level"]
@@ -120,6 +141,19 @@ with st.sidebar:
                             run_statistical_analysis()
                         except Exception as exc:          # shown on the pages
                             st.session_state["analysis_error"] = str(exc)
+
+                # Ask AI: every verified result, built once now and reused for
+                # every question (src/tools/agent_context.fact_sheet).
+                with st.spinner("Preparing the verified results for Ask AI..."):
+                    try:
+                        st.session_state["agent_fact_sheet"] = {
+                            "key": repr(st.session_state.get("assumptions")),
+                            "sheet": fact_sheet(
+                                usable, st.session_state.get("uploaded_analysis"),
+                                None, st.session_state.get("assumptions")),
+                        }
+                    except Exception:                     # Ask AI builds it on demand
+                        st.session_state.pop("agent_fact_sheet", None)
 
             validation = st.session_state["uploaded_validation"]
             health = st.session_state["health_report"]["summary"]
@@ -184,38 +218,18 @@ with st.sidebar:
 
 
 # PROCESS 4 – NAVIGATION
+#
+# The layout (which pages, in which group, which views are combined) lives in
+# src/layout.py. Edit that file to move, merge or hide pages.
 
-pages = {
-    "Report": [
-        st.Page("app_pages/overview.py", title="Overview", icon=":material/dashboard:", default=True),
-        st.Page("app_pages/ceo_brief.py", title="CEO brief", icon=":material/summarize:"),
-        st.Page("app_pages/engagement.py", title="Engagement", icon=":material/favorite:"),
-        st.Page("app_pages/change.py", title="Trends", icon=":material/timeline:"),
-        st.Page("app_pages/outcomes.py", title="Outcomes", icon=":material/query_stats:"),
-        st.Page("app_pages/teams.py", title="Teams", icon=":material/groups:"),
-    ],
-    "Act": [
-        st.Page("app_pages/action_story.py", title="Action story", icon=":material/auto_stories:"),
-        st.Page("app_pages/predictions.py", title="Predictions", icon=":material/online_prediction:"),
-        st.Page("app_pages/recommendations.py", title="Recommendations", icon=":material/tips_and_updates:"),
-        st.Page("app_pages/strengths.py", title="Strengths", icon=":material/workspace_premium:"),
-        st.Page("app_pages/financials.py", title="Financials", icon=":material/payments:"),
-        st.Page("app_pages/scenarios.py", title="Scenarios", icon=":material/tune:"),
-    ],
-    "Tools": [
-        st.Page("app_pages/agent.py", title="Ask AI", icon=":material/chat:"),
-        st.Page("app_pages/data_quality.py", title="Data", icon=":material/fact_check:"),
-        st.Page("app_pages/audit.py", title="Audit", icon=":material/verified:"),
-        st.Page("app_pages/report_pack.py", title="Report pack", icon=":material/slideshow:"),
-    ],
-}
+pages, pages_by_file = build_pages()
 
-# Sidebar navigation, grouped: ten report pages do not fit in a top bar.
 navigation = st.navigation(
     pages,
     position="sidebar",
     expanded=True,
 )
 
-sidebar_help()          # needs the pages registered above
+sidebar_help(pages_by_file)   # needs the pages registered above
+reset_view_state()            # every page starts with its own title
 navigation.run()

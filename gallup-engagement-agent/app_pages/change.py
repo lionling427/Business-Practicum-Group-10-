@@ -1,6 +1,11 @@
 # PROCESS 1 – IMPORTS
 
+import altair as alt
+import pandas as pd
 import streamlit as st
+
+from src.layout import hidden
+from src.tools.insights import Q12_ITEMS
 
 from src.tools.longitudinal import (
     INDEX,
@@ -85,202 +90,253 @@ index_row = table[table["measure"] == INDEX].iloc[0]
 items = table[table["measure"] != INDEX]
 who = "same people" if same_employees else "all respondents"
 
-tiles = [
-    ("Surveys compared", f"{wave_label(before).capitalize()} → {wave_label(after)[5:]}",
-     None, None),
-    ("People compared", f"{change['n_employees']:,}",
-     None, "Answered both surveys" if same_employees else "Smaller of the two survey counts"),
-    (f"Average Q12 ({who})", f"{index_row['after']:.2f}",
-     float(index_row["change"]), "Average across the 12 questions for the people compared."),
-    ("Clear changes",
-     f"{int((items['direction'] == 'Rose').sum())} ↑  {int((items['direction'] == 'Fell').sum())} ↓",
-     None, "Questions that rose (↑) or fell (↓) by more than chance would explain, "
-           "after correcting for testing 12 questions."),
-]
+if not hidden("change.overall"):
 
-for (label, value, delta, help_text), column in zip(tiles, st.columns(len(tiles))):
-    column.metric(
-        label,
-        value,
-        delta=delta,
-        delta_description=f"vs. {wave_label(before)}" if delta is not None else None,
-        help=help_text,
-        border=True,
-    )
+    tiles = [
+        (f"Average Q12 ({who})", f"{index_row['after']:.2f}",
+         float(index_row["change"]), "Average across the 12 questions for the people compared."),
+        ("Clear changes",
+         f"{int((items['direction'] == 'Rose').sum())} ↑  {int((items['direction'] == 'Fell').sum())} ↓",
+         None, "Questions that rose (↑) or fell (↓) by more than chance would explain, "
+               "after correcting for testing 12 questions."),
+    ]
+
+    for (label, value, delta, help_text), column in zip(tiles, st.columns(len(tiles))):
+        column.metric(
+            label,
+            value,
+            delta=delta,
+            delta_description=f"vs. {wave_label(before)}" if delta is not None else None,
+            help=help_text,
+            border=True,
+        )
+
+
+    # Everyone vs the same people, across every survey: joiners and leavers can
+    # hide what is happening to the people who stay.
+    answered = df
+    if "responded" in answered.columns:
+        answered = answered[pd.to_numeric(answered["responded"], errors="coerce") == 1]
+    items_present = [i for i in Q12_ITEMS if i in answered.columns]
+    scores = pd.DataFrame({
+        "wave": answered["wave"],
+        "score": answered[items_present].apply(pd.to_numeric, errors="coerce").mean(axis=1),
+    })
+    lines = [scores.groupby("wave")["score"].mean().rename("Everyone who answered")]
+    cohort = 0
+    if "employee_id" in answered.columns:
+        scores["employee_id"] = answered["employee_id"]
+        cohort_ids = (set(scores.loc[scores["wave"] == before, "employee_id"])
+                      & set(scores.loc[scores["wave"] == after, "employee_id"]))
+        cohort = len(cohort_ids)
+        same_group = f"Same {cohort:,} people"
+        lines.append(scores[scores["employee_id"].isin(cohort_ids)]
+                     .groupby("wave")["score"].mean().rename(same_group))
+    trend = (pd.concat(lines, axis=1).reset_index()
+             .melt(id_vars="wave", var_name="group", value_name="score").dropna())
+    trend["survey"] = trend["wave"].map(lambda w: wave_label(w).capitalize())
+    order = [wave_label(w).capitalize() for w in sorted(trend["wave"].unique())]
+
+    with st.container(border=True):
+        st.subheader("Everyone vs the same people", anchor=False)
+        groups = list(dict.fromkeys(trend["group"]))
+        base = alt.Chart(trend).encode(
+            x=alt.X("survey:N", sort=order, title=None, axis=alt.Axis(labelAngle=0)),
+            y=alt.Y("score:Q", title="Average Q12 score (1–5)", scale=alt.Scale(zero=False)),
+            color=alt.Color("group:N", title=None, sort=groups,
+                            scale=alt.Scale(domain=groups,
+                                            range=["#9A9486", "#8C2A3A"][:len(groups)]),
+                            legend=alt.Legend(orient="top", labelLimit=320)),
+            tooltip=[alt.Tooltip("group:N", title=" "), alt.Tooltip("survey:N", title="Survey"),
+                     alt.Tooltip("score:Q", title="Average", format=".2f")])
+        chart = base.mark_line(strokeWidth=3) + base.mark_point(filled=True, size=70)
+        labels = base.mark_text(dy=-12, fontSize=11).encode(text=alt.Text("score:Q", format=".2f"))
+        st.altair_chart((chart + labels).properties(height=300), width="stretch",
+                        alt="Average engagement for everyone and for the same people")
+        if cohort:
+            st.caption(f"Gray: everyone who answered each survey (joiners and leavers included). "
+                       f"Red: the {cohort:,} people who answered both {wave_label(before)} and "
+                       f"{wave_label(after)}, followed across every survey they answered.")
 
 
 # PROCESS 4 – WHAT CHANGED
 
-with st.container(border=True):
+# Hidden in Team drill-down > Teams that moved (src/layout.py).
+if not hidden("change.overall"):
 
-    st.subheader("What changed", anchor=False)
 
-    change_story = explain_item_change(change)
+    with st.container(border=True):
 
-    chart_col, story_col = st.columns([2, 1], gap="large")
+        st.subheader("What changed", anchor=False)
 
-    with chart_col:
+        # Full width; hover a bar for the before and after scores.
         st.altair_chart(
             item_change_chart(change),
             width="stretch",
             alt="Change in average score for each Q12 question",
         )
 
-    with story_col:
-        story_box(change_story)
-
-    how_to_read(change_story["how_to_read"])
-
 
 # PROCESS 5 – TEAMS THAT MOVED MOST
 
-teams = team_change(df, before=before, after=after)
+# Shown under Team drill-down > Teams that moved (src/layout.py).
+if not hidden("change.teams"):
 
-if not teams.empty:
 
-    with st.container(border=True):
+    teams = team_change(df, before=before, after=after)
 
-        st.subheader("Teams that moved most", anchor=False)
+    if not teams.empty:
 
-        team_story = explain_team_change(teams)
+        with st.container(border=True):
 
-        chart_col, story_col = st.columns([2, 1], gap="large")
+            st.subheader("Teams that moved most", anchor=False)
 
-        with chart_col:
-            st.altair_chart(
-                team_movers_chart(teams),
-                width="stretch",
-                alt="Teams with the biggest rises and falls in average engagement",
-            )
+            team_story = explain_team_change(teams)
 
-        with story_col:
-            story_box(team_story)
+            chart_col, story_col = st.columns([2, 1], gap="large")
 
-        how_to_read(team_story["how_to_read"])
+            with chart_col:
+                st.altair_chart(
+                    team_movers_chart(teams),
+                    width="stretch",
+                    alt="Teams with the biggest rises and falls in average engagement",
+                )
 
-        with st.expander("All teams", icon=":material/table_chart:"):
+            with story_col:
+                story_box(team_story)
 
-            st.dataframe(
-                teams,
-                hide_index=True,
-                width="stretch",
-                column_config={
-                    "team_id": st.column_config.TextColumn("Team"),
-                    "department": st.column_config.TextColumn("Department"),
-                    "before": st.column_config.NumberColumn(
-                        wave_label(before).capitalize(), format="%.2f"),
-                    "after": st.column_config.NumberColumn(
-                        wave_label(after).capitalize(), format="%.2f"),
-                    "change": st.column_config.NumberColumn("Change", format="%+.2f"),
-                },
-                alt="Average engagement for every team in the two surveys",
-            )
+
+            with st.expander("All teams", icon=":material/table_chart:"):
+
+                st.dataframe(
+                    teams,
+                    hide_index=True,
+                    width="stretch",
+                    column_config={
+                        "team_id": st.column_config.TextColumn("Team"),
+                        "department": st.column_config.TextColumn("Department"),
+                        "before": st.column_config.NumberColumn(
+                            wave_label(before).capitalize(), format="%.2f"),
+                        "after": st.column_config.NumberColumn(
+                            wave_label(after).capitalize(), format="%.2f"),
+                        "change": st.column_config.NumberColumn("Change", format="%+.2f"),
+                    },
+                    alt="Average engagement for every team in the two surveys",
+                )
 
 
 # PROCESS 6 – IS CHANGE LINKED TO RESULTS?
 
-with st.container(border=True):
+# A function, so "nothing to show" returns instead of stopping the whole page
+# (Predictions & risk shows more sections after this one).
+def linked_results():
 
-    st.subheader("Is change in engagement linked to results?", anchor=False)
+    with st.container(border=True):
 
-    st.caption(
-        f"Uses all {len(waves)} surveys. Each person and each team is compared with "
-        "themselves over time, so stable differences between them cannot explain the "
-        "result. Still an association, not proof of cause and effect."
-    )
-
-    change_analysis = st.session_state.get("change_analysis")
-
-    if change_analysis is None:
-
-        with st.spinner("Comparing people and teams with themselves over time..."):
-
-            try:
-                change_analysis = analyze_change(df)
-                st.session_state["change_analysis"] = change_analysis
-            except ValueError as exc:
-                st.info(str(exc), icon=":material/info:")
-                st.stop()
-
-            st.toast("Change-over-time analysis complete.", icon=":material/check_circle:")
-            st.rerun()
-
-        st.stop()
-
-    results = change_analysis["results"]
-
-    for note in change_analysis["notes"]:
-        st.caption(f":material/info: {note}")
-
-    if results.empty:
-        st.info("None of the change-over-time models could be fitted on this data.")
-        st.stop()
-
-    cards = outcome_summary(results)
-
-    for card, column in zip(cards, st.columns(len(cards), border=True)):
-
-        with column:
-
-            st.caption(card["outcome"].upper())
-            st.markdown(f"**{card['verdict']}**")
-
-            for line in card["lines"]:
-                badge = (":green-badge[:material/check: clear]" if line["clear"]
-                         else ":gray-badge[not clear]")
-                st.markdown(f"{badge} **{line['model']}:** {line['text']}")
-                st.caption(line["n"])
-
-    with st.expander("Results for each question", icon=":material/list_alt:"):
-
-        outcomes = list(dict.fromkeys(results["outcome"]))
-
-        outcome = st.segmented_control(
-            "Outcome",
-            options=outcomes,
-            format_func=lambda o: OUTCOME_LABELS[o].capitalize(),
-            default=outcomes[0],
-            key="change_matrix_outcome",
-        ) or outcomes[0]
-
-        st.dataframe(
-            question_matrix(results, outcome),
-            hide_index=True,
-            width="stretch",
-            height="content",
-            alt="Change-over-time results for each question",
-        )
+        st.subheader("Is change in engagement linked to results?", anchor=False)
 
         st.caption(
-            "✓ = clear link after correcting for testing 12 questions; · = not clear. "
-            "Effects are per +1 point on that question."
+            f"Uses all {len(waves)} surveys. Each person and each team is compared with "
+            "themselves over time, so stable differences between them cannot explain the "
+            "result. Still an association, not proof of cause and effect."
         )
 
-    with st.expander("Technical details", icon=":material/functions:"):
+        change_analysis = st.session_state.get("change_analysis")
 
-        st.dataframe(
-            results.assign(model=results["model"].map(MODEL_LABELS))[[
-                "model", "outcome", "name", "effect_type", "effect",
-                "ci_low", "ci_high", "p_value", "clear_link", "n_units",
-            ]],
-            hide_index=True,
-            width="stretch",
-            column_config={
-                "effect": st.column_config.NumberColumn(format="%.3f"),
-                "ci_low": st.column_config.NumberColumn("95% CI low", format="%.3f"),
-                "ci_high": st.column_config.NumberColumn("95% CI high", format="%.3f"),
-                "p_value": st.column_config.NumberColumn("p-value", format="%.4f"),
-            },
-            alt="All change-over-time model results",
+        if change_analysis is None:
+
+            with st.spinner("Comparing people and teams with themselves over time..."):
+
+                try:
+                    change_analysis = analyze_change(df)
+                    st.session_state["change_analysis"] = change_analysis
+                except ValueError as exc:
+                    st.info(str(exc), icon=":material/info:")
+                    return
+
+                st.toast("Change-over-time analysis complete.", icon=":material/check_circle:")
+                st.rerun()
+
+            return
+
+        results = change_analysis["results"]
+
+        for note in change_analysis["notes"]:
+            st.caption(f":material/info: {note}")
+
+        if results.empty:
+            st.info("None of the change-over-time models could be fitted on this data.")
+            return
+
+        cards = outcome_summary(results)
+
+        for card, column in zip(cards, st.columns(len(cards), border=True)):
+
+            with column:
+
+                st.caption(card["outcome"].upper())
+                st.markdown(f"**{card['verdict']}**")
+
+                for line in card["lines"]:
+                    badge = (":green-badge[:material/check: clear]" if line["clear"]
+                             else ":gray-badge[not clear]")
+                    st.markdown(f"{badge} **{line['model']}:** {line['text']}")
+                    st.caption(line["n"])
+
+        with st.expander("Results for each question", icon=":material/list_alt:"):
+
+            outcomes = list(dict.fromkeys(results["outcome"]))
+
+            outcome = st.segmented_control(
+                "Outcome",
+                options=outcomes,
+                format_func=lambda o: OUTCOME_LABELS[o].capitalize(),
+                default=outcomes[0],
+                key="change_matrix_outcome",
+            ) or outcomes[0]
+
+            st.dataframe(
+                question_matrix(results, outcome),
+                hide_index=True,
+                width="stretch",
+                height="content",
+                alt="Change-over-time results for each question",
+            )
+
+            st.caption(
+                "✓ = clear link after correcting for testing 12 questions; · = not clear. "
+                "Effects are per +1 point on that question."
+            )
+
+        with st.expander("Technical details", icon=":material/functions:"):
+
+            st.dataframe(
+                results.assign(model=results["model"].map(MODEL_LABELS))[[
+                    "model", "outcome", "name", "effect_type", "effect",
+                    "ci_low", "ci_high", "p_value", "clear_link", "n_units",
+                ]],
+                hide_index=True,
+                width="stretch",
+                column_config={
+                    "effect": st.column_config.NumberColumn(format="%.3f"),
+                    "ci_low": st.column_config.NumberColumn("95% CI low", format="%.3f"),
+                    "ci_high": st.column_config.NumberColumn("95% CI high", format="%.3f"),
+                    "p_value": st.column_config.NumberColumn("p-value", format="%.4f"),
+                },
+                alt="All change-over-time model results",
+            )
+
+        how_to_read(
+            "**Same people** compares each person with themselves: when their engagement "
+            "rises between surveys, does their own performance or absence change too? "
+            "**Same teams** does the same for team averages, including turnover rates. "
+            "**Score drop** looks at people with the same current score and asks whether "
+            "those whose score fell since the last survey were more likely to leave. "
+            "A clear link means the result is unlikely to be chance; it does not prove "
+            "that raising engagement causes the change.",
+            "How these models work",
         )
 
-    how_to_read(
-        "**Same people** compares each person with themselves: when their engagement "
-        "rises between surveys, does their own performance or absence change too? "
-        "**Same teams** does the same for team averages, including turnover rates. "
-        "**Score drop** looks at people with the same current score and asks whether "
-        "those whose score fell since the last survey were more likely to leave. "
-        "A clear link means the result is unlikely to be chance; it does not prove "
-        "that raising engagement causes the change.",
-        "How these models work",
-    )
+
+if not hidden("change.linked"):   # switched off in src/layout.py
+    linked_results()

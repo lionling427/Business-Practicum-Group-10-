@@ -41,6 +41,8 @@ from .financial import (
     team_excess_cost,
 )
 from .insights import ACTION_LIBRARY, ITEM_LABELS, analysis_frame, explain_finding, team_scorecard
+from .longitudinal import composition as people_mix
+from .longitudinal import composition_pairs
 from .longitudinal import (
     INDEX,
     explain_item_change,
@@ -72,6 +74,8 @@ SECTION_KEYWORDS = {
                    "profit", "financial", "spend", "expensive", "value",
                    "invest", "avoid", "prioriti", "biggest impact", "pay off"],
     "trends": ["trend", "change", "over time", "improving", "improved", "declin", "wave", "since",
+               "same people", "same group", "same employees", "everyone", "flat", "stay",
+               "stayer", "joiner", "leaver", "new hire", "average", "drop", "fall", "fell",
                "last survey", "last year", "getting better", "getting worse", "history"],
     "recommendations": ["recommend", "what should", "plan", "action", "productivity",
                         "lever", "do next", "improve performance", "first step", "how to",
@@ -131,13 +135,28 @@ def _trends(df, analysis, change, a) -> dict:
     moved = item_change(df, same_employees=same)
     table = moved["table"]
     section = {
-        "compared": f"{wave_label(moved['before'])} to {wave_label(moved['after'])}",
+        "compared": (f"{wave_label(moved['before'])} to {wave_label(moved['after'])} "
+                     "(the latest two surveys)"),
         "people_compared": int(moved["n_employees"]),
         "summary": explain_item_change(moved)["headline"],
         "questions_that_clearly_changed": [
             {"question": r["name"], "change_in_average": round(float(r["change"]), 2)}
             for _, r in table[(table["measure"] != INDEX) & table["clear_change"]].iterrows()],
     }
+    mix = people_mix(df, moved["before"], moved["after"])
+    if mix is not None:
+        section["everyone_vs_same_people"] = {
+            "why_they_differ": (
+                "Everyone's average mixes in people who left and people who joined. "
+                "The same-people average follows only employees who answered both surveys. "
+                "If people who leave score low and people who join score higher, everyone's "
+                "average can stay flat while the people who stay become less engaged."),
+            "everyone_average_by_survey": mix["everyone_average_by_survey"],
+            "by_pair_of_surveys": composition_pairs(df),
+            "how_to_use": ("Each entry under by_pair_of_surveys is labelled with the two "
+                           "surveys it compares. Use only the entry for the surveys the "
+                           "question names; with no surveys named, use the latest pair."),
+        }
     if change is not None and not change["results"].empty:
         section["is_change_linked_to_results"] = [
             {"outcome": c["outcome"], "verdict": c["verdict"],
@@ -430,6 +449,67 @@ def build_context(df: pd.DataFrame, analysis: dict | None = None,
         except Exception as exc:          # one failed section must not block the answer
             context[name] = {"note": f"Not available: {exc}"}
     return context
+
+
+# PROCESS 4A – FACT SHEET AND FOCUS
+#
+# The fact sheet is every section, built once when the data is uploaded and
+# reused for every question. Each question then gets only the sections it
+# needs, narrowed to the surveys it names, so similar numbers from other
+# comparisons cannot be mixed in.
+
+def fact_sheet(df: pd.DataFrame, analysis: dict | None = None,
+               change_analysis: dict | None = None,
+               assumptions: Assumptions | None = None) -> dict[str, Any]:
+    """Every section of the context, for the whole upload."""
+    return build_context(df, analysis, change_analysis, assumptions, list(BUILDERS))
+
+
+WAVE_NUMBER = re.compile(r"wave[s]?\s*(\d+)(?:\s*(?:-|–|to|and|&|vs\.?|→)\s*(?:wave\s*)?(\d+))?",
+                         re.IGNORECASE)
+
+
+def question_waves(question: str) -> list[str]:
+    """Surveys a question names, e.g. 'from Wave 3 to Wave 4' -> ['3', '4']."""
+    found = []
+    for first, second in WAVE_NUMBER.findall(question):
+        found += [first] + ([second] if second else [])
+    return list(dict.fromkeys(found))
+
+
+def focus_context(sheet: dict[str, Any], question: str,
+                  sections: list[str]) -> dict[str, Any]:
+    """The sections a question needs, narrowed to the surveys it names."""
+    context = {k: v for k, v in sheet.items() if k == "model_survey" or k in sections}
+    waves = question_waves(question)
+    trends = context.get("trends")
+    if len(waves) >= 2 and isinstance(trends, dict) and "everyone_vs_same_people" in trends:
+        mix = dict(trends["everyone_vs_same_people"])
+        pairs = mix.get("by_pair_of_surveys", {})
+        key = f"wave {waves[0]} → wave {waves[1]}"
+        keep = {f"wave {w}" for w in waves[:2]}
+        if key in pairs:
+            pair = dict(pairs[key])
+            pair["these_stayers_average_in_every_survey"] = {
+                w: v for w, v in pair.get("these_stayers_average_in_every_survey", {}).items()
+                if w in keep}
+            mix["by_pair_of_surveys"] = {key: pair}
+            mix["everyone_average_by_survey"] = {
+                w: v for w, v in mix.get("everyone_average_by_survey", {}).items() if w in keep}
+        mix["how_to_use"] = (f"The question asks about wave {waves[0]} and wave {waves[1]}: "
+                             "use only these figures.")
+        context["trends"] = {**trends, "everyone_vs_same_people": mix}
+    return context
+
+
+def wrong_waves(answer: str, question: str) -> list[str]:
+    """Surveys an answer talks about that the question did not ask about
+    (only when the question names its surveys)."""
+    asked = set(question_waves(question))
+    if len(asked) < 2:
+        return []
+    used = set(question_waves(answer))
+    return sorted(used - asked)
 
 
 # PROCESS 5 – NUMBER CHECK

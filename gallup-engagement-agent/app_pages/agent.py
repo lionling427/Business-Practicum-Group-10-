@@ -3,7 +3,14 @@
 import streamlit as st
 
 from src.agent import ask_agent
-from src.tools.agent_context import build_context, check_numbers, route_sections
+from src.tools.agent_context import (
+    check_numbers,
+    fact_sheet,
+    focus_context,
+    question_waves,
+    route_sections,
+    wrong_waves,
+)
 from src.tools.analytics import analyze_dataframe
 from src.tools.longitudinal import analyze_change, survey_waves
 from src.tools.waves import model_sample
@@ -77,26 +84,19 @@ else:
 
 
 def context_for(question):
-    """Verified dashboard facts for this question (cached per upload and sections)."""
+    """Verified facts for this question: the sections it needs from the fact sheet
+    built at upload, narrowed to the surveys the question names."""
     if df is None:
         return None, []
     sections = route_sections(question)
-    key = (
-        st.session_state.get("upload_signature"),
-        tuple(sections),
-        repr(st.session_state.get("assumptions")),
-        st.session_state.get("change_analysis") is not None,
-    )
-    cache = st.session_state.setdefault("agent_context_cache", {})
-    if key not in cache:
-        cache[key] = build_context(
-            df,
-            analysis,
-            st.session_state.get("change_analysis"),
-            st.session_state.get("assumptions"),
-            sections,
-        )
-    return cache[key], sections
+    key = repr(st.session_state.get("assumptions"))
+    stored = st.session_state.get("agent_fact_sheet")
+    if not stored or stored.get("key") != key:     # new upload or new cost assumptions
+        stored = {"key": key, "sheet": fact_sheet(
+            df, analysis, st.session_state.get("change_analysis"),
+            st.session_state.get("assumptions"))}
+        st.session_state["agent_fact_sheet"] = stored
+    return focus_context(stored["sheet"], question, sections), sections
 
 
 # PROCESS 4 – CHAT CONTROLS
@@ -229,6 +229,19 @@ if user_question:
                     context=context,
                     return_debug=True,
                 )
+
+                # An answer that uses surveys the question did not ask about is
+                # written again once, told which surveys to use.
+                stray = wrong_waves(result["answer"], user_question) if context else []
+                if stray:
+                    asked = " and ".join(f"wave {w}" for w in question_waves(user_question))
+                    result = ask_agent(
+                        f"{user_question}\n\n(Use only the figures for {asked}; do not "
+                        f"use wave {', '.join(stray)}.)",
+                        analysis_override=analysis,
+                        context=context,
+                        return_debug=True,
+                    )
 
                 answer = result["answer"]
                 evidence = result.get("evidence") or {}

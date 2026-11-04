@@ -40,7 +40,7 @@ from .priorities import PRIORITY_COLORS, PRIORITY_ORDER, factor_value  # noqa: E
 @dataclass
 class Branding:
     company: str = "Your organization"
-    color: str = "#1E7B34"                 # accent: title bar, numbers, chart bars
+    color: str = "#2F6B3F"                 # accent: title bar, numbers, chart bars
     logo: bytes | None = None              # PNG or JPG
     prepared_by: str = "People Analytics"
 

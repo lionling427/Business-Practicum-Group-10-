@@ -85,6 +85,14 @@ class Assumptions:
         return self._headcount(sample) / sample if sample else 1.0
 
 
+def data_assumptions(df: pd.DataFrame) -> tuple[Assumptions, str]:
+    """Starting assumptions for an upload: the default salary ($60,000, a
+    placeholder) and the survey headcount. Returns (assumptions, salary note)."""
+    data = analysis_frame(df)
+    return (Assumptions(headcount=len(data)),
+            "Default $60,000 placeholder: replace it with your organization's average salary.")
+
+
 # PROCESS 3 – WHAT IT COSTS TODAY
 
 def current_costs(df: pd.DataFrame, a: Assumptions) -> dict[str, Any]:
@@ -101,6 +109,27 @@ def current_costs(df: pd.DataFrame, a: Assumptions) -> dict[str, Any]:
         out.update(absence_days=days, absence_cost=days * a.day_cost)
     out["total_cost"] = out.get("turnover_cost", 0.0) + out.get("absence_cost", 0.0)
     return out
+
+
+def department_costs(df: pd.DataFrame, a: Assumptions) -> pd.DataFrame:
+    """Today's yearly turnover, absence and total cost split by department.
+    Each department's share of leavers (or absence days) is applied to the
+    company totals, so the departments add up exactly to current_costs()."""
+    data = analysis_frame(df)
+    if "department" not in data.columns:
+        return pd.DataFrame(columns=["department", "turnover_cost", "absence_cost",
+                                     "total_cost"])
+    totals = current_costs(df, a)
+    out = pd.DataFrame({"department": sorted(data["department"].dropna().unique())})
+    for column, cost in ((TURNOVER, "turnover_cost"), (ABSENCE, "absence_cost")):
+        if column in data.columns and totals.get(cost):
+            by_dept = pd.to_numeric(data[column], errors="coerce").groupby(data["department"]).sum()
+            share = by_dept / by_dept.sum() if by_dept.sum() else by_dept * 0
+            out[cost] = out["department"].map(share).fillna(0) * totals[cost]
+        else:
+            out[cost] = 0.0
+    out["total_cost"] = out["turnover_cost"] + out["absence_cost"]
+    return out.sort_values("total_cost", ascending=False).reset_index(drop=True)
 
 
 # PROCESS 4 – WHAT ENGAGEMENT COULD BE WORTH
@@ -253,7 +282,7 @@ def excess_cost_chart(teams: pd.DataFrame, currency: str = "$", n: int = 15) -> 
                 axis=alt.Axis(format="~s")),
         color=alt.Color("kind:N", title=None,
                         scale=alt.Scale(domain=["Turnover", "Absence"],
-                                        range=["#B5473F", MUTED_COLOR]),
+                                        range=["#8C2A3A", MUTED_COLOR]),
                         legend=alt.Legend(orient="top")),
         tooltip=[alt.Tooltip("team_id:N", title="Team"), alt.Tooltip("kind:N"),
                  alt.Tooltip("cost:Q", title="Extra cost", format=",.0f")],

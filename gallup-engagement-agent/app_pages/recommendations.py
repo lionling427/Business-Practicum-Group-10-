@@ -23,6 +23,7 @@ from src.tools.recommendations import (
     team_plans,
 )
 from src.tools.waves import model_sample
+from src.layout import hidden
 from src.ui import (
     OUTCOME_LEVEL,
     analysis_runner,
@@ -117,32 +118,41 @@ for (label, value, delta, help_text), column in zip(tiles, st.columns(len(tiles)
 
 # PROCESS 5 – WHERE TO START
 
-with st.container(border=True):
+# Hidden in the Team drill-down > Team plans view (src/layout.py).
+if not hidden("recommendations.where_to_start"):
 
-    st.subheader("Where to start", anchor=False)
 
-    chart_col, story_col = st.columns([3, 2], gap="large")
+    with st.container(border=True):
 
-    with chart_col:
-        if not summary["starts"].empty:
-            st.altair_chart(
-                starting_points_chart(summary["starts"]),
-                width="stretch",
-                alt="Number of teams that should start with each engagement question",
-            )
+        st.subheader("Where to start", anchor=False)
 
-    with story_col:
-        story_box(summary)
+        chart_col, story_col = st.columns([3, 2], gap="large")
 
-    how_to_read(
-        "Each bar is an engagement question verified to go with higher performance, and "
-        "how many teams should start there because that is where they have the most room "
-        "to improve. Dark green = strong evidence (two analyses agree); light green = good "
-        "evidence (one analysis)."
-    )
+        with chart_col:
+            if not summary["starts"].empty:
+                st.altair_chart(
+                    starting_points_chart(summary["starts"]),
+                    width="stretch",
+                    alt="Number of teams that should start with each engagement question",
+                )
+
+        with story_col:
+            story_box(summary)
+
+        how_to_read(
+            "Each bar is an engagement question verified to go with higher performance, and "
+            "how many teams should start there because that is where they have the most room "
+            "to improve. Dark green = strong evidence (two analyses agree); light green = good "
+            "evidence (one analysis)."
+        )
 
 
 # PROCESS 6 – PLAN FOR EACH TEAM
+
+# Team-by-team plans are shown under Team drill-down (src/layout.py).
+if hidden("recommendations.team_plans"):
+    st.caption(":material/groups: Each team's plan is under **Team drill-down > Team plans**.")
+    st.stop()
 
 with st.container(border=True):
 

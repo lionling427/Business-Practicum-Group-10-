@@ -23,6 +23,7 @@ from src.tools.visualization import (
 from src.tools.traps import STATUS_BADGES, TRAP_NAMES
 from src.tools.model_spec import SPEC_VERSION, SPECS, describe, spec_fingerprint
 from src.tools.waves import model_wave, wave_label
+from src.layout import hidden
 from src.ui import (
     OUTCOME_LEVEL,
     analysis_runner,
@@ -57,28 +58,94 @@ sample_wave = wave_label(model_wave(df))
 analysis = analysis_runner(df, key="run_analysis_outcomes")
 
 
+# PROCESS 2B – EVIDENCE EXPANDERS (also shown under Strategy: where to act)
+
+def findings_expander(analysis):
+    with st.expander("All findings as a table", icon=":material/table_chart:"):
+        st.table(
+            findings_table(analysis, df),
+            border="horizontal",
+            hide_index=True,
+            alt="Plain-language list of findings",
+        )
+
+
+def methods_expander(analysis):
+    with st.expander("How these numbers are computed", icon=":material/rule:"):
+
+        st.markdown(
+            "Each outcome uses a **pre-defined method and controls**, fixed before any "
+            "data is seen. The data health check can only switch on extra controls that "
+            "were registered in advance. Verified code computes every number; the AI "
+            "only explains them."
+        )
+
+        methods = analysis.get("methods") or {
+            o: describe(o) for o in SPECS
+        }
+
+        st.table(
+            [{
+                "Outcome": SPECS[o].label,
+                "Method": m["method"],
+                "Effect reported": m["effect_unit"],
+                "Controls": ", ".join(m["controls"]),
+                "Added by health check": ", ".join(m["controls_added_by_health_check"]) or "none",
+                "Minimum effect to report": m["min_effect"],
+            } for o, m in methods.items()],
+            border="horizontal",
+            hide_index=True,
+            alt="Fixed statistical method for each outcome",
+        )
+
+        decisions = (analysis.get("adjustments") or {}).get("control_decisions", {})
+        refused = {o: d["refused"] for o, d in decisions.items() if d["refused"]}
+        if refused:
+            st.caption(":material/block: Requested but not pre-registered, so not added: "
+                       + "; ".join(f"{o}: {', '.join(c)}" for o, c in refused.items()) + ".")
+
+        st.caption(
+            f"Method version {SPEC_VERSION} · fingerprint {spec_fingerprint()} (part of "
+            "every calculation ID). Standard errors clustered by team; multiple testing "
+            "controlled with a 5% false discovery rate."
+        )
+
+
+# Strategy: where to act shows only these two expanders under the action story.
+if hidden("outcomes.all_but_evidence"):
+    if analysis is not None:
+        st.markdown("#### :material/fact_check: The evidence behind it")
+        findings_expander(analysis)
+        methods_expander(analysis)
+    st.stop()
+
+
 # PROCESS 3 – ONE ROW OF TILES
 
-st.subheader(f"Outcomes · {sample_wave}", anchor=False)
+# Hidden in the Trust > Analytical checks view (src/layout.py).
+if not hidden("outcomes.drivers"):
 
-with st.container(horizontal=True):
 
-    outcome_tiles(df)
+    st.subheader(f"Outcomes · {sample_wave}", anchor=False)
 
-    if analysis is not None:
-        findings = analysis["findings"]
-        st.metric(
-            "Findings that passed all checks",
-            f"{int((findings['robustness_status'] == 'ROBUST').sum())} of {len(findings)}",
-            help=f"Out of the findings that met the reporting rules, for "
-            f"{analysis['sample_size']:,} employees in {sample_wave}.",
-            border=True,
-        )
+    with st.container(horizontal=True):
+
+        outcome_tiles(df)
+
+        if analysis is not None:
+            findings = analysis["findings"]
+            st.metric(
+                "Findings that passed all checks",
+                f"{int((findings['robustness_status'] == 'ROBUST').sum())} of {len(findings)}",
+                help=f"Out of the findings that met the reporting rules, for "
+                f"{analysis['sample_size']:,} employees in {sample_wave}.",
+                border=True,
+            )
 
 # PROCESS 4 – WHICH QUESTIONS MATTER FOR EACH OUTCOME
 
 # Shown once the statistical analysis has run (button above).
-if analysis is not None:
+if analysis is not None and not hidden("outcomes.drivers"):
 
     rows = driver_rows(analysis, df)
 
@@ -130,13 +197,7 @@ if analysis is not None:
             "factors constant. Associations, not proof of cause and effect."
         )
 
-        with st.expander("All findings as a table", icon=":material/table_chart:"):
-            st.table(
-                findings_table(analysis, df),
-                border="horizontal",
-                hide_index=True,
-                alt="Plain-language list of findings",
-            )
+        findings_expander(analysis)
 
         with st.expander("Technical details", icon=":material/functions:"):
             st.dataframe(
@@ -160,47 +221,16 @@ if analysis is not None:
                 alt="Model effects with 95% confidence intervals",
             )
 
-        with st.expander("How these numbers are computed", icon=":material/rule:"):
-
-            st.markdown(
-                "Each outcome uses a **pre-defined method and controls**, fixed before any "
-                "data is seen. The data health check can only switch on extra controls that "
-                "were registered in advance. Verified code computes every number; the AI "
-                "only explains them."
-            )
-
-            methods = analysis.get("methods") or {
-                o: describe(o) for o in SPECS
-            }
-
-            st.table(
-                [{
-                    "Outcome": SPECS[o].label,
-                    "Method": m["method"],
-                    "Effect reported": m["effect_unit"],
-                    "Controls": ", ".join(m["controls"]),
-                    "Added by health check": ", ".join(m["controls_added_by_health_check"]) or "none",
-                    "Minimum effect to report": m["min_effect"],
-                } for o, m in methods.items()],
-                border="horizontal",
-                hide_index=True,
-                alt="Fixed statistical method for each outcome",
-            )
-
-            decisions = (analysis.get("adjustments") or {}).get("control_decisions", {})
-            refused = {o: d["refused"] for o, d in decisions.items() if d["refused"]}
-            if refused:
-                st.caption(":material/block: Requested but not pre-registered, so not added: "
-                           + "; ".join(f"{o}: {', '.join(c)}" for o, c in refused.items()) + ".")
-
-            st.caption(
-                f"Method version {SPEC_VERSION} · fingerprint {spec_fingerprint()} (part of "
-                "every calculation ID). Standard errors clustered by team; multiple testing "
-                "controlled with a 5% false discovery rate."
-            )
+        methods_expander(analysis)
 
 
 # PROCESS 5 – ANALYTICAL TRAPS
+
+# The checks below are shown under Trust > Analytical checks (src/layout.py).
+if hidden("outcomes.checks"):
+    st.caption(":material/verified: The analytical traps and sorting checks behind these "
+               "results are under **Trust > Analytical checks**.")
+    st.stop()
 
 TRAP_ICONS = {"department": ":material/domain:", "manager": ":material/supervisor_account:",
               "nonresponse": ":material/how_to_reg:"}

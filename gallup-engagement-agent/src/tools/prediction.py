@@ -627,7 +627,7 @@ def team_risk_chart(result: dict[str, Any], n: int = 15) -> alt.Chart:
         x=alt.X("risk_pct:Q", title=title, scale=alt.Scale(domain=[0, 100])),
         color=alt.Color("risk_band:N", title=None,
                         scale=alt.Scale(domain=["High", "Elevated", "Typical"],
-                                        range=["#B5473F", "#C27C1E", "#B9B1A8"]),
+                                        range=["#8C2A3A", "#C9A227", "#B9B1A8"]),
                         legend=alt.Legend(orient="top")),
         tooltip=[alt.Tooltip("team_id:N", title="Team"),
                  alt.Tooltip("risk_pct:Q", title="Risk" if show else "Risk rank", format=".0f"),
@@ -707,9 +707,14 @@ def group_risk_chart(result: dict[str, Any]) -> alt.LayerChart:
     t["share"] = t["high_risk_share"] * 100
     t["label"] = t["share"].round().astype(int).astype(str) + "%  ·  ~" + \
         t["expected_leavers"].astype(int).astype(str) + " leavers"
+    t["explain"] = [
+        (f"{share:.0f}% of the {int(people):,} people here are in the company's riskiest "
+         f"fifth ({'above' if share > HIGH_SHARE * 100 else 'at or below'} the 20% an average "
+         f"group would have); about {leavers:,.0f} are expected to leave in the next 12 months.")
+        for share, people, leavers in zip(t["share"], t["employees"], t["expected_leavers"])]
     order = list(t.sort_values("share", ascending=False)[group])
     y = alt.Y(f"{group}:N", sort=order, title=None, axis=alt.Axis(labelLimit=200, labelOverlap=False))
-    color = alt.condition(f"datum.share > {HIGH_SHARE * 100}", alt.value("#B5473F"), alt.value("#B9B1A8"))
+    color = alt.condition(f"datum.share > {HIGH_SHARE * 100}", alt.value("#8C2A3A"), alt.value("#B9B1A8"))
     bars = alt.Chart(t).mark_bar(cornerRadiusEnd=3, height=18).encode(
         y=y, x=alt.X("share:Q", title="% of people in the company's riskiest fifth",
                      scale=alt.Scale(domain=[0, max(40.0, float(t["share"].max()) * 1.45)])),
@@ -717,7 +722,8 @@ def group_risk_chart(result: dict[str, Any]) -> alt.LayerChart:
         tooltip=[alt.Tooltip(f"{group}:N", title=group.replace("_", " ").capitalize()),
                  alt.Tooltip("share:Q", title="% at high risk", format=".0f"),
                  alt.Tooltip("employees:Q", title="People", format=","),
-                 alt.Tooltip("expected_leavers:Q", title="Expected leavers", format=",.0f")])
+                 alt.Tooltip("expected_leavers:Q", title="Expected leavers", format=",.0f"),
+                 alt.Tooltip("explain:N", title="What it means")])
     text = alt.Chart(t).mark_text(align="left", dx=5, fontSize=12).encode(
         y=y, x="share:Q", text="label:N")
     rule = alt.Chart(pd.DataFrame({"x": [HIGH_SHARE * 100]})).mark_rule(

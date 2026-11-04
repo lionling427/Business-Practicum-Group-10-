@@ -127,9 +127,8 @@ def empty_state():
             "1. Use **Survey data** in the sidebar to upload a CSV or Excel file "
             "with one row per employee and the 12 Q12 answers (1–5).\n"
             "2. Add business outcomes (turnover, absence, performance) to unlock "
-            "the **Outcomes** page.\n"
-            "3. The analysis runs automatically: start with **Overview** or the "
-            "**CEO brief**."
+            "the money and strategy pages.\n"
+            "3. The analysis runs automatically: start with the **Executive summary**."
         )
 
         st.caption(
@@ -141,35 +140,20 @@ def empty_state():
 # PROCESS 4 – PAGE HEADER
 
 def page_header(title, icon, description):
+    """The page title only. Descriptions, the file name and the analysis badge
+    are left out to keep pages focused (the sidebar already shows the data
+    status). `description` is kept in the signature so page files need no change."""
 
-    df, validation = get_data()
+    from src.layout import hidden   # here to keep src.layout free of src.ui
 
-    st.title(title, icon=icon, anchor=False)
-
-    st.caption(description)
-
-    if df is None:
+    if hidden("page.header"):       # this view sits under another page's header
         return
 
-    parts = [
-        st.session_state.get("uploaded_name", "Uploaded data"),
-        f"{len(df):,} survey responses",
-    ]
+    # A view inside a combined page (src/hub.py): the page already has a title.
+    if st.session_state.get("_embedded_view"):
+        return
 
-    if "wave" in df.columns and df["wave"].nunique() > 1:
-        parts.append(f"{df['wave'].nunique()} survey waves")
-
-    analysis_badge = (
-        ":green-badge[:material/check_circle: Analysis complete]"
-        if st.session_state.get("uploaded_analysis") is not None
-        else ":orange-badge[:material/pending: Analysis not run]"
-        if validation["capabilities"]["level"] == OUTCOME_LEVEL
-        else ":gray-badge[Survey only]"
-    )
-
-    st.markdown(
-        " · ".join(parts) + "  " + analysis_badge
-    )
+    st.title(title, icon=icon, anchor=False)
 
 
 # PROCESS 5 – EXPLANATION BLOCKS
@@ -299,8 +283,11 @@ GLOSSARY = [
 ]
 
 
-def sidebar_help():
-    """Two small popovers: which page answers my question, and what the words mean."""
+def sidebar_help(pages_by_file=None):
+    """Two small popovers: which page answers my question, and what the words mean.
+
+    pages_by_file maps a page file to the sidebar page that shows it (src/hub.py);
+    questions whose page is not in the current layout are left out."""
 
     with st.sidebar:
 
@@ -308,6 +295,10 @@ def sidebar_help():
                         width="stretch"):
             st.markdown("**Pick your question**")
             for question, page, icon in PAGE_GUIDE:
+                if pages_by_file is not None:
+                    page = pages_by_file.get(page)
+                    if page is None:
+                        continue
                 st.page_link(page, label=question, icon=icon)
 
         if st.button("What do the words mean?", icon=":material/menu_book:",

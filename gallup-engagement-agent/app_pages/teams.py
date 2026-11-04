@@ -2,6 +2,8 @@
 
 import streamlit as st
 
+from src.layout import hidden
+
 from src.tools.action_tools import DISCLAIMER, links_markdown, resources_for
 from src.tools.dashboard import team_watchlist
 from src.tools.data_ingestion import Q12_ITEMS
@@ -69,6 +71,30 @@ watchlist = team_watchlist(scorecard, risk_results)
 risk_ok = {o: r is not None and r["status"] == "useful" for o, r in risk_results.items()}
 
 
+def risk_model_tests():
+    """How each team risk model was tested (shown under Trust > Prediction tests)."""
+    tested = [o for o, r in risk_results.items() if r is not None]
+    if not tested:
+        st.info("Risk predictions need turnover or absence data.")
+        return
+    left_out = ("On data it never saw", "People who later left")   # kept off every page
+    for outcome, column in zip(tested, st.columns(len(tested), gap="large")):
+        story = explain_team_risk(risk_results[outcome])
+        story = {**story, "points": [p for p in story["points"]
+                                     if not p.startswith(left_out)]}
+        with column:
+            st.markdown(f"**{outcome.capitalize()} risk**")
+            story_box(story)
+            if not risk_ok[outcome]:
+                st.caption(":material/visibility_off: Not shown in the watchlist.")
+
+
+# Trust > Prediction tests shows only the model tests (src/layout.py).
+if hidden("teams.only_tests"):
+    risk_model_tests()
+    st.stop()
+
+
 # PROCESS 3 – TILES
 
 tiles = [
@@ -96,10 +122,17 @@ if analysis is None:
 
 # PROCESS 4 – WATCHLIST · HEATMAP · RISK MODEL
 
-watch_tab, heat_tab, model_tab = st.tabs([
+# One line on how far the risk model can be trusted; the details are under Trust.
+tested_ok = [r for o, r in risk_results.items() if r is not None and risk_ok.get(o)]
+if tested_ok and tested_ok[0].get("baseline_auc") is not None:
+    r = tested_ok[0]
+    st.caption(f":material/verified: The {r['outcome']} risk model was tested on a survey it "
+               f"never saw: {r['auc'] * 100:.0f}% accurate, vs {r['baseline_auc'] * 100:.0f}% "
+               "for last year's rate alone. Details under **Trust > Prediction tests**.")
+
+watch_tab, heat_tab = st.tabs([
     ":material/flag: Watchlist",
     ":material/grid_on: Heatmap",
-    ":material/verified: How the risk model was tested",
 ])
 
 with watch_tab:
@@ -129,7 +162,7 @@ with watch_tab:
     x7 = next((r["survey_response_warning"] for r in risk_results.values()
                if r is not None and r.get("survey_response_warning")), None)
     if x7 is not None:
-        st.caption(":material/info: " + x7["text"])
+        pass  # the survey-response note is left out to keep the page focused
 
     if shown.empty:
         st.info("No teams match these filters.")
@@ -186,23 +219,6 @@ with heat_tab:
     )
 
     how_to_read(heatmap_story["how_to_read"])
-
-with model_tab:
-
-    tested = [o for o, r in risk_results.items() if r is not None]
-
-    if not tested:
-        st.info("Risk predictions need turnover or absence data.")
-    else:
-        for outcome, column in zip(tested, st.columns(len(tested), gap="large")):
-            with column:
-                st.markdown(f"**{outcome.capitalize()} risk**")
-                story_box(explain_team_risk(risk_results[outcome]))
-                if not risk_ok[outcome]:
-                    st.caption(":material/visibility_off: Not shown in the watchlist.")
-
-        how_to_read(explain_team_risk(risk_results[tested[0]])["how_to_read"],
-                    "What the risk bands mean")
 
 
 # PROCESS 5 – MANAGER COACH FOR THE SELECTED TEAM

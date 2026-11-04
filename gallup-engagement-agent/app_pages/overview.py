@@ -19,6 +19,7 @@ from src.tools.visualization import (
     trend_sparkline_chart,
 )
 from src.tools.waves import latest_wave, model_wave, wave_label
+from src.layout import hidden
 from src.ui import (
     analysis_runner,
     page_header,
@@ -67,7 +68,7 @@ for tile, column in zip(tiles, st.columns(len(tiles))):
         st.metric(
             tile["label"],
             tile["value"],
-            delta="About the same" if small else tile["delta"],
+            delta=None if small else tile["delta"],   # no badge for tiny changes
             delta_color="off" if small else "inverse" if tile["inverse"] else "normal",
             delta_arrow="off" if small else "auto",
             delta_description="vs. last survey" if tile["delta"] is not None and not small else None,
@@ -185,6 +186,9 @@ with st.container(border=True):
 
 
 # PROCESS 5 – KEY FINDINGS
+
+if hidden("overview.key_findings"):
+    st.stop()  # last section: switched off in src/layout.py
 
 analysis = st.session_state.get("uploaded_analysis")
 drivers = what_drives_results(analysis, df)

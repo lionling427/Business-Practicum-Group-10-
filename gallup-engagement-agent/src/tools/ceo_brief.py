@@ -25,7 +25,7 @@ import pandas as pd
 from .dashboard import kpi_tiles
 from .financial import Assumptions, current_costs, md, money
 from .insights import analysis_frame, explain_finding, team_scorecard, top_drivers
-from .priorities import factor_value
+from .priorities import factor_value, factor_value_range
 from .waves import latest_wave, model_wave, wave_label
 
 
@@ -103,10 +103,12 @@ def build_ceo_brief(df: pd.DataFrame, analysis: dict | None = None,
             gains.append(f"about {top['avoided_leavers']:,.0f} fewer people leaving")
         if top["avoided_absence_days"] > 0:
             gains.append(f"{top['avoided_absence_days']:,.0f} fewer absence days")
+        low, high = factor_value_range(df, analysis, a, traps).get(
+            top["item"], (top["yearly_value"], top["yearly_value"]))
         money_points.append(
             f"Improving {top['label']} for the {top['people_below']:,.0f} people who score it "
             f"low is linked to {' and '.join(gains)} a year, worth about "
-            f"{money(top['yearly_value'], c)}.")
+            f"{money(top['yearly_value'], c)} (likely {money(low, c)}–{money(high, c)}).")
     brief["money"] = money_points
 
     # Where to act.

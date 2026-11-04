@@ -46,10 +46,10 @@ VISUAL_CONFIG = {
     "max_points": 60,               # dots per group in the sorting chart
 }
 
-HIGH_COLOR, LOW_COLOR = "#2E9E3E", "#3D3335"     # Gallup-like green / dark brown
+HIGH_COLOR, LOW_COLOR = "#2F6B3F", "#3D3335"     # EngagAI green / dark brown
 OVERALL_COLOR = "#1B2A4A"                         # "All employees" line (navy, like Gallup U.S.)
-LINE_COLORS = ["#2E8B3E", "#2F7FA8", "#B5473F", "#8C6BB1",
-               "#D08C2E", "#5B8C85", "#C2549A", "#7A7A7A"]
+LINE_COLORS = ["#2F6B3F", "#2F7FA8", "#8C2A3A", "#8C6BB1",
+               "#C9A227", "#5B8C85", "#C2549A", "#7A7A7A"]
 
 # How to split each outcome into "high performers" and "low performers".
 # higher_is_better=False means a LOW value is the good side.
@@ -356,7 +356,7 @@ def sorting_power_chart(ranking: pd.DataFrame) -> alt.Chart:
         color=alt.Color("verdict:N", title=None,
                         scale=alt.Scale(domain=["Strong sorter", "Moderate sorter",
                                                 "Weak sorter", "Reversed"],
-                                        range=[HIGH_COLOR, "#9CCB9F", "#B9B1A8", "#B5473F"]),
+                                        range=[HIGH_COLOR, "#9DBFA5", "#B9B1A8", "#8C2A3A"]),
                         legend=alt.Legend(orient="top", columns=2, labelLimit=0)),
         tooltip=["item", "label", "high_mean", "low_mean", "gap", "sorting_power", "n_high", "n_low"])
     no_sorting = alt.Chart(pd.DataFrame({"x": [0.5]})).mark_rule(
@@ -996,7 +996,7 @@ def item_results_chart(results: dict[str, Any]) -> alt.LayerChart:
                 scale=alt.Scale(domain=[0, 100])),
         color=alt.Color("group:N", title=None,
                         scale=alt.Scale(domain=["Top 3", "Middle", "Bottom 3"],
-                                        range=[HIGH_COLOR, "#9CCB9F", "#C27C1E"]),
+                                        range=[HIGH_COLOR, "#9DBFA5", "#C9A227"]),
                         legend=alt.Legend(orient="top")),
         tooltip=tooltip)
     labels = alt.Chart(t).mark_text(align="left", dx=6, fontSize=12).encode(
@@ -1044,7 +1044,7 @@ def sorting_dot_chart(
 # PROCESS 12 – AGREE / NEUTRAL / DISAGREE SPLIT BY PERFORMANCE GROUP
 
 ANSWER_BANDS = ["Disagree", "Neutral", "Agree"]
-BAND_COLORS = ["#B5473F", "#B9B1A8", HIGH_COLOR]     # diverging: red · gray midpoint · green
+BAND_COLORS = ["#8C2A3A", "#B9B1A8", HIGH_COLOR]     # diverging: red · gray midpoint · green
 
 
 def sorting_distribution(df: pd.DataFrame, item: str, outcome: str = "performance",

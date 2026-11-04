@@ -266,7 +266,7 @@ def starting_points_chart(starts: pd.DataFrame) -> alt.Chart:
                 axis=alt.Axis(labelLimit=260, labelOverlap=False)),
         x=alt.X("teams:Q", title="Teams that should start here", axis=alt.Axis(tickMinStep=1)),
         color=alt.Color("evidence:N", title="Evidence",
-                        scale=alt.Scale(domain=["Strong", "Good"], range=[HIGH_COLOR, "#9CCB9F"]),
+                        scale=alt.Scale(domain=["Strong", "Good"], range=[HIGH_COLOR, "#9DBFA5"]),
                         legend=alt.Legend(orient="top")),
         tooltip=[alt.Tooltip("name:N", title="Question"),
                  alt.Tooltip("teams:Q", title="Teams"),
@@ -295,7 +295,7 @@ def team_gap_chart(plan: pd.Series, df: pd.DataFrame, levers: pd.DataFrame) -> a
         y=y, x=x, tooltip=[alt.Tooltip("company:Q", title="Company", format=".2f")])
     dots = alt.Chart(long).mark_circle(size=110, opacity=1).encode(
         y=y, x=alt.X("team:Q"),
-        color=alt.condition("datum.start", alt.value("#B5473F"), alt.value(HIGH_COLOR)),
+        color=alt.condition("datum.start", alt.value("#8C2A3A"), alt.value(HIGH_COLOR)),
         tooltip=[alt.Tooltip("name:N", title="Question"),
                  alt.Tooltip("team:Q", title="Team", format=".2f"),
                  alt.Tooltip("company:Q", title="Company", format=".2f")])
