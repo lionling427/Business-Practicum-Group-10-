@@ -69,7 +69,12 @@ def build_ceo_brief(df: pd.DataFrame, analysis: dict | None = None,
     brief: dict[str, Any] = {
         "survey": wave_label(latest_wave(df)),
         "model_survey": wave_label(model_wave(df)),
-        "scorecard": [{"label": t["label"], "value": t["value"], "change": _change(t)}
+        # A tile from an older wave (the newest survey's outcomes are not in yet)
+        # says which wave it is: "wave 4 · about the same".
+        "scorecard": [{"label": t["label"], "value": t["value"],
+                       "change": _change(t) if not t.get("as_of") else
+                       f"{t['as_of']} · " + _change(t, judge=False).replace("about the same",
+                                                                             "steady")}
                       for t in tiles],
     }
 

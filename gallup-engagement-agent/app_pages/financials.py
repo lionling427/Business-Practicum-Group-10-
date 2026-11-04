@@ -145,36 +145,39 @@ if not by_dept.empty and by_dept["total_cost"].sum() > 0:
 
         st.markdown("**Which department carries the biggest share of the cost**")
 
-        DEPT_COLORS = ["#8C2A3A", "#1F4A2E", "#C9A227", "#2F6B3F", "#B5707B",
-                       "#5B8C6A", "#E3C56B", "#9DBFA5", "#6E6A5E", "#D9D4C7"]
-        domain = list(by_dept["department"])           # same color per department
-        colors = alt.Scale(domain=domain,
-                           range=(DEPT_COLORS * (len(domain) // len(DEPT_COLORS) + 1))
-                           [:len(domain)])
-        pies = [(cost, title) for cost, title in (
-            ("turnover_cost", "Voluntary turnover"), ("absence_cost", "Unplanned absence"),
-            ("total_cost", "Total people cost")) if by_dept[cost].sum() > 0]
+        # One bar per department, largest first: turnover and absence side by side
+        # in the same bar, the total and its share at the end.
+        order = list(by_dept.sort_values("total_cost", ascending=False)["department"])
+        parts = [(col, name) for col, name in (("turnover_cost", "Voluntary turnover"),
+                                                ("absence_cost", "Unplanned absence"))
+                 if by_dept[col].sum() > 0]
+        long = by_dept.melt(id_vars="department", value_vars=[col for col, _ in parts],
+                            var_name="kind", value_name="value")
+        long["kind"] = long["kind"].map(dict(parts))
+        long["label"] = long["value"].map(lambda v: money(v, c))
+        totals = by_dept[["department", "total_cost"]].copy()
+        totals["label"] = [f"{money(v, c)} · {v / totals['total_cost'].sum():.0%}"
+                           for v in totals["total_cost"]]
+        top = totals.sort_values("total_cost", ascending=False).iloc[0]
+        st.caption(md(f"Largest: **{top['department']}**, {top['label'].split(' · ')[1]} of the "
+                      f"total ({money(top['total_cost'], c)} a year)."))
 
-        for (cost, title), column in zip(pies, st.columns(len(pies), gap="large")):
-            data = by_dept[["department", cost]].rename(columns={cost: "value"})
-            data["share"] = data["value"] / data["value"].sum()
-            data["label"] = data["value"].map(lambda v: money(v, c))
-            top = data.sort_values("value", ascending=False).iloc[0]
-            with column:
-                st.markdown(f"**{title}**")
-                st.caption(md(f"Largest: **{top['department']}**, {top['share']:.0%} "
-                              f"({money(top['value'], c)} a year)"))
-                st.altair_chart(
-                    alt.Chart(data).mark_arc(innerRadius=55, stroke="#FFFDF5").encode(
-                        theta=alt.Theta("value:Q", stack=True),
-                        color=alt.Color("department:N", scale=colors, title=None,
-                                        legend=alt.Legend(orient="bottom", columns=2)),
-                        order=alt.Order("value:Q", sort="descending"),
-                        tooltip=[alt.Tooltip("department:N", title="Department"),
-                                 alt.Tooltip("label:N", title="Per year"),
-                                 alt.Tooltip("share:Q", title="Share", format=".0%")],
-                    ).properties(height=320),
-                    width="stretch", alt=f"{title} cost by department")
+        y = alt.Y("department:N", sort=order, title=None, axis=alt.Axis(labelLimit=200))
+        bars = alt.Chart(long).mark_bar(height=18).encode(
+            y=y,
+            x=alt.X("sum(value):Q", title=f"Cost per year ({c})", axis=alt.Axis(format="~s"),
+                    scale=alt.Scale(domain=[0, float(totals["total_cost"].max()) * 1.25])),
+            color=alt.Color("kind:N", title=None, legend=alt.Legend(orient="top"),
+                            scale=alt.Scale(domain=[name for _, name in parts],
+                                            range=["#8C2A3A", "#C9A227"][:len(parts)])),
+            order=alt.Order("kind:N"),
+            tooltip=[alt.Tooltip("department:N", title="Department"),
+                     alt.Tooltip("kind:N", title="Cost"),
+                     alt.Tooltip("label:N", title="Per year")])
+        labels = alt.Chart(totals).mark_text(align="left", dx=6, fontWeight="bold").encode(
+            y=y, x="total_cost:Q", text="label:N")
+        st.altair_chart((bars + labels).properties(height=alt.Step(30)), width="stretch",
+                        alt="Turnover and absence cost by department")
 
 
 # PROCESS 5 – THE RECOMMENDED PROGRAM: WHAT IT IS WORTH
@@ -300,11 +303,11 @@ if not teams.empty:
                     "absence_days": st.column_config.NumberColumn(
                         "Absence days (6 mo.)", format="%.1f"),
                     "excess_turnover_cost": st.column_config.NumberColumn(
-                        f"Extra turnover cost ({c})", format="localized"),
+                        f"Extra turnover cost ({c})", format="compact"),
                     "excess_absence_cost": st.column_config.NumberColumn(
-                        f"Extra absence cost ({c})", format="localized"),
+                        f"Extra absence cost ({c})", format="compact"),
                     "excess_cost": st.column_config.NumberColumn(
-                        f"Extra cost, total ({c})", format="localized"),
+                        f"Extra cost, total ({c})", format="compact"),
                 },
                 alt="Extra yearly turnover and absence cost for every team",
             )

@@ -214,6 +214,12 @@ PLAIN_AXIS = {
     "absence": "Fewer absence days a year, per 100 employees",
     "performance": "Higher rating, points per person",
 }
+# Two lines on screen so the axis titles fit narrow columns.
+PLAIN_AXIS_LINES = {
+    "turnover": ["Fewer leavers a year", "per 100 employees"],
+    "absence": ["Fewer absence days a year", "per 100 employees"],
+    "performance": ["Higher rating", "points per person"],
+}
 PLAIN_COLOR = {"turnover": GREEN, "absence": GREEN, "performance": BUTTER}
 
 
@@ -223,7 +229,7 @@ def plain_chart(data, outcome):
         y=alt.Y("question:N", sort=list(data["question"]), title=None,
                 axis=alt.Axis(labelLimit=170)))
     bars = base.mark_bar(cornerRadiusEnd=3, color=PLAIN_COLOR[outcome]).encode(
-        x=alt.X("plain:Q", title=PLAIN_AXIS[outcome], axis=alt.Axis(tickCount=4),
+        x=alt.X("plain:Q", title=PLAIN_AXIS_LINES[outcome], axis=alt.Axis(tickCount=4),
                 scale=alt.Scale(domain=[0, float(data["plain"].max()) * 1.9])),
         tooltip=[alt.Tooltip("question:N", title="Question"),
                  alt.Tooltip("explain:N", title="What it means")])
@@ -281,7 +287,7 @@ def worth_screen():
         yOffset=alt.YOffset("kind:N", sort=kinds))
     bars = base.mark_bar(cornerRadiusEnd=4).encode(
         x=alt.X("value:Q", title=f"Per year ({c})", axis=alt.Axis(format="~s"),
-                scale=alt.Scale(domain=[0, float(worth[["value", "high"]].max().max()) * 1.2])),
+                scale=alt.Scale(domain=[0, float(worth[["value", "high"]].max().max()) * 1.15])),
         color=alt.Color("kind:N", title=None, sort=kinds,
                         legend=alt.Legend(orient="bottom", labelLimit=400),
                         scale=alt.Scale(domain=kinds, range=[BURGUNDY, GREEN][:len(kinds)])),
@@ -289,8 +295,11 @@ def worth_screen():
                  alt.Tooltip("label:N", title="Per year"),
                  alt.Tooltip("explain:N", title="How it is worked out")])
     whisker = base.mark_rule(strokeWidth=3, color=BUTTER).encode(x="low:Q", x2="high:Q")
-    text = base.mark_text(align="left", dx=6, fontWeight="bold").encode(
-        x=alt.X("value:Q"), text="label:N")
+    # The label sits past the end of the bar or of its range line, whichever is longer.
+    text = base.transform_calculate(
+        label_x="max(datum.value, isValid(datum.high) ? datum.high : 0)"
+    ).mark_text(align="left", dx=6, fontWeight="bold").encode(
+        x=alt.X("label_x:Q"), text="label:N")
     st.altair_chart((bars + whisker + text).properties(height=alt.Step(30)),
                     width="stretch", alt="Cost today and what the program would save")
     if program is not None:
@@ -310,20 +319,22 @@ def worth_screen():
 
 
 def act_screen():
-    st.markdown("**All 12 questions, ranked by what improving them is worth**")
+    st.markdown("**Questions ranked by what improving them is worth**")
     if ranking.empty:
         st.caption("No question has a price yet.")
     else:
-        order = PRIORITY_ORDER + [NOT_PRICED, NO_LINK]
-        colors = PRIORITY_COLORS + ["#EAD58A", "#D9D4C7"]
-        present = [p for p in order if (ranking["priority"] == p).any()]
-        base = alt.Chart(ranking).encode(
-            x=alt.X("name:N", sort=list(ranking["name"]), title=None,
-                    axis=alt.Axis(labelAngle=-35, labelLimit=160, labelOverlap=False)))
-        bars = base.mark_bar(cornerRadiusTopLeft=4, cornerRadiusTopRight=4).encode(
-            y=alt.Y("bar:Q", title=f"Yearly value if improved ({c})",
+        order = PRIORITY_ORDER + [NOT_PRICED]
+        colors = PRIORITY_COLORS + ["#EAD58A"]
+        linked = ranking[ranking["priority"] != NO_LINK]
+        unlinked = ranking[ranking["priority"] == NO_LINK]
+        present = [p for p in order if (linked["priority"] == p).any()]
+        base = alt.Chart(linked).encode(
+            y=alt.Y("name:N", sort=list(linked["name"]), title=None,
+                    axis=alt.Axis(labelLimit=220, labelOverlap=False)))
+        bars = base.mark_bar(cornerRadiusEnd=4).encode(
+            x=alt.X("bar:Q", title=f"Yearly value if improved ({c})",
                     axis=alt.Axis(format="~s"),
-                    scale=alt.Scale(domain=[0, float(ranking["bar"].max()) * 1.18])),
+                    scale=alt.Scale(domain=[0, float(linked["bar"].max()) * 1.2])),
             color=alt.Color("priority:N", title=None, legend=alt.Legend(orient="top"),
                             scale=alt.Scale(domain=present,
                                             range=[colors[order.index(p)] for p in present])),
@@ -332,15 +343,17 @@ def act_screen():
                      alt.Tooltip("value_label:N", title="Yearly value"),
                      alt.Tooltip("agree_pct:Q", title="Agree today", format=".0%"),
                      alt.Tooltip("explain:N", title="What it means")])
-        text = base.mark_text(dy=-8, fontWeight="bold", fontSize=11).encode(
-            y="bar:Q", text="value_label:N")
-        st.altair_chart((bars + text).properties(height=360), width="stretch",
-                        alt="All 12 engagement questions ranked by yearly value")
+        text = base.mark_text(align="left", dx=5, fontWeight="bold", fontSize=11).encode(
+            x="bar:Q", text="value_label:N")
+        st.altair_chart((bars + text).properties(height=alt.Step(30)), width="stretch",
+                        alt="Engagement questions with a verified link, ranked by yearly value")
+        if not unlinked.empty:
+            st.caption("No verified link yet, so no value: "
+                       + ", ".join(unlinked["label"]) + ".")
         st.caption(":material/touch_app: Hover a bar for what it means. **Fix first** = big "
                    "payoff and many people score low; **Protect** = big payoff, already strong; "
                    "**Improve next** = smaller payoff, many score low; **Linked, not priced** = "
-                   "goes with performance, which has no dollar value yet; gray = no verified "
-                   "link yet.")
+                   "goes with performance, which has no dollar value yet.")
 
     st.markdown("**Teams that need support first, by department**")
     if priority_teams.empty:
@@ -373,6 +386,12 @@ for number, (icon, title, key) in enumerate(CHAPTERS, 1):
 # PROCESS 6 – 4: WHERE TO START
 
 start = story["start_here"].copy()
+if "why" in start.columns:
+    # Short list names so the reasons fit on one line in the table.
+    SHORT = {"High turnover risk": "Turnover risk", "High absence risk": "Absence risk",
+             "Biggest opportunity": "Big opportunity", "Highest extra cost": "High cost"}
+    start["why"] = start["why"].map(
+        lambda text: " · ".join(SHORT.get(part.strip(), part.strip()) for part in text.split("·")))
 if "extra_cost" in start.columns:
     # Written out (e.g. $1.2M) so the browser's language never changes the units.
     start["extra_cost"] = start["extra_cost"].map(lambda v: money(v, c))
@@ -393,10 +412,13 @@ with st.container(border=True):
             column_config={
                 "team_id": "Team",
                 "department": "Department",
-                "lists": st.column_config.NumberColumn("Lists", format="%d"),
-                "why": "Why it is here",
-                "start_with": "Team's first step",
-                "extra_cost": "Extra yearly cost",
+                "lists": st.column_config.NumberColumn("Lists", format="%d", width="small"),
+                "why": st.column_config.TextColumn("Why it is here", width="large",
+                                                   help="Turnover / absence risk: high predicted "
+                                                   "risk. Big opportunity: biggest expected gain. "
+                                                   "High cost: among the costliest teams."),
+                "start_with": st.column_config.TextColumn("Team's first step", width="medium"),
+                "extra_cost": st.column_config.TextColumn("Extra cost/yr", width="small"),
             },
             alt="Teams that show up on several lists, with their first step",
         )

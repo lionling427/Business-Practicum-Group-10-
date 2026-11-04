@@ -82,7 +82,8 @@ def kpi_tiles(df: pd.DataFrame) -> list[dict[str, Any]]:
             digits = 1 if "%" in fmt else 2
             delta = round(float(latest[key] - previous[key]), digits)
         tiles.append({
-            "label": f"{label} · {wave_label(latest['wave'])}" if pending else label,
+            "label": label,
+            "as_of": wave_label(latest["wave"]) if pending else None,
             "value": fmt.format(latest[key]),
             "delta": delta,
             "help": help_text + (f" {wave_label(newest).capitalize()} results are not known yet, "

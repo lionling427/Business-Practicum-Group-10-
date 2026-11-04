@@ -181,7 +181,7 @@ with watch_tab:
             key="watchlist_table",
             column_config={
                 "team_id": "Team",
-                "department": "Department",
+                "department": st.column_config.TextColumn("Department", width="medium"),
                 "employees": st.column_config.NumberColumn("People", format="%d"),
                 "q12_average": st.column_config.ProgressColumn(
                     "Average Q12", min_value=1, max_value=5, format="%.2f"),

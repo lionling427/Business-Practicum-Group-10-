@@ -488,13 +488,17 @@ def check_reproducible(df, analysis, health_report) -> list[dict[str, Any]]:
         summary = health_report.get("summary", {})
         blocked = [b for b in summary.get("blocked_outcomes", []) if b != "all"]
         added = {o: c for o, c in (analysis.get("adjustments") or {}).get("model_controls_added", {}).items() if c}
+        biases = sum(1 for c in health_report.get("checks", []) if c.get("status") == "WARN")
         checks.append(_check(
             "reproducible", "Data health check applied",
             "warn" if blocked else "pass",
-            ("Health check passed and was applied"
-             + (": blocked " + ", ".join(blocked) if blocked else "")
-             + ("; controls added: " + "; ".join(f"{o}: {', '.join(c)}" for o, c in added.items())
-                if added else "; no extra controls needed") + "."),
+            ("No data errors"
+             + (f"; {biases} known biases handled with caveats or adjustments "
+                "(listed under Trust → Data quality)" if biases else "")
+             + ("; blocked: " + ", ".join(blocked) if blocked else "")
+             + ("; extra model controls: " + "; ".join(f"{o}: {', '.join(c)}"
+                                                      for o, c in added.items())
+                if added else "; no extra model controls were needed") + "."),
             "Errors in the data stop the analysis, and known biases get the controls registered "
             "for them."))
     return checks

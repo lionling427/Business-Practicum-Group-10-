@@ -73,8 +73,9 @@ if not hidden("overview.tiles"):     # off when the CEO brief above already show
                 delta="About the same" if small else tile["delta"],   # neutral for tiny changes
                 delta_color="off" if small else "inverse" if tile["inverse"] else "normal",
                 delta_arrow="off" if small else "auto",
-                delta_description=("vs. the survey before" if tile.get("pending") else "vs. last survey")
-                if tile["delta"] is not None and not small else None,
+                delta_description=(f"{tile['as_of']}, vs. the survey before" if tile.get("as_of")
+                                   else "vs. last survey")
+                if tile["delta"] is not None and not small else tile.get("as_of"),
                 chart_data=tile["trend"],
                 chart_type="line",
                 help=tile["help"],
