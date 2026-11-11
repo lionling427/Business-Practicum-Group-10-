@@ -145,36 +145,113 @@ if not by_dept.empty and by_dept["total_cost"].sum() > 0:
 
         st.markdown("**Which department carries the biggest share of the cost**")
 
-        DEPT_COLORS = ["#8C2A3A", "#1F4A2E", "#C9A227", "#2F6B3F", "#B5707B",
-                       "#5B8C6A", "#E3C56B", "#9DBFA5", "#6E6A5E", "#D9D4C7"]
-        domain = list(by_dept["department"])           # same color per department
-        colors = alt.Scale(domain=domain,
-                           range=(DEPT_COLORS * (len(domain) // len(DEPT_COLORS) + 1))
-                           [:len(domain)])
-        pies = [(cost, title) for cost, title in (
+        departments = sorted(by_dept["department"].tolist())
+        charts = [(cost, title) for cost, title in (
             ("turnover_cost", "Voluntary turnover"), ("absence_cost", "Unplanned absence"),
-            ("total_cost", "Total people cost")) if by_dept[cost].sum() > 0]
+            ("total_cost", "Total people cost"))]
 
-        for (cost, title), column in zip(pies, st.columns(len(pies), gap="large")):
+        def rank_word(rank):
+            words = {1: "highest", 2: "second-highest", 3: "third-highest"}
+            if rank in words:
+                return words[rank]
+            suffix = "th" if 10 <= rank % 100 <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(rank % 10, "th")
+            return f"{rank}{suffix}-highest"
+
+        def update_filter(prefix, action, department=None):
+            selection_key = f"{prefix}_selection"
+            default_key = f"{prefix}_default"
+            all_key = f"{prefix}_all"
+            if action == "default" and st.session_state[default_key]:
+                chosen = []
+            elif action == "all":
+                chosen = departments.copy() if st.session_state[all_key] else []
+            else:
+                chosen = [name for name in departments
+                          if st.session_state[f"{prefix}_dept_{name}"]]
+            st.session_state[selection_key] = chosen
+            st.session_state[default_key] = not chosen
+            st.session_state[all_key] = bool(chosen) and len(chosen) == len(departments)
+            for name in departments:
+                st.session_state[f"{prefix}_dept_{name}"] = name in chosen
+
+        for (cost, title), column in zip(charts, st.columns(len(charts), gap="large")):
+            prefix = f"fin_chart_{cost}"
+            selection_key = f"{prefix}_selection"
+            roster_key = f"{prefix}_roster"
+            if st.session_state.get(roster_key) != tuple(departments):
+                st.session_state[roster_key] = tuple(departments)
+                st.session_state[selection_key] = []
+                st.session_state[f"{prefix}_default"] = True
+                st.session_state[f"{prefix}_all"] = False
+                for name in departments:
+                    st.session_state[f"{prefix}_dept_{name}"] = False
+            chosen = st.session_state[selection_key]
             data = by_dept[["department", cost]].rename(columns={cost: "value"})
-            data["share"] = data["value"] / data["value"].sum()
+            data = data.sort_values(["value", "department"], ascending=[False, True]).reset_index(drop=True)
+            measure_total = data["value"].sum()
+            data["share"] = data["value"] / measure_total if measure_total else 0.0
+            data["rank"] = data.index + 1
             data["label"] = data["value"].map(lambda v: money(v, c))
-            top = data.sort_values("value", ascending=False).iloc[0]
+            shown = data[data["department"].isin(chosen)].copy() if chosen else data.head(3).copy()
+            shown["leading"] = False
+            shown.loc[shown.index[0], "leading"] = True
+            order = shown["department"].tolist()
+            lead = shown.iloc[0]
+            if not chosen:
+                description = "Top 3 departments with highest cost"
+            elif len(chosen) == 1:
+                description = (f"{lead['department']} has the {rank_word(int(lead['rank']))} "
+                               f"cost, accounting for {lead['share']:.0%} of cost.")
+            else:
+                description = (f"Selected departments account for {shown['share'].sum():.0%} "
+                               f"of cost. {lead['department']} is highest among them and "
+                               f"ranks {rank_word(int(lead['rank'])).replace('-highest', '')} overall.")
+
             with column:
-                st.markdown(f"**{title}**")
-                st.caption(md(f"Largest: **{top['department']}**, {top['share']:.0%} "
-                              f"({money(top['value'], c)} a year)"))
+                title_col, filter_col = st.columns([3, 1.35], vertical_alignment="center", gap="small")
+                title_col.markdown(f"<span style='white-space:nowrap;font-weight:600'>{title}</span>",
+                                   unsafe_allow_html=True)
+                with filter_col.popover("Filter", width="content"):
+                    st.html("<style>div[class*='st-key-fin_chart_'] input[type='checkbox']"
+                            "{accent-color:#5B8C6A}</style>")
+                    st.checkbox("Default", key=f"{prefix}_default",
+                                on_change=update_filter, args=(prefix, "default"))
+                    st.checkbox("Select all", key=f"{prefix}_all",
+                                on_change=update_filter, args=(prefix, "all"))
+                    for name in departments:
+                        st.checkbox(name, key=f"{prefix}_dept_{name}",
+                                    on_change=update_filter, args=(prefix, "department", name))
+                st.caption(description)
+                x = alt.X("value:Q", scale=alt.Scale(domain=[0, max(float(shown["value"].max()) * 1.25, 1)], nice=False),
+                          axis=alt.Axis(title=None, grid=True, gridColor="#D8D5CF", gridWidth=0.5,
+                                        domain=False, tickSize=0, format="~s"))
+                y = alt.Y("department:N", sort=order,
+                          axis=alt.Axis(title=None, grid=False, domain=False, tickSize=0,
+                                        labelLimit=160))
+                base = alt.Chart(shown).encode(
+                    x=x, y=y,
+                    tooltip=[alt.Tooltip("department:N", title="Department"),
+                             alt.Tooltip("label:N", title="Per year"),
+                             alt.Tooltip("value:Q", title=f"Precise cost ({c})", format=",.2f"),
+                             alt.Tooltip("share:Q", title="Share", format=".0%"),
+                             alt.Tooltip("rank:Q", title="Overall rank", format=".0f")],
+                )
+                bars = base.mark_bar(size=28).encode(
+                    color=alt.condition("datum.leading", alt.value("#8C2A3A"), alt.value("#B9B1A8")))
+                red_value = base.transform_filter(alt.datum.leading).mark_text(
+                    align="right", dx=-7, color="white", fontWeight="bold", fontSize=11).encode(text="label:N")
+                gray_value = base.transform_filter(~alt.datum.leading).mark_text(
+                    align="right", dx=-7, color="black", fontSize=11).encode(text="label:N")
+                red_share = base.transform_filter(alt.datum.leading).mark_text(
+                    align="left", dx=6, color="#8C2A3A", fontWeight="bold", fontSize=11
+                ).encode(text=alt.Text("share:Q", format=".0%"))
                 st.altair_chart(
-                    alt.Chart(data).mark_arc(innerRadius=55, stroke="#FFFDF5").encode(
-                        theta=alt.Theta("value:Q", stack=True),
-                        color=alt.Color("department:N", scale=colors, title=None,
-                                        legend=alt.Legend(orient="bottom", columns=2)),
-                        order=alt.Order("value:Q", sort="descending"),
-                        tooltip=[alt.Tooltip("department:N", title="Department"),
-                                 alt.Tooltip("label:N", title="Per year"),
-                                 alt.Tooltip("share:Q", title="Share", format=".0%")],
-                    ).properties(height=320),
+                    (bars + red_value + gray_value + red_share).properties(
+                        height=max(150, len(shown) * 43)).configure_view(stroke=None),
                     width="stretch", alt=f"{title} cost by department")
+
+        _, instruction_col, _ = st.columns([1, 3, 1])
+        instruction_col.caption("Hover over each chart for additional features")
 
 
 # PROCESS 5 – THE RECOMMENDED PROGRAM: WHAT IT IS WORTH
