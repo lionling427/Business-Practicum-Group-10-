@@ -155,10 +155,10 @@ def coach_brief(
 
         answer = response.choices[0].message.content or ""
 
-    except Exception as exc:
+    except Exception:
 
         return use_fallback(
-            f"AI coach unavailable: {exc}"
+            "AI coaching is temporarily unavailable."
         )
 
     if not answer.strip():
@@ -172,8 +172,7 @@ def coach_brief(
     if unverified:
 
         return use_fallback(
-            "AI answer contained numbers not in the brief: "
-            + ", ".join(f"{number:g}" for number in unverified)
+            "The generated note could not be verified."
         )
 
     return {

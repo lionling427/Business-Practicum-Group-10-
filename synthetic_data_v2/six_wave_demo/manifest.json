@@ -1,0 +1,261 @@
+{
+  "scenario": "long_main",
+  "seed": 1,
+  "employees_per_wave": 5000,
+  "waves": 6,
+  "generation_seconds": 7.143,
+  "generator_command": "python synthetic_data_v2/gallup_v2_code/generate_synthetic_data.py --variant long_main --waves 6 --employees 5000 --seed 1 --full-data yes --out synthetic_data_v2/six_wave_demo/generated_work",
+  "prior_performance": "Masked: generator has no dated proof it predates the row's survey.",
+  "snapshots": [
+    {
+      "filename": "long_main_seed01_wave_01_asof.csv",
+      "latest_wave": 1,
+      "included_waves": [
+        1
+      ],
+      "cutoff_date": "2024-03-24",
+      "rows": 5000,
+      "rows_by_wave": {
+        "1": 5000
+      },
+      "unique_employees": 5000,
+      "unique_teams": 400,
+      "outcomes": {
+        "turnover": {
+          "known": 0,
+          "pending": 5000
+        },
+        "absence": {
+          "known": 0,
+          "pending": 5000
+        },
+        "performance": {
+          "known": 0,
+          "pending": 5000
+        }
+      },
+      "bytes": 650186,
+      "sha256": "67b755acd22cd3cc73fdcfdbb87a8ed006b9cf7fab22f80d8d0ea1ebf337a1b4",
+      "application": {
+        "capability": "OUTCOME_ANALYSIS",
+        "model_wave": 1,
+        "ingestion_seconds": 0.033
+      }
+    },
+    {
+      "filename": "long_main_seed01_wave_02_asof.csv",
+      "latest_wave": 2,
+      "included_waves": [
+        1,
+        2
+      ],
+      "cutoff_date": "2025-03-23",
+      "rows": 10000,
+      "rows_by_wave": {
+        "1": 5000,
+        "2": 5000
+      },
+      "unique_employees": 5909,
+      "unique_teams": 400,
+      "outcomes": {
+        "turnover": {
+          "known": 4772,
+          "pending": 5228
+        },
+        "absence": {
+          "known": 5000,
+          "pending": 5000
+        },
+        "performance": {
+          "known": 5000,
+          "pending": 5000
+        }
+      },
+      "bytes": 1493850,
+      "sha256": "31317f81c9c47863f6bf0f47b7b049c38f11845763b25296a9a30bdc30500103",
+      "application": {
+        "capability": "OUTCOME_ANALYSIS",
+        "model_wave": 1,
+        "ingestion_seconds": 0.075
+      }
+    },
+    {
+      "filename": "long_main_seed01_wave_03_asof.csv",
+      "latest_wave": 3,
+      "included_waves": [
+        1,
+        2,
+        3
+      ],
+      "cutoff_date": "2026-03-22",
+      "rows": 15000,
+      "rows_by_wave": {
+        "1": 5000,
+        "2": 5000,
+        "3": 5000
+      },
+      "unique_employees": 6794,
+      "unique_teams": 400,
+      "outcomes": {
+        "turnover": {
+          "known": 9780,
+          "pending": 5220
+        },
+        "absence": {
+          "known": 10000,
+          "pending": 5000
+        },
+        "performance": {
+          "known": 10000,
+          "pending": 5000
+        }
+      },
+      "bytes": 2340762,
+      "sha256": "690555eba3820407b6a1c3eef8abe1d9e60bbaceb39a187cfdf6795d1469f4f2",
+      "application": {
+        "capability": "OUTCOME_ANALYSIS",
+        "model_wave": 2,
+        "ingestion_seconds": 0.088
+      }
+    },
+    {
+      "filename": "long_main_seed01_wave_04_asof.csv",
+      "latest_wave": 4,
+      "included_waves": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "cutoff_date": "2027-03-21",
+      "rows": 20000,
+      "rows_by_wave": {
+        "1": 5000,
+        "2": 5000,
+        "3": 5000,
+        "4": 5000
+      },
+      "unique_employees": 7614,
+      "unique_teams": 400,
+      "outcomes": {
+        "turnover": {
+          "known": 14772,
+          "pending": 5228
+        },
+        "absence": {
+          "known": 15000,
+          "pending": 5000
+        },
+        "performance": {
+          "known": 15000,
+          "pending": 5000
+        }
+      },
+      "bytes": 3189320,
+      "sha256": "f4b19e3897f5a780daf8109ebfd17c4d21b78b1905f551a81a251b8b6c7bf74f",
+      "application": {
+        "capability": "OUTCOME_ANALYSIS",
+        "model_wave": 3,
+        "ingestion_seconds": 0.13
+      }
+    },
+    {
+      "filename": "long_main_seed01_wave_05_asof.csv",
+      "latest_wave": 5,
+      "included_waves": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "cutoff_date": "2028-03-26",
+      "rows": 25000,
+      "rows_by_wave": {
+        "1": 5000,
+        "2": 5000,
+        "3": 5000,
+        "4": 5000,
+        "5": 5000
+      },
+      "unique_employees": 8429,
+      "unique_teams": 400,
+      "outcomes": {
+        "turnover": {
+          "known": 20000,
+          "pending": 5000
+        },
+        "absence": {
+          "known": 20000,
+          "pending": 5000
+        },
+        "performance": {
+          "known": 20000,
+          "pending": 5000
+        }
+      },
+      "bytes": 4042144,
+      "sha256": "59cc3bc4d5f090dc7e87641ac1ae3f3c3e17182408178412231ca2955a1ffb04",
+      "application": {
+        "capability": "OUTCOME_ANALYSIS",
+        "model_wave": 4,
+        "ingestion_seconds": 0.134
+      }
+    },
+    {
+      "filename": "long_main_seed01_wave_06_asof.csv",
+      "latest_wave": 6,
+      "included_waves": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "cutoff_date": "2029-03-25",
+      "rows": 30000,
+      "rows_by_wave": {
+        "1": 5000,
+        "2": 5000,
+        "3": 5000,
+        "4": 5000,
+        "5": 5000,
+        "6": 5000
+      },
+      "unique_employees": 9244,
+      "unique_teams": 400,
+      "outcomes": {
+        "turnover": {
+          "known": 24756,
+          "pending": 5244
+        },
+        "absence": {
+          "known": 25000,
+          "pending": 5000
+        },
+        "performance": {
+          "known": 25000,
+          "pending": 5000
+        }
+      },
+      "bytes": 4889210,
+      "sha256": "86f2a4a2d98b942fad244a9d056d234c91b663f5b4a24c7f4c36f4383f03b4a4",
+      "application": {
+        "capability": "OUTCOME_ANALYSIS",
+        "model_wave": 5,
+        "ingestion_seconds": 0.183
+      }
+    }
+  ],
+  "private_answer_key_hashes": {
+    "events.csv": "582ce95b4cc5e9425053808c16739401549636d13733dfd1ae20de9673e9df48",
+    "full_data_with_latents.csv": "25db40f8637ecfb1b932a21fb06f66c4f1b8035a3cfda84dec684481ff4e45c3",
+    "ground_truth.json": "b66812316c9ae0e850fcf45fcde69287e1ca3013907062741ecd9a5f813552a9",
+    "hidden_outcomes.csv": "2036812dfefa5d1a9bfad249104db9a0f14fbcb210751d609838e2b535a2c7fc",
+    "manager_changes.csv": "21042a013c267204b27cc64b6b624f8f70a7f305147847f968e9a1d9f2b81422",
+    "team_true_risk.csv": "2ed095b3821476c8327b657f6e45c42168a1c9662e179b355216357b5a3544c5",
+    "teams_with_manager_quality.csv": "6bf5ad48674d4d33930837fa3266bbf3efaae024428a402b900ad36ec8b0b513"
+  },
+  "export_seconds": 12.014
+}

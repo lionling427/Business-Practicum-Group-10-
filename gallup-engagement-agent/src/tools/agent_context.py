@@ -436,10 +436,20 @@ def build_context(df: pd.DataFrame, analysis: dict | None = None,
     be built is replaced by a short note instead of failing the whole answer."""
     a = assumptions or Assumptions(headcount=len(analysis_frame(df)))
     wanted = sections or list(BUILDERS)
+    from .data_ingestion import detect_capabilities
+    has_outcomes = bool(detect_capabilities(df)["outcomes"])
     needs_risk = {"teams", "recommendations", "predictions"} & set(wanted)
-    risk_results = _risk_results(df, analysis) if needs_risk else None
+    risk_results = _risk_results(df, analysis) if needs_risk and has_outcomes else None
     context: dict[str, Any] = {"model_survey": wave_label(model_wave(df))}
     for name in wanted:
+        if not has_outcomes and name in ("financials", "recommendations", "predictions"):
+            context[name] = {"note": "Business outcomes have not been observed yet; outcome-based results are unavailable."}
+            continue
+        if not has_outcomes and name == "teams":
+            scorecard = team_scorecard(df, None)
+            context[name] = {"teams_reported": int(len(scorecard)),
+                             "note": "Survey team scores are available. Outcome-backed priorities and risk are not available yet."}
+            continue
         builder = BUILDERS[name]
         try:
             if name in ("teams", "recommendations", "predictions"):
@@ -514,26 +524,86 @@ def wrong_waves(answer: str, question: str) -> list[str]:
 
 # PROCESS 5 – NUMBER CHECK
 
-NUMBER = re.compile(r"(?<![A-Za-z\d.])\d+(?:,\d{3})*(?:\.\d+)?")
+NUMBER = re.compile(r"(?<![A-Za-z\d.])\d+(?:,\d{3})*(?:\.\d+)?([KMB])?", re.IGNORECASE)
 
 
 def _numbers(text: str) -> set[float]:
-    return {float(m.replace(",", "")) for m in NUMBER.findall(text)}
+    return {float(m.group(0).rstrip("KkMmBb").replace(",", ""))
+            * {"k": 1e3, "m": 1e6, "b": 1e9}.get((m.group(1) or "").lower(), 1)
+            for m in NUMBER.finditer(text)}
 
 
 def check_numbers(answer: str, evidence: Any, question: str = "") -> list[float]:
     """Figures in the answer that do not appear (at any rounding) in the evidence
     or the question. Small counting words like 1-12 are ignored."""
-    source = json.dumps(evidence, default=str) + " " + question
+    source = json.dumps(evidence, default=str)
     allowed: set[float] = set()
     for value in _numbers(source):
         for digits in (0, 1, 2):
             allowed.add(round(value, digits))
             allowed.add(round(value * 100, digits))     # 0.38 written as 38%
     unverified = []
-    for value in _numbers(answer):
-        if value <= 12 and float(value).is_integer():
-            continue                                     # list numbers, "Q04", "3 teams"
+    answer_without_list_numbers = re.sub(r"(?m)^\s*(?:#+\s*)?\d+[.)]\s", "", answer)
+    for value in _numbers(answer_without_list_numbers):
         if not any(abs(value - x) < 0.051 for x in allowed):
             unverified.append(value)
     return sorted(set(unverified))
+
+
+def check_high_risk_claims(answer: str, sections: list[str]) -> list[str]:
+    """Conservative textual screen; it cannot establish all qualitative truth."""
+    text = answer.lower()
+    text = re.sub(r"\b(?:not|never|no)\s+(?:a\s+)?(?:guarantee|guaranteed|prove|proven|cause|causes)\b", "", text)
+    issues = []
+    if re.search(r"\b(?:causes?|caused|proves?|proven|guarantees?)\b|\b(?:will|would)\s+(?:directly\s+)?(?:reduce|increase|improve|prevent|eliminate)\b", text):
+        issues.append("causal certainty")
+    if re.search(r"\b(?:guaranteed|guarantees|will definitely|certain to)\b.{0,45}\b(?:sav(?:e|ings)|return|profit)\b|\b(?:sav(?:e|ings)|return|profit)\b.{0,45}\bguaranteed\b", text):
+        issues.append("guaranteed financial outcome")
+    if re.search(r"\b(?:measured|actual|realized|proven)\s+profit\b", text):
+        issues.append("measured profit claim")
+    if re.search(r"\b(?:employee|person|individual)\s+(?:[a-z]*\d+[a-z\d]*|will\s+(?:leave|quit|resign)|is\s+at\s+risk)\b", text):
+        issues.append("individual employee conclusion")
+    names = {"overview", "trends", "teams", "predictions", "recommendations",
+             "financials", "outcomes", "engagement", "change", "scenarios",
+             "strengths", "audit", "report pack"}
+    for name in names - set(sections):
+        if re.search(rf"\b(?:the\s+)?{name}\s+(?:page|section|tab|shows|reports|estimates)\b", text):
+            issues.append(f"unsupported source: {name}")
+    return issues
+
+
+class UnverifiedAnswerError(Exception):
+    """A generated answer failed both bounded verification attempts."""
+
+
+def public_answer_failure(error):
+    if isinstance(error, UnverifiedAnswerError):
+        return "The generated answer could not be verified, so it was not displayed. Please try again."
+    return "AI explanation is temporarily unavailable. Your verified dashboard results remain available."
+
+
+def generate_verified_reply(question, generate, sections, context=None):
+    """Generate, check, and make at most one corrective generation attempt."""
+    def issues_for(result):
+        if result.get("blocked"):
+            return []
+        answer = result["answer"]
+        evidence = result.get("evidence") or {}
+        available = sections or result.get("sections", [])
+        return (check_numbers(answer, evidence)
+                + check_high_risk_claims(answer, available)
+                + (wrong_waves(answer, question) if context else []))
+
+    result = generate(question)
+    if issues_for(result):
+        correction = (
+            "Use only verified numbers supplied in VERIFIED_EVIDENCE. Remove flagged "
+            "unsupported figures and claims. Do not echo numbers from the user's question "
+            "as verified results. Describe associations without claiming causation, and "
+            "estimates without guaranteed savings or measured profit. Cite only application "
+            "sections supplied in the evidence."
+        )
+        result = generate(f"{question}\n\nCORRECTION: {correction}")
+        if issues_for(result):
+            raise UnverifiedAnswerError
+    return result

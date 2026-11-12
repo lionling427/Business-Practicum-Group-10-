@@ -2,11 +2,17 @@
 
 from __future__ import annotations
 
+import hashlib
 from io import BytesIO
 from typing import Any
 
 import numpy as np
 import pandas as pd
+
+
+def upload_fingerprint(uploaded_file) -> str:
+    """Identify the file contents so equal-sized replacements cannot reuse old results."""
+    return hashlib.sha256(uploaded_file.getvalue()).hexdigest()
 
 
 # PROCESS 2 – SCHEMA CONFIGURATION
@@ -134,12 +140,18 @@ def detect_capabilities(
         if column in columns
     ]
 
-    outcomes_available = [
-        outcome
-        for outcome, column
-        in OUTCOME_COLUMNS.items()
-        if column in columns
-    ]
+    outcomes_available = []
+    for outcome, column in OUTCOME_COLUMNS.items():
+        if column not in columns:
+            continue
+        numeric = pd.to_numeric(df[column], errors="coerce")
+        observed = np.isfinite(numeric)
+        if outcome == "turnover":
+            observed &= numeric.isin([0, 1])
+        elif outcome == "absence":
+            observed &= numeric >= 0
+        if observed.any():
+            outcomes_available.append(outcome)
 
     if not has_core:
 
@@ -151,9 +163,9 @@ def detect_capabilities(
 
         level = "OUTCOME_ANALYSIS"
 
-    elif len(
-        profile_available
-    ) > 0:
+    elif len(profile_available) > 0 and not any(
+        column in columns for column in OUTCOME_COLUMNS.values()
+    ):
 
         level = "SEGMENT_ANALYSIS"
 

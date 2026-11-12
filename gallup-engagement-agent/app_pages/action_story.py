@@ -1,10 +1,12 @@
 # PROCESS 1 – IMPORTS
 
 import altair as alt
+import html
 import pandas as pd
+import re
 import streamlit as st
 
-from src.tools.action_story import build_action_story, for_screen
+from src.tools.action_story import MAX_START_TEAMS, build_action_story, for_screen
 from src.tools.ceo_brief import brief_for_screen, build_ceo_brief
 from src.tools.dashboard import driver_rows
 from src.tools.financial import Assumptions, current_costs, md, money
@@ -191,11 +193,110 @@ if analysis is not None:
                       "question and have worse turnover or absence than the company.", axis=1)
 
 
-# PROCESS 4 – THE STORY IN ONE SENTENCE
+# PROCESS 4 – RECOMMENDATION SUMMARY
+
+top_factor = factors.iloc[0] if not factors.empty and factors.iloc[0]["yearly_value"] > 0 else None
+start_count = len(story["start_here"])
+team_word = "team" if start_count == 1 else "teams"
+factor_recommendation = (f'Company-wide: Prioritize “{top_factor["label"]}”'
+                         if top_factor is not None else
+                         "Company-wide: No verified factor is currently available.")
+team_recommendation = (f"Team review: Review the {start_count} {team_word} with the "
+                       "strongest combined signals." if start_count else
+                       "Team review: No cross-signal teams are currently available for review.")
+
+st.html(
+    "<style>"
+    ".strategy-summary-lead{display:flex;flex-direction:column;gap:.42rem;margin-bottom:1.1rem}"
+    ".strategy-summary-row{display:flex;align-items:center;gap:.6rem;min-width:0;text-align:left}"
+    ".strategy-summary-marker{display:inline-flex;align-items:center;justify-content:center;"
+    "flex:none;width:1.35rem;height:1.35rem;border-radius:50%;background:#1F4A2E;"
+    "color:white;font-size:.9rem;font-weight:600}"
+    ".strategy-summary-title{color:#1F4A2E;font-size:1.1rem;font-weight:600;"
+    "white-space:nowrap;line-height:1.35;min-width:0}"
+    "@media(max-width:1000px){.strategy-summary-title{white-space:normal}}"
+    "</style>"
+    '<div class="strategy-summary-lead">'
+    '<div class="strategy-summary-row"><span class="strategy-summary-marker" '
+    'aria-hidden="true">1</span>'
+    f'<div class="strategy-summary-title">{html.escape(factor_recommendation)}</div></div>'
+    '<div class="strategy-summary-row"><span class="strategy-summary-marker" '
+    'aria-hidden="true">2</span>'
+    f'<div class="strategy-summary-title">{html.escape(team_recommendation)}</div></div>'
+    '</div>'
+)
 
 with st.container(border=True):
-    st.caption("THE STORY IN ONE SENTENCE")
-    st.subheader(for_screen(story["headline"]), anchor=False)
+
+    leavers_match = re.search(r"about ([\d,]+) people are likely to leave next year",
+                               story["headline"])
+    if leavers_match is None:
+        leavers_match = re.search(
+            r"About \*\*([\d,]+) people\*\* are likely to leave",
+            " ".join(story["chapters"]["predict"]["points"]),
+        )
+    risk_display = leavers_match.group(1) if leavers_match else "Unavailable"
+    value_display = money(top_factor["yearly_value"], c) if top_factor is not None else "Unavailable"
+    teams_display = f"{start_count:,}"
+    metrics = (
+        ("Risk if nothing changes", risk_display, "modeled likely leavers next year", "#8C2A3A"),
+        ("Potential yearly value", value_display, "modeled from observed associations", "#1F4A2E"),
+        ("Teams to review", teams_display, "highest combined signals shown", "#1F4A2E"),
+    )
+    team_help = ("Teams appear here when they qualify on at least two independent concern "
+                 f"or opportunity lists. The page displays up to {MAX_START_TEAMS} teams, "
+                 "so additional teams may qualify.")
+    metric_html = "".join(
+        f'<div class="strategy-summary-metric"><div class="strategy-summary-label" style="color:{color}">'
+        f'{html.escape(label)}'
+        + (f' <span class="strategy-summary-help" title="{html.escape(team_help, quote=True)}" '
+           'aria-label="About teams to review" tabindex="0">?</span>'
+           if label == "Teams to review" else "")
+        + '</div>'
+        f'<div class="strategy-summary-value" style="color:{color}">{html.escape(value)}</div>'
+        f'<div class="strategy-summary-detail">{html.escape(detail)}</div></div>'
+        for label, value, detail, color in metrics
+    )
+    st.html(
+        "<style>"
+        ".strategy-summary-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));"
+        "margin-top:1rem}"
+        ".strategy-summary-metric{min-width:0;padding:0 1rem;text-align:center}"
+        ".strategy-summary-metric+.strategy-summary-metric{border-left:1px solid #E8DDB5}"
+        ".strategy-summary-label{font-size:.84rem;font-weight:600;min-height:1.3rem}"
+        ".strategy-summary-value{font-size:1.45rem;font-weight:600;line-height:1.3}"
+        ".strategy-summary-detail{font-size:.8rem;color:#6E6A5E;min-height:1.3rem}"
+        ".strategy-summary-help{cursor:help;border-bottom:1px dotted #6E6A5E}"
+        ".strategy-summary-caveat{font-size:.72rem;font-style:italic;color:#6E6A5E;"
+        "margin-top:1.5rem;text-align:left}"
+        "@media(max-width:640px){.strategy-summary-metrics{grid-template-columns:1fr;gap:.7rem}"
+        ".strategy-summary-metric{padding:0;border-left:0!important}}"
+        "</style>"
+        f'<div class="strategy-summary-metrics">{metric_html}</div>'
+        '<div class="strategy-summary-caveat">Predictions are likelihoods, not certainties; '
+        'potential values are modeled from observed associations, not guarantees, and depend '
+        'on the cost assumptions in Financials.</div>'
+    )
+
+with st.container(border=True):
+    st.markdown("**How to read this recommendation**")
+    active_lists = sorted({name for why in story["start_here"].get("why", [])
+                           for name in str(why).split(" · ") if name})
+    lists_text = (" The lists represented here include "
+                  + ", ".join(name.lower() for name in active_lists) + ".") if active_lists else ""
+    factor_text = (f"{top_factor['label']} is the current company-wide priority based on "
+                   "the verified factor analysis. " if top_factor is not None else
+                   "No verified company-wide factor is currently available. ")
+    team_text = (f"Separately, the {start_count} {team_word} shown here appeared on at least "
+                 "two independent concern or opportunity lists. " if start_count else
+                 "Separately, no team currently appears on at least two available concern "
+                 "or opportunity lists. ")
+    explanation = (factor_text + team_text + lists_text + " Teams are ordered by how many "
+                   "lists they appear on, then by estimated extra annual cost. The page "
+                   f"displays up to {MAX_START_TEAMS} teams, so others may qualify. Each "
+                   "team's own first step is calculated separately and may focus on a "
+                   "different engagement factor.")
+    st.markdown(explanation)
 
 
 # PROCESS 5 – 1-3: WHAT DRIVES RESULTS, WHAT IT IS WORTH, WHERE TO ACT
@@ -489,7 +590,7 @@ sections += [
 
 st.download_button(
     "Download the action story (PDF)",
-    data=document_pdf("Action story", sections, subtitle=brief.get("survey", "")),
+    data=lambda: document_pdf("Action story", sections, subtitle=brief.get("survey", "")),
     file_name="engagai_action_story.pdf",
     mime="application/pdf",
     icon=":material/picture_as_pdf:",

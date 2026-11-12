@@ -14,6 +14,7 @@ from src.tools.financial import (
     team_excess_cost,
 )
 from src.tools.insights import analysis_frame
+from src.tools.waves import model_wave, wave_label
 from src.tools.priorities import (
     PRIORITY_MEANING,
     explain_priorities,
@@ -52,6 +53,22 @@ if validation["capabilities"]["level"] != OUTCOME_LEVEL:
         icon=":material/info:",
     )
     st.stop()
+
+observed_wave = model_wave(df)
+wave_rows = df[df["wave"] == observed_wave] if "wave" in df.columns else df
+partial = []
+for label, column in (("turnover", "left_voluntarily_12m"),
+                      ("absence", "unplanned_absence_days_6m")):
+    if column in wave_rows and wave_rows[column].notna().any():
+        coverage = wave_rows[column].notna().mean()
+        if coverage < 1:
+            partial.append(f"{label} {coverage:.0%}")
+if partial:
+    st.caption(
+        f"Outcome coverage in {wave_label(observed_wave)} is partial "
+        f"({', '.join(partial)}). Cost estimates use observed outcomes; pending rows "
+        "are not counted as zero."
+    )
 
 sample = len(analysis_frame(df))
 assumptions = st.session_state.get("assumptions") or Assumptions(headcount=sample)

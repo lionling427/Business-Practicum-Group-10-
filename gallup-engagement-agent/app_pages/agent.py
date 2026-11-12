@@ -7,9 +7,10 @@ from src.tools.agent_context import (
     check_numbers,
     fact_sheet,
     focus_context,
-    question_waves,
+    generate_verified_reply,
+    public_answer_failure,
+    UnverifiedAnswerError,
     route_sections,
-    wrong_waves,
 )
 from src.tools.analytics import analyze_dataframe
 from src.tools.longitudinal import analyze_change, survey_waves
@@ -35,6 +36,7 @@ SECTION_NAMES = {
     "financials": "Financials",
 }
 
+
 EXAMPLES = [
     "Which teams should I worry about, and what will it cost?",
     "Is engagement getting better over time?",
@@ -54,12 +56,14 @@ if df is not None:
     require_data()
 
     # The agent needs the analyses behind every page; run any that are missing once.
-    missing = st.session_state.get("uploaded_analysis") is None or (
+    has_outcomes = bool(st.session_state.get("uploaded_validation", {})
+                        .get("capabilities", {}).get("outcomes"))
+    missing = (has_outcomes and st.session_state.get("uploaded_analysis") is None) or (
         len(survey_waves(df)) >= 2 and st.session_state.get("change_analysis") is None)
 
     if missing:
         with st.spinner("Preparing the analyses the agent answers from..."):
-            if st.session_state.get("uploaded_analysis") is None:
+            if has_outcomes and st.session_state.get("uploaded_analysis") is None:
                 run_statistical_analysis()
             if len(survey_waves(df)) >= 2 and st.session_state.get("change_analysis") is None:
                 try:
@@ -67,11 +71,14 @@ if df is not None:
                 except ValueError:
                     pass
 
-    analysis = st.session_state["uploaded_analysis"]
-    st.caption(
-        f":material/check_circle: Answering from **{st.session_state.get('uploaded_name')}** "
-        f"· {analysis['sample_size']:,} employees in the statistical models."
-    )
+    analysis = st.session_state.get("uploaded_analysis")
+    if analysis is None:
+        st.caption("Answering from verified survey results. Business outcomes are not available yet.")
+    else:
+        st.caption(
+            f":material/check_circle: Answering from **{st.session_state.get('uploaded_name')}** "
+            f"· {analysis['sample_size']:,} employees in the statistical models."
+        )
 
 else:
 
@@ -201,6 +208,8 @@ def show_sources(message):
 for message in st.session_state.messages:
     with st.chat_message(message["role"], avatar=AVATARS[message["role"]]):
         st.markdown(safe(message["content"]))
+        if message.get("mode") == "ai":
+            st.caption("AI-generated explanation from verified results")
         show_sources(message)
 
 
@@ -223,25 +232,12 @@ if user_question:
             try:
                 context, sections = context_for(user_question)
 
-                result = ask_agent(
+                result = generate_verified_reply(
                     user_question,
-                    analysis_override=analysis,
-                    context=context,
-                    return_debug=True,
+                    lambda prompt: ask_agent(prompt, analysis_override=analysis,
+                                             context=context, return_debug=True),
+                    sections, context,
                 )
-
-                # An answer that uses surveys the question did not ask about is
-                # written again once, told which surveys to use.
-                stray = wrong_waves(result["answer"], user_question) if context else []
-                if stray:
-                    asked = " and ".join(f"wave {w}" for w in question_waves(user_question))
-                    result = ask_agent(
-                        f"{user_question}\n\n(Use only the figures for {asked}; do not "
-                        f"use wave {', '.join(stray)}.)",
-                        analysis_override=analysis,
-                        context=context,
-                        return_debug=True,
-                    )
 
                 answer = result["answer"]
                 evidence = result.get("evidence") or {}
@@ -252,21 +248,22 @@ if user_question:
                     # the agent builds the development dataset's facts itself.
                     "sections": sections or result.get("sections", []),
                     "evidence": evidence if isinstance(evidence, dict) else {},
-                    "unverified": check_numbers(answer, evidence, user_question)
-                    if evidence else [],
+                    "mode": "verified" if result.get("blocked") else "ai",
                 }
 
-            except Exception as exc:
-
-                answer = ("I could not complete the analysis. Please check the application "
-                          "configuration or try again.")
+            except UnverifiedAnswerError:
+                answer = public_answer_failure(UnverifiedAnswerError())
                 message = {"role": "assistant", "content": answer}
                 st.error(answer)
-                # Development-only diagnostic
-                st.caption(f"Technical detail: {exc}")
+            except Exception:
+
+                answer = public_answer_failure(None)
+                message = {"role": "assistant", "content": answer}
+                st.error(answer)
 
         if "sections" in message:
             st.markdown(safe(answer))
+            st.caption("AI-generated explanation from verified results")
             show_sources(message)
 
     st.session_state.messages.append(message)

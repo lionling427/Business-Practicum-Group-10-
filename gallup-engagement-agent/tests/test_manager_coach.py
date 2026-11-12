@@ -104,7 +104,7 @@ def test_coach_falls_back_on_invented_number(brief):
     )
 
     assert result["source"] == "deterministic"
-    assert "47" in result["reason"]
+    assert "could not be verified" in result["reason"]
     assert result["text"] == brief_markdown(brief)
 
 
@@ -116,6 +116,8 @@ def test_coach_falls_back_when_ai_fails(brief):
     )
 
     assert result["source"] == "deterministic"
+    assert "no key" not in result["reason"]
+    assert result["text"] == brief_markdown(brief)
 
 
 def test_coach_falls_back_on_empty_answer(brief):

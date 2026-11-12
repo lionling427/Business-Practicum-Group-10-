@@ -8,6 +8,7 @@ import streamlit as st
 from src.tools.data_ingestion import (
     normalize_columns,
     read_uploaded_file,
+    upload_fingerprint,
     validate_uploaded_data,
 )
 from src.tools.agent_context import fact_sheet
@@ -91,7 +92,8 @@ with st.sidebar:
 
             upload_signature = (
                 f"{uploaded_file.name}:"
-                f"{getattr(uploaded_file, 'size', 0)}"
+                f"{getattr(uploaded_file, 'size', 0)}:"
+                f"{upload_fingerprint(uploaded_file)}"
             )
 
             # Read and validate only when the file changes.

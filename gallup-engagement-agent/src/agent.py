@@ -749,6 +749,8 @@ def get_azure_client():
         azure_endpoint=endpoint,
         api_key=api_key,
         api_version=AZURE_API_VERSION,
+        timeout=30.0,
+        max_retries=0,
     )
 
 

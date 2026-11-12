@@ -99,8 +99,9 @@ if hidden("teams.only_tests"):
 
 tiles = [
     ("Teams", f"{len(watchlist):,}", f"Teams with {MIN_TEAM_SIZE}+ people in {wave_label(model_wave(df))}."),
-    ("Priority teams", f"{int(watchlist['priority'].sum()):,}",
-     "Bottom quarter on their focus question and worse turnover or absence than the company."),
+    ("Priority teams", f"{int(watchlist['priority'].sum()):,}" if analysis is not None else "Unavailable",
+     "Bottom quarter on their focus question and worse turnover or absence than the company."
+     if analysis is not None else "Needs observed turnover or absence outcomes."),
 ]
 for outcome in ["turnover", "absence"]:
     if risk_ok.get(outcome):

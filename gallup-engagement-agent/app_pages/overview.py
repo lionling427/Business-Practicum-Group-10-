@@ -1,6 +1,8 @@
 # PROCESS 1 – IMPORTS
 
 import streamlit as st
+import html
+import math
 
 from src.tools.ceo_brief import SMALL_POINTS, SMALL_SCORE
 
@@ -49,23 +51,90 @@ now = wave_label(latest_wave(df))
 
 # PROCESS 3 – HEADLINE TILES (LATEST SURVEY)
 
-st.subheader(
-    f"Latest survey · {now} · {latest_responses(df):,} people",
-    anchor=False,
-)
-
 tiles = kpi_tiles(df)
 
+def executive_readout(tiles, wave, people, previous_wave, available_views):
+    """Describe the two displayed tiles without recalculating their values."""
+    by_label = {tile["label"]: tile for tile in tiles}
+    score = by_label.get("Average Q12 score")
+    engaged = by_label.get("Employees engaged")
+    population = (f"Across {people:,} {'person' if people == 1 else 'people'} in {wave}"
+                  if people is not None and wave else "In the latest survey")
+    current = []
+    if score and score.get("value"):
+        current.append(f"the average Q12 score is {score['value']}")
+    if engaged and engaged.get("value"):
+        current.append(f"{engaged['value']} are classified as engaged")
+    text = population + (", " + " and ".join(current) if current else
+                         ", the headline measures are unavailable") + "."
+
+    if previous_wave and score and engaged:
+        score_delta, engaged_delta = score.get("delta"), engaged.get("delta")
+        if (score_delta is not None and engaged_delta is not None
+                and math.isfinite(score_delta) and math.isfinite(engaged_delta)):
+            score_state = ("about the same" if abs(score_delta) < SMALL_SCORE else
+                           "improved" if score_delta > 0 else "declined")
+            engaged_state = ("unchanged" if engaged_delta == 0 else
+                             "about the same" if abs(engaged_delta) < SMALL_POINTS else
+                             "improved" if engaged_delta > 0 else "declined")
+            score_phrase = ("remained about the same" if score_state == "about the same" else
+                            f"{score_state} by {abs(score_delta):g} points")
+            engaged_phrase = ("was unchanged" if engaged_state == "unchanged" else
+                              "remained about the same" if engaged_state == "about the same" else
+                              f"{engaged_state} by {abs(engaged_delta):g} "
+                              f"percentage {'point' if abs(engaged_delta) == 1 else 'points'}")
+            text += f" Compared with {previous_wave}, the average {score_phrase} and the engaged share {engaged_phrase}."
+            if (score_state == "improved" and engaged_state == "declined" or
+                    score_state == "declined" and engaged_state == "improved" or
+                    score_state == "about the same" and engaged_state in ("improved", "declined")):
+                text += " The measures present a mixed picture."
+            elif score_state == engaged_state == "improved":
+                text += " Both measures improved."
+            elif score_state == engaged_state == "declined":
+                text += " Both measures weakened."
+    if available_views:
+        names = " and ".join(available_views)
+        ending = ("where that change is concentrated" if previous_wave else
+                  "how the current results differ across groups")
+        text += f" Review the {names} {'scorecards' if len(available_views) > 1 else 'scorecard'} below to determine {ending}."
+    return text
+
+
+previous_wave = None
+if any(tile.get("delta") is not None for tile in tiles):
+    from src.tools.dashboard import wave_summary
+    summary_waves = wave_summary(df)["wave"]
+    if len(summary_waves) >= 2:
+        previous_wave = wave_label(summary_waves.iloc[-2])
+views = [name for name, key in (("department", "department"), ("team", "team_id"))
+         if key in df.columns]
+readout = executive_readout(tiles, now, latest_responses(df), previous_wave, views)
+st.markdown(html.escape(readout))
+
+st.html("""<style>
+.st-key-executive_tiles [data-testid="stHorizontalBlock"] { align-items: stretch; }
+.st-key-executive_tiles [data-testid="stColumn"] { display: flex; }
+.st-key-executive_tiles [data-testid="stMetric"] {
+    box-sizing: border-box; width: 100%; height: 220px;
+    display: flex; flex-direction: column;
+}
+.st-key-executive_tiles [data-testid="stMetric"] > :last-child { margin-top: auto; }
+@media (max-width: 700px) {
+    .st-key-executive_tiles [data-testid="stMetric"] { height: auto; }
+}
+</style>""")
+
 # Fixed grid so every tile has the same width.
-for tile, column in zip(tiles, st.columns(len(tiles))):
+with st.container(key="executive_tiles"):
+ for tile, column in zip(tiles, st.columns(len(tiles))):
 
     # Changes too small to matter read "About the same", not a red or green arrow.
-    small = tile["delta"] is not None and abs(tile["delta"]) < (
-        SMALL_POINTS if "%" in tile["value"] else SMALL_SCORE)
+     small = tile["delta"] is not None and abs(tile["delta"]) < (
+         SMALL_POINTS if "%" in tile["value"] else SMALL_SCORE)
 
-    with column:
+     with column:
 
-        st.metric(
+         st.metric(
             tile["label"],
             tile["value"],
             delta=None if small else tile["delta"],   # no badge for tiny changes
